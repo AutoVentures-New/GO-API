@@ -1,0 +1,25 @@
+services:
+  trabalhe-conosco-database:
+    image: mysql:8
+    container_name: trabalhe-conosco-database
+    volumes:
+      - trabalhe-conosco-database-volume:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:3306
+
+  trabalhe-conosco-redis:
+    image: redis:alpine
+    container_name: trabalhe-conosco-redis
+
+volumes:
+  trabalhe-conosco-database-volume:
+    external: false
+
+networks:
+  default:
+    name: trabalhe-conosco
+    external: false
