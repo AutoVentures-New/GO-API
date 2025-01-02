@@ -12,6 +12,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+var ErrUserAlreadyExists = errors.New("User already exists")
+
+var ErrCompanyAlreadyExists = errors.New("Company already exists")
+
 func CreateAccount(
 	ctx context.Context,
 	user model.User,

@@ -1,0 +1,520 @@
+{
+	"info": {
+		"_postman_id": "cc4a4d1d-5fc5-4171-b73a-c4a5d03ae4e1",
+		"name": "HubJob",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "339742"
+	},
+	"item": [
+		{
+			"name": "Company",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"    // set acces_token ",
+											"pm.environment.set(\"COMPANY_ACCESS_TOKEN\", jsonData.data.token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"email3@email.com\",\n    \"password\": \"q1w2e3\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/company/auth/login",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"    // set acces_token ",
+											"pm.environment.set(\"COMPANY_ACCESS_TOKEN\", jsonData.data.token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"full name\",\n    \"email\": \"email4@email.com\",\n    \"password\": \"q1w2e3\",\n    \"cnpj\": \"123456\",\n    \"cpf\": \"12345\",\n    \"code\": \"567880\",\n    \"city\": \"Ara\",\n    \"state\": \"SP\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/company/auth/create-account",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"auth",
+										"create-account"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Send Email Validation",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Vitor Ruschoni\",\n    \"email\": \"email4@email.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/company/auth/send-email-validation",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"auth",
+										"send-email-validation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Validate Email Validation Code",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"code\": \"768507\",\n    \"email\": \"email3@email.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/company/auth/email-validation-code",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"auth",
+										"email-validation-code"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Validate Cnpj and Cpf",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cnpj\": \"872644\",\n    \"cpf\": \"13213123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/company/auth/validate-cnpj-cpf",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"auth",
+										"validate-cnpj-cpf"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Me",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{COMPANY_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/company/auth/me",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"auth",
+										"me"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Candidate",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"    // set acces_token ",
+											"pm.environment.set(\"CANDIDATE_ACCESS_TOKEN\", jsonData.data.token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"candidate@email.com\",\n    \"password\": \"q1w2e3\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/candidate/auth/login",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"candidate",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"    // set acces_token ",
+											"pm.environment.set(\"CANDIDATE_ACCESS_TOKEN\", jsonData.data.token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"full name\",\n    \"email\": \"candidate@email.com\",\n    \"password\": \"q1w2e3\",\n    \"cpf\": \"12345\",\n    \"code\": \"984023\",\n    \"phone\": \"16997531996\",\n    \"birth_date\": \"1996-02-01\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/candidate/auth/create-account",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"candidate",
+										"auth",
+										"create-account"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Send Email Validation",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"candidate@email.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/candidate/auth/send-email-validation",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"candidate",
+										"auth",
+										"send-email-validation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Validate Email Validation Code",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"code\": \"984023\",\n    \"email\": \"candidate@email.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/candidate/auth/email-validation-code",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"candidate",
+										"auth",
+										"email-validation-code"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Validate Cpf",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cpf\": \"13213123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/candidate/auth/validate-cpf",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"candidate",
+										"auth",
+										"validate-cpf"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Me",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{CANDIDATE_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/candidate/auth/me",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"candidate",
+										"auth",
+										"me"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
