@@ -131,7 +131,7 @@ func CheckAlreadyExist(
 
 	err = database.Database.QueryRowContext(
 		ctx,
-		`SELECT COUNT(0) FROM company WHERE cnpj = ?`,
+		`SELECT COUNT(0) FROM companies WHERE cnpj = ?`,
 		company.CNPJ,
 	).Scan(&count)
 	if errors.Is(err, sql.ErrNoRows) {

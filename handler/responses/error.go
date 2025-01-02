@@ -36,6 +36,24 @@ func MethodNotAllowed(
 		})
 }
 
+func Unauthorized(
+	fiberCtx *fiber.Ctx,
+) error {
+	return fiberCtx.Status(fiber.StatusUnauthorized).
+		JSON(fiber.Map{
+			"message": "Invalid email and password",
+		})
+}
+
+func Forbidden(
+	fiberCtx *fiber.Ctx,
+) error {
+	return fiberCtx.Status(fiber.StatusForbidden).
+		JSON(fiber.Map{
+			"message": "Invalid or expired token",
+		})
+}
+
 func Conflict(
 	fiberCtx *fiber.Ctx,
 	error string,

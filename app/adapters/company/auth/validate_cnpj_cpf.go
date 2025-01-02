@@ -21,7 +21,7 @@ func ValidateCnpjCpf(
 
 	err := database.Database.QueryRowContext(
 		ctx,
-		`SELECT COUNT(0) FROM company WHERE cnpj = ?`,
+		`SELECT COUNT(0) FROM companies WHERE cnpj = ?`,
 		cnpj,
 	).Scan(&count)
 	if err != nil && !errors.Is(err, sql.ErrNoRows) {

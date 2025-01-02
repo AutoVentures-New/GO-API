@@ -12,7 +12,7 @@ func ErrorHandler() fiber.ErrorHandler {
 	return func(fiberCtx *fiber.Ctx, err error) error {
 		var fiberErr *fiber.Error
 
-		ok := errors.As(err, &fiberErr)
+		ok := errors.Is(err, fiberErr)
 		if !ok {
 			return responses.InternalServerError(fiberCtx, err)
 		}

@@ -3,17 +3,18 @@ package router
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/hubjob/api/handler/company"
+	"github.com/hubjob/api/middleware"
 )
 
 func setupCompanyRoute(router fiber.Router) {
-	auth := router.Group("/auth/company")
+	auth := router.Group("/auth")
 
 	auth.Post("/validate-cnpj-cpf", company.ValidateCnpjCpf)
 	auth.Post("/send-email-validation", company.SendEmailValidation)
 	auth.Post("/email-validation-code", company.ValidateEmailValidationCode)
 
 	auth.Post("/create-account", company.CreateAccount)
-	//auth.Post("/login", handler.Login)
+	auth.Post("/login", company.Login)
 
-	//auth.Get("/me", middleware.Protected(), handler.Me)
+	auth.Get("/me", middleware.Protected(), company.Me)
 }
