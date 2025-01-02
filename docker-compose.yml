@@ -1,9 +1,9 @@
 services:
-  trabalhe-conosco-database:
+  hubjob-database:
     image: mysql:8
-    container_name: trabalhe-conosco-database
+    container_name: hubjob-database
     volumes:
-      - trabalhe-conosco-database-volume:/var/lib/mysql
+      - hubjob-database-volume:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE}
@@ -11,15 +11,15 @@ services:
     ports:
       - ${DB_PORT}:3306
 
-  trabalhe-conosco-redis:
+  hubjob-redis:
     image: redis:alpine
-    container_name: trabalhe-conosco-redis
+    container_name: hubjob-redis
 
 volumes:
-  trabalhe-conosco-database-volume:
+  hubjob-database-volume:
     external: false
 
 networks:
   default:
-    name: trabalhe-conosco
+    name: hubjob
     external: false

@@ -1,11 +1,55 @@
-CREATE TABLE IF NOT EXISTS b2b_users (
+CREATE TABLE IF NOT EXISTS email_validations (
+    email VARCHAR(255) UNIQUE NOT NULL,
+    code VARCHAR(255) NOT NULL,
+    created_at DATETIME(6) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS companies (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
+    cnpj VARCHAR(255) UNIQUE NOT NULL,
+    status ENUM('ACTIVE', 'INACTIVE') DEFAULT 'ACTIVE',
+    created_at DATETIME(6) NOT NULL,
+    updated_at DATETIME(6) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS users (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    cpf VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     status ENUM('ACTIVE', 'INACTIVE') DEFAULT 'ACTIVE',
+    company_id BIGINT NOT NULL,
     created_at DATETIME(6) NOT NULL,
     updated_at DATETIME(6) NOT NULL,
 
-    UNIQUE(email)
+    FOREIGN KEY (company_id) REFERENCES companies(id)
+);
+
+CREATE TABLE IF NOT EXISTS candidates (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    cpf VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    status ENUM('ACTIVE', 'INACTIVE') DEFAULT 'ACTIVE',
+    phone VARCHAR(255) NULL,
+    birth_date DATETIME(6) NULL,
+    created_at DATETIME(6) NOT NULL,
+    updated_at DATETIME(6) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS candidate_addresses (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    candidate_id BIGINT NOT NULL,
+    address VARCHAR(255) NULL,
+    address_2 VARCHAR(255) NULL,
+    neighborhood VARCHAR(255) NULL,
+    zip_code VARCHAR(255) NULL,
+    city VARCHAR(255) NULL,
+    state VARCHAR(255) NULL,
+    created_at DATETIME(6) NOT NULL,
+    updated_at DATETIME(6) NOT NULL,
+    FOREIGN KEY (candidate_id) REFERENCES candidates(id)
 );

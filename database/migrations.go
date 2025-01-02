@@ -6,8 +6,8 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/mysql"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
+	"github.com/hubjob/api/config"
 	"github.com/sirupsen/logrus"
-	"github.com/trabalhe-conosco/api/config"
 )
 
 func RunMigrations() {
@@ -22,7 +22,7 @@ func RunMigrations() {
 
 	m, err := migrate.NewWithDatabaseInstance(
 		"file://./database/migrations",
-		"trabalhe-conosco",
+		"hubjob",
 		driver,
 	)
 	if err != nil {

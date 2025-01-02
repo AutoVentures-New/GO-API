@@ -16,6 +16,12 @@ type configEnv struct {
 	Database struct {
 		Uri string `env:"DB_URI"`
 	}
+
+	SendGrid struct {
+		ApiKey   string `env:"SENDGRID_API_KEY"`
+		Sender   string `env:"SENDGRID_SENDER"`
+		EmailDev string `env:"SENDGRID_EMAIL_DEV"`
+	}
 }
 
 func InitConfig() {

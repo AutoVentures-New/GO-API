@@ -3,8 +3,8 @@ package database
 import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/hubjob/api/config"
 	"github.com/sirupsen/logrus"
-	"github.com/trabalhe-conosco/api/config"
 )
 
 var Database *sql.DB
@@ -25,4 +25,18 @@ func InitDatabase() {
 	}
 
 	logrus.Info("Successfully connected to database")
+}
+
+func CloseDatabase() {
+	if Database == nil {
+		return
+	}
+
+	if err := Database.Close(); err != nil {
+		logrus.WithError(err).Error("Failed to close database")
+
+		return
+	}
+
+	logrus.Info("Successfully closed database")
 }

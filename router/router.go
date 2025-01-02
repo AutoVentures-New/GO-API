@@ -2,23 +2,23 @@ package router
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/trabalhe-conosco/api/handler"
-	"github.com/trabalhe-conosco/api/middleware"
+	"github.com/hubjob/api/handler/responses"
 )
 
 func SetupRoutes(app *fiber.App) {
 	api := app.Group("/")
-	api.Get("/", func(ctx *fiber.Ctx) error {
-		return ctx.JSON(fiber.Map{"status": "success", "message": "Hello i'm ok!", "data": nil})
+	api.Get("/", func(fiberCtx *fiber.Ctx) error {
+		return responses.Success(fiberCtx, "I'm OK")
 	})
 
-	setupB2bRoute(api.Group("/b2b"))
+	//setupB2bRoute(api.Group("/b2b"))
+	setupCompanyRoute(api.Group("/company"))
 }
 
-func setupB2bRoute(router fiber.Router) {
-	auth := router.Group("/auth")
-	auth.Post("/register", handler.Register)
-	auth.Post("/login", handler.Login)
-
-	auth.Get("/me", middleware.Protected(), handler.Me)
-}
+//func setupB2bRoute(router fiber.Router) {
+//	auth := router.Group("/auth")
+//	auth.Post("/register", handler.Register)
+//	auth.Post("/login", handler.Login)
+//
+//	auth.Get("/me", middleware.Protected(), handler.Me)
+//}
