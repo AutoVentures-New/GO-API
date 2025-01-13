@@ -25,4 +25,12 @@ func setupCompanyRoute(router fiber.Router) {
 	benefit.Get("/:id", company.GetBenefit)
 	benefit.Patch("/:id", company.UpdateBenefit)
 	benefit.Delete("/:id", company.DeleteBenefit)
+
+	questionnaire := router.Group("/questionnaire", middleware.ProtectedCompany())
+
+	questionnaire.Post("", company.CreateQuestionnaire)
+	questionnaire.Get("", company.ListQuestionnaires)
+	questionnaire.Get("/:id", company.GetQuestionnaire)
+	questionnaire.Patch("/:id", company.UpdateQuestionnaire)
+	questionnaire.Delete("/:id", company.DeleteQuestionnaire)
 }
