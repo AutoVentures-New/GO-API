@@ -33,4 +33,11 @@ func setupCompanyRoute(router fiber.Router) {
 	questionnaire.Get("/:id", company.GetQuestionnaire)
 	questionnaire.Patch("/:id", company.UpdateQuestionnaire)
 	questionnaire.Delete("/:id", company.DeleteQuestionnaire)
+
+	question := questionnaire.Group("/:questionnaire_id/question", middleware.ProtectedCompany())
+
+	question.Post("", company.CreateQuestion)
+	question.Get("", company.ListQuestions)
+	question.Patch("/:id", company.UpdateQuestion)
+	question.Delete("/:id", company.DeleteQuestion)
 }

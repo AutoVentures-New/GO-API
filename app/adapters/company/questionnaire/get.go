@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 
+	questionnaire_question "github.com/hubjob/api/app/adapters/company/questionnaire/question"
 	"github.com/hubjob/api/database"
 	"github.com/hubjob/api/model"
 	"github.com/sirupsen/logrus"
@@ -37,6 +38,13 @@ func GetQuestionnaire(
 
 	if err != nil {
 		logrus.WithError(err).Error("Error to get questionnaire")
+
+		return questionnaire, err
+	}
+
+	questionnaire.Questions, err = questionnaire_question.ListQuestions(ctx, questionnaire.ID)
+	if err != nil {
+		logrus.WithError(err).Error("Error to list questions")
 
 		return questionnaire, err
 	}

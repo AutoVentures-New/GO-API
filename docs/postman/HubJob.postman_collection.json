@@ -489,6 +489,199 @@
 					"name": "Questionnaire",
 					"item": [
 						{
+							"name": "Question",
+							"item": [
+								{
+									"name": "Create Question",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{COMPANY_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"title\": \"question 2\",\n    \"type\": \"SINGLE_CHOICE\",\n    \"answers\": [\n        {\n            \"title\": \"answer 1\",\n            \"is_correct\": true\n        },\n        {\n            \"title\": \"answer 2\",\n            \"is_correct\": false\n        },\n        {\n            \"title\": \"answer 3\",\n            \"is_correct\": true\n        }\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/company/questionnaire/2/question",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"company",
+												"questionnaire",
+												"2",
+												"question"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "List Question",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{COMPANY_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{HOST}}/company/questionnaire/2/question",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"company",
+												"questionnaire",
+												"2",
+												"question"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Question",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{COMPANY_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"title\": \"question 3333\",\n    \"type\": \"SINGLE_CHOICE\",\n    \"answers\": [\n        {\n            \"title\": \"answer 44444\",\n            \"is_correct\": true\n        },\n        {\n            \"id\": 14,\n            \"title\": \"answer 22222\",\n            \"is_correct\": false\n        }\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/company/questionnaire/2/question/3",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"company",
+												"questionnaire",
+												"2",
+												"question",
+												"3"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Question",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{COMPANY_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{HOST}}/company/questionnaire/2/question/1",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"company",
+												"questionnaire",
+												"2",
+												"question",
+												"1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
 							"name": "Create Questionnaire",
 							"event": [
 								{
@@ -517,7 +710,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"questionnaire 2\"\n}",
+									"raw": "{\n    \"name\": \"questionnaire 1\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -605,14 +798,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{HOST}}/company/questionnaire/1",
+									"raw": "{{HOST}}/company/questionnaire/2",
 									"host": [
 										"{{HOST}}"
 									],
 									"path": [
 										"company",
 										"questionnaire",
-										"1"
+										"2"
 									]
 								}
 							},
