@@ -189,12 +189,7 @@ func createToken(fiberCtx *fiber.Ctx, candidate model.Candidate) error {
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	claims := token.Claims.(jwt.MapClaims)
-	claims["email"] = candidate.Email
-	claims["id"] = candidate.ID
-	claims["name"] = candidate.Name
-	claims["cpf"] = candidate.CPF
-	claims["status"] = candidate.Status
-	claims["created_at"] = candidate.CreatedAt
+	claims["candidate"] = candidate
 	claims["exp"] = time.Now().UTC().Add(time.Hour * 72).Unix()
 
 	t, err := token.SignedString([]byte(config.Config.JwtSecret))
@@ -215,7 +210,7 @@ func checkPasswordHash(password, hash string) bool {
 }
 
 func Me(fiberCtx *fiber.Ctx) error {
-	token := fiberCtx.Locals("user").(*jwt.Token)
+	candidate := fiberCtx.Locals("candidate").(model.Candidate)
 
-	return fiberCtx.JSON(fiber.Map{"data": token.Claims})
+	return fiberCtx.JSON(fiber.Map{"data": candidate})
 }

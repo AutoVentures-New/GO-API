@@ -16,5 +16,13 @@ func setupCompanyRoute(router fiber.Router) {
 	auth.Post("/create-account", company.CreateAccount)
 	auth.Post("/login", company.Login)
 
-	auth.Get("/me", middleware.Protected(), company.Me)
+	auth.Get("/me", middleware.ProtectedCompany(), company.Me)
+
+	benefit := router.Group("/benefit", middleware.ProtectedCompany())
+
+	benefit.Post("", company.CreateBenefit)
+	benefit.Get("", company.ListBenefits)
+	benefit.Get("/:id", company.GetBenefit)
+	benefit.Patch("/:id", company.UpdateBenefit)
+	benefit.Delete("/:id", company.DeleteBenefit)
 }

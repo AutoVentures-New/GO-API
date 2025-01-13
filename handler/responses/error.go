@@ -5,6 +5,17 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+func BadRequest(
+	fiberCtx *fiber.Ctx,
+	error string,
+) error {
+	return fiberCtx.Status(fiber.StatusBadRequest).
+		JSON(fiber.Map{
+			"message": "Invalid Request",
+			"error":   error,
+		})
+}
+
 func InvalidBodyRequest(
 	fiberCtx *fiber.Ctx,
 	err error,

@@ -2,6 +2,7 @@ package company
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -200,12 +201,7 @@ func createToken(fiberCtx *fiber.Ctx, user model.User) error {
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	claims := token.Claims.(jwt.MapClaims)
-	claims["email"] = user.Email
-	claims["id"] = user.ID
-	claims["name"] = user.Name
-	claims["cpf"] = user.CPF
-	claims["status"] = user.Status
-	claims["created_at"] = user.CreatedAt
+	claims["user"] = user
 	claims["exp"] = time.Now().UTC().Add(time.Hour * 72).Unix()
 
 	t, err := token.SignedString([]byte(config.Config.JwtSecret))
@@ -226,7 +222,8 @@ func checkPasswordHash(password, hash string) bool {
 }
 
 func Me(fiberCtx *fiber.Ctx) error {
-	token := fiberCtx.Locals("user").(*jwt.Token)
+	fmt.Println("me")
+	user := fiberCtx.Locals("user").(model.User)
 
-	return fiberCtx.JSON(fiber.Map{"data": token.Claims})
+	return fiberCtx.JSON(fiber.Map{"data": user})
 }

@@ -16,5 +16,5 @@ func setupCandidateRoute(router fiber.Router) {
 	auth.Post("/create-account", candidate.CreateAccount)
 	auth.Post("/login", candidate.Login)
 
-	auth.Get("/me", middleware.Protected(), candidate.Me)
+	auth.Get("/me", middleware.ProtectedCandidate(), candidate.Me)
 }
