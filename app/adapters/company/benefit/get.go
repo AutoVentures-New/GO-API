@@ -10,7 +10,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var ErrNotFound = errors.New("Benefit not found")
+var ErrBenefitNotFound = errors.New("Benefit not found")
 
 func GetBenefit(
 	ctx context.Context,
@@ -32,7 +32,7 @@ func GetBenefit(
 		&benefit.UpdatedAt,
 	)
 	if errors.Is(err, sql.ErrNoRows) {
-		return benefit, ErrNotFound
+		return benefit, ErrBenefitNotFound
 	}
 
 	if err != nil {

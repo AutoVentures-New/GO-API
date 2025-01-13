@@ -12,7 +12,7 @@ func DeleteBenefit(
 	id int64,
 	companyID int64,
 ) error {
-	_, err := database.Database.ExecContext(
+	result, err := database.Database.ExecContext(
 		ctx,
 		`DELETE FROM benefits WHERE id = ? AND company_id = ?`,
 		id,
@@ -22,6 +22,17 @@ func DeleteBenefit(
 		logrus.WithError(err).Error("Error to delete benefit")
 
 		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		logrus.WithError(err).Error("Error to get rows affected")
+
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return ErrBenefitNotFound
 	}
 
 	return nil

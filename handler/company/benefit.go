@@ -72,7 +72,7 @@ func GetBenefit(fiberCtx *fiber.Ctx) error {
 		int64(idInt),
 		user.CompanyID,
 	)
-	if errors.Is(err, company_benefit_adp.ErrNotFound) {
+	if errors.Is(err, company_benefit_adp.ErrBenefitNotFound) {
 		return responses.NotFound(fiberCtx, err.Error())
 	}
 
@@ -110,7 +110,7 @@ func UpdateBenefit(fiberCtx *fiber.Ctx) error {
 		int64(idInt),
 		user.CompanyID,
 	)
-	if errors.Is(err, company_benefit_adp.ErrNotFound) {
+	if errors.Is(err, company_benefit_adp.ErrBenefitNotFound) {
 		return responses.NotFound(fiberCtx, err.Error())
 	}
 
@@ -152,6 +152,10 @@ func DeleteBenefit(fiberCtx *fiber.Ctx) error {
 		int64(idInt),
 		user.CompanyID,
 	)
+	if errors.Is(err, company_benefit_adp.ErrBenefitNotFound) {
+		return responses.NotFound(fiberCtx, err.Error())
+	}
+
 	if err != nil {
 		return responses.InternalServerError(fiberCtx, err)
 	}
