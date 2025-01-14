@@ -40,4 +40,12 @@ func setupCompanyRoute(router fiber.Router) {
 	question.Get("", company.ListQuestions)
 	question.Patch("/:id", company.UpdateQuestion)
 	question.Delete("/:id", company.DeleteQuestion)
+
+	job := router.Group("/job", middleware.ProtectedCompany())
+
+	job.Post("", company.CreateJob)
+	job.Get("", company.ListJobs)
+	job.Get("/:id", company.GetJob)
+	job.Patch("/:id", company.UpdateJob)
+	job.Delete("/:id", company.DeleteJob)
 }
