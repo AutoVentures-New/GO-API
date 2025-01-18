@@ -2,6 +2,7 @@ package job
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"time"
 
@@ -77,6 +78,13 @@ func UpdateJob(
 		return job, err
 	}
 
+	err = updateJobRequirement(ctx, dbTransaction, &job)
+	if err != nil {
+		_ = dbTransaction.Rollback()
+
+		return job, err
+	}
+
 	if err := dbTransaction.Commit(); err != nil {
 		_ = dbTransaction.Rollback()
 
@@ -86,4 +94,35 @@ func UpdateJob(
 	}
 
 	return job, nil
+}
+
+func updateJobRequirement(
+	ctx context.Context,
+	dbTransaction *sql.Tx,
+	job *model.Job,
+) error {
+	job.JobRequirement.UpdatedAt = job.UpdatedAt
+
+	itemsString, err := json.Marshal(job.JobRequirement.Items)
+	if err != nil {
+		logrus.WithError(err).Error("Error to marshal job requirements items")
+
+		return err
+	}
+
+	_, err = dbTransaction.ExecContext(
+		ctx,
+		`UPDATE job_requirements set items = ?, min_match = ?, updated_at = ? WHERE id = ?`,
+		itemsString,
+		job.JobRequirement.MinMatch,
+		job.JobRequirement.UpdatedAt,
+		job.JobRequirement.ID,
+	)
+	if err != nil {
+		logrus.WithError(err).Error("Error to update job requirements")
+
+		return err
+	}
+
+	return nil
 }

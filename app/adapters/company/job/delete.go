@@ -28,7 +28,21 @@ func DeleteJob(
 	if err != nil {
 		_ = dbTransaction.Rollback()
 
-		logrus.WithError(err).Error("Error to delete job_cultural_fit")
+		logrus.WithError(err).Error("Error to delete job cultural fit")
+
+		return err
+	}
+
+	_, err = dbTransaction.ExecContext(
+		ctx,
+		`DELETE FROM job_requirements WHERE company_id = ? AND job_id = ?`,
+		companyID,
+		id,
+	)
+	if err != nil {
+		_ = dbTransaction.Rollback()
+
+		logrus.WithError(err).Error("Error to delete job requirements")
 
 		return err
 	}

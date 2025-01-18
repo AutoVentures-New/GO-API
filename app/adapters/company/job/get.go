@@ -61,6 +61,11 @@ func GetJob(
 		return job, err
 	}
 
+	job.JobRequirement, err = getJobRequirements(ctx, id, companyID)
+	if err != nil {
+		return job, err
+	}
+
 	return job, nil
 }
 
@@ -105,4 +110,47 @@ func getJobCulturalFit(
 	}
 
 	return jobCulturalFit, nil
+}
+
+func getJobRequirements(
+	ctx context.Context,
+	id int64,
+	companyID int64,
+) (model.JobRequirement, error) {
+	jobRequirement := model.JobRequirement{}
+
+	var itemsJSON []byte
+
+	err := database.Database.QueryRowContext(
+		ctx,
+		`SELECT id,company_id,job_id,items,min_match,created_at,updated_at 
+				FROM job_requirements WHERE company_id = ? AND job_id = ? LIMIT 1`,
+		companyID,
+		id,
+	).Scan(
+		&jobRequirement.ID,
+		&jobRequirement.CompanyID,
+		&jobRequirement.JobID,
+		&itemsJSON,
+		&jobRequirement.MinMatch,
+		&jobRequirement.CreatedAt,
+		&jobRequirement.UpdatedAt,
+	)
+	if errors.Is(err, sql.ErrNoRows) {
+		return jobRequirement, ErrJobNotFound
+	}
+
+	if err != nil {
+		logrus.WithError(err).Error("Error to get job requirement")
+
+		return jobRequirement, err
+	}
+
+	if err = json.Unmarshal(itemsJSON, &jobRequirement.Items); err != nil {
+		logrus.WithError(err).Error("Error to unmarshal job requirement")
+
+		return jobRequirement, err
+	}
+
+	return jobRequirement, nil
 }

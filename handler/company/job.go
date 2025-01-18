@@ -32,6 +32,13 @@ type CreateJobRequest struct {
 			Answer        string `json:"answer"`
 		} `json:"answers"`
 	} `json:"cultural_fit"`
+	JobRequirements struct {
+		MinMatch int64 `json:"min_match"`
+		Items    []struct {
+			Name     string `json:"name"`
+			Required bool   `json:"required"`
+		} `json:"items"`
+	} `json:"requirements"`
 }
 
 func CreateJob(fiberCtx *fiber.Ctx) error {
@@ -48,6 +55,18 @@ func CreateJob(fiberCtx *fiber.Ctx) error {
 		jobCulturalFit.Answers = append(jobCulturalFit.Answers, model.JobCulturalFitAnswer{
 			CulturalFitID: job.CulturalFitID,
 			Answer:        job.Answer,
+		})
+	}
+
+	jobRequirement := model.JobRequirement{
+		MinMatch: request.JobRequirements.MinMatch,
+	}
+	jobRequirement.Items = make([]model.JobRequirementItem, 0)
+	for index, value := range request.JobRequirements.Items {
+		jobRequirement.Items = append(jobRequirement.Items, model.JobRequirementItem{
+			ID:       int64(index + 1),
+			Name:     value.Name,
+			Required: value.Required,
 		})
 	}
 
@@ -70,6 +89,7 @@ func CreateJob(fiberCtx *fiber.Ctx) error {
 			PublishAt:           request.PublishAt,
 			FinishAt:            request.FinishAt,
 			JobCulturalFit:      jobCulturalFit,
+			JobRequirement:      jobRequirement,
 		},
 	)
 	if errors.Is(err, company_job_adp.ErrJobAlreadyExists) {
@@ -147,6 +167,13 @@ type UpdateJobRequest struct {
 			Answer        string `json:"answer"`
 		} `json:"answers"`
 	} `json:"cultural_fit"`
+	JobRequirements struct {
+		MinMatch int64 `json:"min_match"`
+		Items    []struct {
+			Name     string `json:"name"`
+			Required bool   `json:"required"`
+		} `json:"items"`
+	} `json:"requirements"`
 }
 
 func UpdateJob(fiberCtx *fiber.Ctx) error {
@@ -185,6 +212,17 @@ func UpdateJob(fiberCtx *fiber.Ctx) error {
 		job.JobCulturalFit.Answers = append(job.JobCulturalFit.Answers, model.JobCulturalFitAnswer{
 			CulturalFitID: value.CulturalFitID,
 			Answer:        value.Answer,
+		})
+	}
+
+	job.JobRequirement.MinMatch = request.JobRequirements.MinMatch
+
+	job.JobRequirement.Items = make([]model.JobRequirementItem, 0)
+	for index, value := range request.JobRequirements.Items {
+		job.JobRequirement.Items = append(job.JobRequirement.Items, model.JobRequirementItem{
+			ID:       int64(index + 1),
+			Name:     value.Name,
+			Required: value.Required,
 		})
 	}
 

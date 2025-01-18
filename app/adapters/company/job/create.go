@@ -127,6 +127,12 @@ func CreateJob(
 		return job, err
 	}
 
+	if err := CreateJobRequirement(ctx, dbTransaction, &job); err != nil {
+		_ = dbTransaction.Rollback()
+
+		return job, err
+	}
+
 	if err := dbTransaction.Commit(); err != nil {
 		_ = dbTransaction.Rollback()
 
@@ -136,4 +142,48 @@ func CreateJob(
 	}
 
 	return job, nil
+}
+
+func CreateJobRequirement(
+	ctx context.Context,
+	dbTransaction *sql.Tx,
+	job *model.Job,
+) error {
+	job.JobRequirement.CompanyID = job.CompanyID
+	job.JobRequirement.JobID = job.ID
+	job.JobRequirement.CreatedAt = job.CreatedAt
+	job.JobRequirement.UpdatedAt = job.CreatedAt
+
+	itemsString, err := json.Marshal(job.JobRequirement.Items)
+	if err != nil {
+		logrus.WithError(err).Error("Error to marshal job requirements items")
+
+		return err
+	}
+
+	resultJobRequirement, err := dbTransaction.ExecContext(
+		ctx,
+		`INSERT INTO job_requirements(company_id,job_id,items,min_match,created_at,updated_at) 
+					VALUES(?,?,?,?,?,?)`,
+		job.JobRequirement.CompanyID,
+		job.JobRequirement.JobID,
+		itemsString,
+		job.JobRequirement.MinMatch,
+		job.JobRequirement.CreatedAt,
+		job.JobRequirement.UpdatedAt,
+	)
+	if err != nil {
+		logrus.WithError(err).Error("Error to insert job requirements")
+
+		return err
+	}
+
+	job.JobRequirement.ID, err = resultJobRequirement.LastInsertId()
+	if err != nil {
+		logrus.WithError(err).Error("Error to get last insert job requirements id")
+
+		return err
+	}
+
+	return nil
 }
