@@ -3,6 +3,7 @@ package job
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"errors"
 
 	"github.com/hubjob/api/database"
@@ -55,5 +56,53 @@ func GetJob(
 		return job, err
 	}
 
+	job.JobCulturalFit, err = getJobCulturalFit(ctx, id, companyID)
+	if err != nil {
+		return job, err
+	}
+
 	return job, nil
+}
+
+func getJobCulturalFit(
+	ctx context.Context,
+	id int64,
+	companyID int64,
+) (model.JobCulturalFit, error) {
+	jobCulturalFit := model.JobCulturalFit{}
+
+	var answersJSON []byte
+
+	err := database.Database.QueryRowContext(
+		ctx,
+		`SELECT id,company_id,job_id,answers,created_at,updated_at 
+				FROM job_cultural_fit WHERE company_id = ? AND job_id = ? LIMIT 1`,
+		companyID,
+		id,
+	).Scan(
+		&jobCulturalFit.ID,
+		&jobCulturalFit.CompanyID,
+		&jobCulturalFit.JobID,
+		&answersJSON,
+		&jobCulturalFit.CreatedAt,
+		&jobCulturalFit.UpdatedAt,
+	)
+	if errors.Is(err, sql.ErrNoRows) {
+		return jobCulturalFit, ErrJobNotFound
+	}
+
+	if err != nil {
+		logrus.WithError(err).Error("Error to get job cultural fit")
+
+		return jobCulturalFit, err
+	}
+
+	err = json.Unmarshal(answersJSON, &jobCulturalFit.Answers)
+	if err != nil {
+		logrus.WithError(err).Error("Error to unmarshal job cultural fit")
+
+		return jobCulturalFit, err
+	}
+
+	return jobCulturalFit, nil
 }

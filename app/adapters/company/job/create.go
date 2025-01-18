@@ -3,6 +3,7 @@ package job
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"time"
 
@@ -39,7 +40,14 @@ func CreateJob(
 	job.CreatedAt = time.Now().UTC()
 	job.UpdatedAt = job.CreatedAt
 
-	result, err := database.Database.ExecContext(
+	dbTransaction, err := database.Database.Begin()
+	if err != nil {
+		logrus.WithError(err).Error("Error to open db transaction")
+
+		return job, err
+	}
+
+	result, err := dbTransaction.ExecContext(
 		ctx,
 		`INSERT INTO jobs(title,company_id,is_talent_bank,is_special_needs,description,job_mode,contracting_modality,state,city,responsibilities,questionnaire,video_link,status,publish_at,finish_at,created_at,updated_at) 
 					VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
@@ -64,12 +72,65 @@ func CreateJob(
 	if err != nil {
 		logrus.WithError(err).Error("Error to insert job")
 
+		_ = dbTransaction.Rollback()
+
 		return job, err
 	}
 
 	job.ID, err = result.LastInsertId()
 	if err != nil {
 		logrus.WithError(err).Error("Error to get last insert job id")
+
+		_ = dbTransaction.Rollback()
+
+		return job, err
+	}
+
+	job.JobCulturalFit.CompanyID = job.CompanyID
+	job.JobCulturalFit.JobID = job.ID
+	job.JobCulturalFit.CreatedAt = job.CreatedAt
+	job.JobCulturalFit.UpdatedAt = job.CreatedAt
+
+	answersString, err := json.Marshal(job.JobCulturalFit.Answers)
+	if err != nil {
+		logrus.WithError(err).Error("Error to marshal job cultural fit answers")
+
+		_ = dbTransaction.Rollback()
+
+		return job, err
+	}
+
+	resultJobCulturalFit, err := dbTransaction.ExecContext(
+		ctx,
+		`INSERT INTO job_cultural_fit(company_id,job_id,answers,created_at,updated_at) 
+					VALUES(?,?,?,?,?)`,
+		job.JobCulturalFit.CompanyID,
+		job.JobCulturalFit.JobID,
+		answersString,
+		job.JobCulturalFit.CreatedAt,
+		job.JobCulturalFit.UpdatedAt,
+	)
+	if err != nil {
+		logrus.WithError(err).Error("Error to insert job cultural fit")
+
+		_ = dbTransaction.Rollback()
+
+		return job, err
+	}
+
+	job.JobCulturalFit.ID, err = resultJobCulturalFit.LastInsertId()
+	if err != nil {
+		logrus.WithError(err).Error("Error to get last insert job cultural fit id")
+
+		_ = dbTransaction.Rollback()
+
+		return job, err
+	}
+
+	if err := dbTransaction.Commit(); err != nil {
+		_ = dbTransaction.Rollback()
+
+		logrus.WithError(err).Error("Error to commit transaction")
 
 		return job, err
 	}

@@ -1,6 +1,8 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 type Job struct {
 	ID                  int64     `json:"id"`
@@ -21,4 +23,20 @@ type Job struct {
 	FinishAt            time.Time `json:"finish_at"`
 	CreatedAt           time.Time `json:"created_at"`
 	UpdatedAt           time.Time `json:"updated_at"`
+
+	JobCulturalFit JobCulturalFit `json:"job_cultural_fit"`
+}
+
+type JobCulturalFit struct {
+	ID        int64                  `json:"id"`
+	CompanyID int64                  `json:"company_id"`
+	JobID     int64                  `json:"job_id"`
+	Answers   []JobCulturalFitAnswer `json:"answers"`
+	CreatedAt time.Time              `json:"created_at"`
+	UpdatedAt time.Time              `json:"updated_at"`
+}
+
+type JobCulturalFitAnswer struct {
+	CulturalFitID int64  `json:"cultural_fit_id"`
+	Answer        string `json:"answer"`
 }

@@ -26,6 +26,12 @@ type CreateJobRequest struct {
 	Status              string    `json:"status"`
 	PublishAt           time.Time `json:"publish_at"`
 	FinishAt            time.Time `json:"finish_at"`
+	JobCulturalFit      struct {
+		Answers []struct {
+			CulturalFitID int64  `json:"cultural_fit_id"`
+			Answer        string `json:"answer"`
+		} `json:"answers"`
+	} `json:"cultural_fit"`
 }
 
 func CreateJob(fiberCtx *fiber.Ctx) error {
@@ -34,6 +40,15 @@ func CreateJob(fiberCtx *fiber.Ctx) error {
 
 	if err := fiberCtx.BodyParser(&request); err != nil {
 		return responses.InvalidBodyRequest(fiberCtx, err)
+	}
+
+	jobCulturalFit := model.JobCulturalFit{}
+	jobCulturalFit.Answers = make([]model.JobCulturalFitAnswer, 0)
+	for _, job := range request.JobCulturalFit.Answers {
+		jobCulturalFit.Answers = append(jobCulturalFit.Answers, model.JobCulturalFitAnswer{
+			CulturalFitID: job.CulturalFitID,
+			Answer:        job.Answer,
+		})
 	}
 
 	job, err := company_job_adp.CreateJob(
@@ -54,6 +69,7 @@ func CreateJob(fiberCtx *fiber.Ctx) error {
 			Status:              request.Status,
 			PublishAt:           request.PublishAt,
 			FinishAt:            request.FinishAt,
+			JobCulturalFit:      jobCulturalFit,
 		},
 	)
 	if errors.Is(err, company_job_adp.ErrJobAlreadyExists) {
@@ -125,6 +141,12 @@ type UpdateJobRequest struct {
 	Status              string    `json:"status"`
 	PublishAt           time.Time `json:"publish_at"`
 	FinishAt            time.Time `json:"finish_at"`
+	JobCulturalFit      struct {
+		Answers []struct {
+			CulturalFitID int64  `json:"cultural_fit_id"`
+			Answer        string `json:"answer"`
+		} `json:"answers"`
+	} `json:"cultural_fit"`
 }
 
 func UpdateJob(fiberCtx *fiber.Ctx) error {
@@ -145,26 +167,45 @@ func UpdateJob(fiberCtx *fiber.Ctx) error {
 		return responses.BadRequest(fiberCtx, "Invalid params {id}")
 	}
 
-	job, err := company_job_adp.UpdateJob(
+	job, err := company_job_adp.GetJob(
 		fiberCtx.UserContext(),
-		model.Job{
-			ID:                  int64(idInt),
-			Title:               request.Title,
-			CompanyID:           user.CompanyID,
-			IsTalentBank:        request.IsTalentBank,
-			IsSpecialNeeds:      request.IsSpecialNeeds,
-			Description:         request.Description,
-			JobMode:             request.JobMode,
-			ContractingModality: request.ContractingModality,
-			State:               request.State,
-			City:                request.City,
-			Responsibilities:    request.Responsibilities,
-			Questionnaire:       request.Questionnaire,
-			VideoLink:           request.VideoLink,
-			Status:              request.Status,
-			PublishAt:           request.PublishAt,
-			FinishAt:            request.FinishAt,
-		},
+		int64(idInt),
+		user.CompanyID,
+	)
+	if errors.Is(err, company_job_adp.ErrJobNotFound) {
+		return responses.NotFound(fiberCtx, err.Error())
+	}
+
+	if err != nil {
+		return responses.InternalServerError(fiberCtx, err)
+	}
+
+	job.JobCulturalFit.Answers = make([]model.JobCulturalFitAnswer, 0)
+	for _, value := range request.JobCulturalFit.Answers {
+		job.JobCulturalFit.Answers = append(job.JobCulturalFit.Answers, model.JobCulturalFitAnswer{
+			CulturalFitID: value.CulturalFitID,
+			Answer:        value.Answer,
+		})
+	}
+
+	job.Title = request.Title
+	job.IsTalentBank = request.IsTalentBank
+	job.IsSpecialNeeds = request.IsSpecialNeeds
+	job.Description = request.Description
+	job.JobMode = request.JobMode
+	job.ContractingModality = request.ContractingModality
+	job.State = request.State
+	job.City = request.City
+	job.Responsibilities = request.Responsibilities
+	job.Questionnaire = request.Questionnaire
+	job.VideoLink = request.VideoLink
+	job.Status = request.Status
+	job.PublishAt = request.PublishAt
+	job.FinishAt = request.FinishAt
+
+	job, err = company_job_adp.UpdateJob(
+		fiberCtx.UserContext(),
+		job,
 	)
 	if err != nil {
 		return responses.InternalServerError(fiberCtx, err)

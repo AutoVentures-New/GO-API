@@ -517,7 +517,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"title\": \"job 3\",\n    \"is_talent_bank\": false,\n    \"is_special_needs\": false,\n    \"description\": \"desc\",\n    \"job_mode\": \"IN_PERSON\",\n    \"contracting_modality\": \"CLT\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara\",\n    \"responsibilities\": \"responsa\",\n    \"questionnaire\": \"PROFESSIONAL\",\n    \"video_link\": \"http://link.com\",\n    \"publish_at\": \"2025-01-30T01:49:01.977009Z\",\n    \"finish_at\": \"2025-02-25T01:49:01.977009Z\"\n}",
+									"raw": "{\n    \"title\": \"job 5\",\n    \"is_talent_bank\": false,\n    \"is_special_needs\": false,\n    \"description\": \"desc\",\n    \"job_mode\": \"IN_PERSON\",\n    \"contracting_modality\": \"CLT\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara\",\n    \"responsibilities\": \"responsa\",\n    \"questionnaire\": \"PROFESSIONAL\",\n    \"video_link\": \"http://link.com\",\n    \"publish_at\": \"2025-01-30T01:49:01.977009Z\",\n    \"finish_at\": \"2025-02-25T01:49:01.977009Z\",\n    \"cultural_fit\": {\n        \"answers\": [\n            {\n                \"cultural_fit_id\": 1,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"cultural_fit_id\": 2,\n                \"answer\": \"answer_b\"\n            },\n            {\n                \"cultural_fit_id\": 3,\n                \"answer\": \"answer_a\"\n            }\n        ]\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -605,14 +605,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{HOST}}/company/job/2",
+									"raw": "{{HOST}}/company/job/9",
 									"host": [
 										"{{HOST}}"
 									],
 									"path": [
 										"company",
 										"job",
-										"2"
+										"9"
 									]
 								}
 							},
@@ -647,7 +647,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"title\": \"job 222222\",\n    \"is_talent_bank\": false,\n    \"is_special_needs\": false,\n    \"description\": \"desc\",\n    \"job_mode\": \"IN_PERSON\",\n    \"contracting_modality\": \"CLT\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara\",\n    \"responsibilities\": \"responsa\",\n    \"questionnaire\": \"PROFESSIONAL\",\n    \"video_link\": \"http://link.com\",\n    \"status\": \"INACTIVE\",\n    \"publish_at\": \"2025-01-30T01:49:01.977009Z\",\n    \"finish_at\": \"2025-02-25T01:49:01.977009Z\"\n}",
+									"raw": "{\n    \"title\": \"job 999999\",\n    \"is_talent_bank\": false,\n    \"is_special_needs\": false,\n    \"description\": \"desc\",\n    \"job_mode\": \"IN_PERSON\",\n    \"contracting_modality\": \"CLT\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara\",\n    \"responsibilities\": \"responsa\",\n    \"questionnaire\": \"PROFESSIONAL\",\n    \"video_link\": \"http://link.com\",\n    \"status\": \"ACTIVE\",\n    \"publish_at\": \"2025-01-30T01:49:01.977009Z\",\n    \"finish_at\": \"2025-02-25T01:49:01.977009Z\",\n    \"cultural_fit\": {\n        \"answers\": [\n            {\n                \"cultural_fit_id\": 1,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"cultural_fit_id\": 2,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"cultural_fit_id\": 3,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"cultural_fit_id\": 4,\n                \"answer\": \"answer_b\"\n            }\n        ]\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -655,14 +655,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/company/job/2",
+									"raw": "{{HOST}}/company/job/9",
 									"host": [
 										"{{HOST}}"
 									],
 									"path": [
 										"company",
 										"job",
-										"2"
+										"9"
 									]
 								}
 							},
@@ -696,14 +696,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{HOST}}/company/job/2",
+									"raw": "{{HOST}}/company/job/8",
 									"host": [
 										"{{HOST}}"
 									],
 									"path": [
 										"company",
 										"job",
-										"2"
+										"8"
 									]
 								}
 							},
@@ -1384,6 +1384,51 @@
 							"response": []
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "Configuration",
+			"item": [
+				{
+					"name": "Cultural Fit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CANDIDATE_ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/configuration/cultural-fit",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"configuration",
+								"cultural-fit"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
