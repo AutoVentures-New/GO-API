@@ -97,6 +97,12 @@ func UpdateJob(
 		return job, err
 	}
 
+	if err := updateJobQuestions(ctx, dbTransaction, &job); err != nil {
+		_ = dbTransaction.Rollback()
+
+		return job, err
+	}
+
 	if err := dbTransaction.Commit(); err != nil {
 		_ = dbTransaction.Rollback()
 
@@ -202,6 +208,44 @@ func updateJobVideoQuestions(
 		logrus.WithError(err).Error("Error to update job video questions")
 
 		return err
+	}
+
+	return nil
+}
+
+func updateJobQuestions(
+	ctx context.Context,
+	dbTransaction *sql.Tx,
+	job *model.Job,
+) error {
+	_, err := dbTransaction.ExecContext(
+		ctx,
+		`DELETE FROM job_questions WHERE company_id = ? AND job_id = ?`,
+		job.CompanyID,
+		job.ID,
+	)
+	if err != nil {
+		logrus.WithError(err).Error("Error to delete job questions")
+
+		return err
+	}
+
+	for _, question := range job.Questions {
+		_, err := dbTransaction.ExecContext(
+			ctx,
+			`INSERT INTO job_questions(company_id,job_id,question_id,created_at,updated_at) 
+					VALUES(?,?,?,?,?)`,
+			job.CompanyID,
+			job.ID,
+			question.ID,
+			job.CreatedAt,
+			job.UpdatedAt,
+		)
+		if err != nil {
+			logrus.WithError(err).Error("Error to insert job questions")
+
+			return err
+		}
 	}
 
 	return nil

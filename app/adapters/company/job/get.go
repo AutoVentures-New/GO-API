@@ -76,6 +76,11 @@ func GetJob(
 		return job, err
 	}
 
+	job.Questions, err = getJobQuestions(ctx, id, companyID)
+	if err != nil {
+		return job, err
+	}
+
 	return job, nil
 }
 
@@ -250,4 +255,57 @@ func getJobVideoQuestions(
 	}
 
 	return jobVideoQuestions, nil
+}
+
+func getJobQuestions(
+	ctx context.Context,
+	id int64,
+	companyID int64,
+) ([]model.Question, error) {
+	questions := make([]model.Question, 0)
+
+	rows, err := database.Database.QueryContext(
+		ctx,
+		`SELECT 
+    				questionnaire_questions.id, 
+    				questionnaire_questions.title, 
+    				questionnaire_questions.type, 
+    				questionnaire_questions.questionnaire_id, 
+    				questionnaire_questions.created_at, 
+    				questionnaire_questions.updated_at 
+				FROM job_questions
+				JOIN questionnaire_questions ON job_questions.question_id = questionnaire_questions.id 
+				WHERE job_questions.company_id = ? AND job_questions.job_id = ?`,
+		companyID,
+		id,
+	)
+	if err != nil {
+		logrus.WithError(err).Error("Error to get job questions")
+
+		return questions, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		question := model.Question{}
+
+		err := rows.Scan(
+			&question.ID,
+			&question.Title,
+			&question.Type,
+			&question.QuestionnaireID,
+			&question.CreatedAt,
+			&question.UpdatedAt,
+		)
+		if err != nil {
+			logrus.WithError(err).Error("Error to scan job questions")
+
+			return questions, err
+		}
+
+		questions = append(questions, question)
+	}
+
+	return questions, nil
 }

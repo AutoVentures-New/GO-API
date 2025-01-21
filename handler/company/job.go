@@ -43,6 +43,7 @@ type CreateJobRequest struct {
 	VideoQuestions struct {
 		Questions []string `json:"questions"`
 	} `json:"video_questions"`
+	Questions []int64 `json:"questions"`
 }
 
 func CreateJob(fiberCtx *fiber.Ctx) error {
@@ -81,6 +82,13 @@ func CreateJob(fiberCtx *fiber.Ctx) error {
 		})
 	}
 
+	questions := make([]model.Question, 0)
+	for _, question := range request.Questions {
+		questions = append(questions, model.Question{
+			ID: question,
+		})
+	}
+
 	job, err := company_job_adp.CreateJob(
 		fiberCtx.UserContext(),
 		model.Job{
@@ -103,6 +111,7 @@ func CreateJob(fiberCtx *fiber.Ctx) error {
 			JobRequirement:      jobRequirement,
 			Benefits:            benefits,
 			VideoQuestions:      model.JobVideoQuestions{Questions: request.VideoQuestions.Questions},
+			Questions:           questions,
 		},
 	)
 	if errors.Is(err, company_job_adp.ErrJobAlreadyExists) {
@@ -191,6 +200,7 @@ type UpdateJobRequest struct {
 	VideoQuestions struct {
 		Questions []string `json:"questions"`
 	} `json:"video_questions"`
+	Questions []int64 `json:"questions"`
 }
 
 func UpdateJob(fiberCtx *fiber.Ctx) error {
@@ -250,6 +260,13 @@ func UpdateJob(fiberCtx *fiber.Ctx) error {
 		})
 	}
 
+	questions := make([]model.Question, 0)
+	for _, question := range request.Questions {
+		questions = append(questions, model.Question{
+			ID: question,
+		})
+	}
+
 	job.Title = request.Title
 	job.IsTalentBank = request.IsTalentBank
 	job.IsSpecialNeeds = request.IsSpecialNeeds
@@ -266,6 +283,7 @@ func UpdateJob(fiberCtx *fiber.Ctx) error {
 	job.FinishAt = request.FinishAt
 	job.Benefits = benefits
 	job.VideoQuestions.Questions = request.VideoQuestions.Questions
+	job.Questions = questions
 
 	job, err = company_job_adp.UpdateJob(
 		fiberCtx.UserContext(),
