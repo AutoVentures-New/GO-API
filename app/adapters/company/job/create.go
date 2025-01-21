@@ -133,6 +133,12 @@ func CreateJob(
 		return job, err
 	}
 
+	if err := CreateJobBenefits(ctx, dbTransaction, &job); err != nil {
+		_ = dbTransaction.Rollback()
+
+		return job, err
+	}
+
 	if err := dbTransaction.Commit(); err != nil {
 		_ = dbTransaction.Rollback()
 
@@ -183,6 +189,32 @@ func CreateJobRequirement(
 		logrus.WithError(err).Error("Error to get last insert job requirements id")
 
 		return err
+	}
+
+	return nil
+}
+
+func CreateJobBenefits(
+	ctx context.Context,
+	dbTransaction *sql.Tx,
+	job *model.Job,
+) error {
+	for _, benefit := range job.Benefits {
+		_, err := dbTransaction.ExecContext(
+			ctx,
+			`INSERT INTO job_benefits(company_id,job_id,benefit_id,created_at,updated_at) 
+					VALUES(?,?,?,?,?)`,
+			job.CompanyID,
+			job.ID,
+			benefit.ID,
+			job.CreatedAt,
+			job.UpdatedAt,
+		)
+		if err != nil {
+			logrus.WithError(err).Error("Error to insert job benefit")
+
+			return err
+		}
 	}
 
 	return nil

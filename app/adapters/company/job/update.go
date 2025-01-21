@@ -85,6 +85,12 @@ func UpdateJob(
 		return job, err
 	}
 
+	if err := updateJobBenefits(ctx, dbTransaction, &job); err != nil {
+		_ = dbTransaction.Rollback()
+
+		return job, err
+	}
+
 	if err := dbTransaction.Commit(); err != nil {
 		_ = dbTransaction.Rollback()
 
@@ -122,6 +128,44 @@ func updateJobRequirement(
 		logrus.WithError(err).Error("Error to update job requirements")
 
 		return err
+	}
+
+	return nil
+}
+
+func updateJobBenefits(
+	ctx context.Context,
+	dbTransaction *sql.Tx,
+	job *model.Job,
+) error {
+	_, err := dbTransaction.ExecContext(
+		ctx,
+		`DELETE FROM job_benefits WHERE company_id = ? AND job_id = ?`,
+		job.CompanyID,
+		job.ID,
+	)
+	if err != nil {
+		logrus.WithError(err).Error("Error to delete job benefits")
+
+		return err
+	}
+
+	for _, benefit := range job.Benefits {
+		_, err := dbTransaction.ExecContext(
+			ctx,
+			`INSERT INTO job_benefits(company_id,job_id,benefit_id,created_at,updated_at) 
+					VALUES(?,?,?,?,?)`,
+			job.CompanyID,
+			job.ID,
+			benefit.ID,
+			job.CreatedAt,
+			job.UpdatedAt,
+		)
+		if err != nil {
+			logrus.WithError(err).Error("Error to insert job benefit")
+
+			return err
+		}
 	}
 
 	return nil

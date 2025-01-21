@@ -26,6 +26,7 @@ type Job struct {
 
 	JobCulturalFit JobCulturalFit `json:"cultural_fit"`
 	JobRequirement JobRequirement `json:"requirements"`
+	Benefits       []Benefit      `json:"benefits"`
 }
 
 type JobCulturalFit struct {

@@ -39,6 +39,7 @@ type CreateJobRequest struct {
 			Required bool   `json:"required"`
 		} `json:"items"`
 	} `json:"requirements"`
+	Benefits []int64 `json:"benefits"`
 }
 
 func CreateJob(fiberCtx *fiber.Ctx) error {
@@ -70,6 +71,13 @@ func CreateJob(fiberCtx *fiber.Ctx) error {
 		})
 	}
 
+	benefits := make([]model.Benefit, 0)
+	for _, benefit := range request.Benefits {
+		benefits = append(benefits, model.Benefit{
+			ID: benefit,
+		})
+	}
+
 	job, err := company_job_adp.CreateJob(
 		fiberCtx.UserContext(),
 		model.Job{
@@ -90,6 +98,7 @@ func CreateJob(fiberCtx *fiber.Ctx) error {
 			FinishAt:            request.FinishAt,
 			JobCulturalFit:      jobCulturalFit,
 			JobRequirement:      jobRequirement,
+			Benefits:            benefits,
 		},
 	)
 	if errors.Is(err, company_job_adp.ErrJobAlreadyExists) {
@@ -174,6 +183,7 @@ type UpdateJobRequest struct {
 			Required bool   `json:"required"`
 		} `json:"items"`
 	} `json:"requirements"`
+	Benefits []int64 `json:"benefits"`
 }
 
 func UpdateJob(fiberCtx *fiber.Ctx) error {
@@ -226,6 +236,13 @@ func UpdateJob(fiberCtx *fiber.Ctx) error {
 		})
 	}
 
+	benefits := make([]model.Benefit, 0)
+	for _, benefit := range request.Benefits {
+		benefits = append(benefits, model.Benefit{
+			ID: benefit,
+		})
+	}
+
 	job.Title = request.Title
 	job.IsTalentBank = request.IsTalentBank
 	job.IsSpecialNeeds = request.IsSpecialNeeds
@@ -240,6 +257,7 @@ func UpdateJob(fiberCtx *fiber.Ctx) error {
 	job.Status = request.Status
 	job.PublishAt = request.PublishAt
 	job.FinishAt = request.FinishAt
+	job.Benefits = benefits
 
 	job, err = company_job_adp.UpdateJob(
 		fiberCtx.UserContext(),

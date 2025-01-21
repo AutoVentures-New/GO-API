@@ -66,6 +66,11 @@ func GetJob(
 		return job, err
 	}
 
+	job.Benefits, err = getJobBenefits(ctx, id, companyID)
+	if err != nil {
+		return job, err
+	}
+
 	return job, nil
 }
 
@@ -153,4 +158,49 @@ func getJobRequirements(
 	}
 
 	return jobRequirement, nil
+}
+
+func getJobBenefits(
+	ctx context.Context,
+	id int64,
+	companyID int64,
+) ([]model.Benefit, error) {
+	benefits := make([]model.Benefit, 0)
+
+	rows, err := database.Database.QueryContext(
+		ctx,
+		`SELECT benefits.id, benefits.name, benefits.company_id, benefits.created_at, benefits.updated_at FROM job_benefits
+				JOIN benefits ON job_benefits.benefit_id = benefits.id 
+				WHERE job_benefits.company_id = ? AND job_benefits.job_id = ?`,
+		companyID,
+		id,
+	)
+	if err != nil {
+		logrus.WithError(err).Error("Error to get job benefits")
+
+		return benefits, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		benefit := model.Benefit{}
+
+		err := rows.Scan(
+			&benefit.ID,
+			&benefit.Name,
+			&benefit.CompanyID,
+			&benefit.CreatedAt,
+			&benefit.UpdatedAt,
+		)
+		if err != nil {
+			logrus.WithError(err).Error("Error to scan job benefit")
+
+			return benefits, err
+		}
+
+		benefits = append(benefits, benefit)
+	}
+
+	return benefits, nil
 }
