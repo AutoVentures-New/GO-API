@@ -91,6 +91,12 @@ func UpdateJob(
 		return job, err
 	}
 
+	if err := updateJobVideoQuestions(ctx, dbTransaction, &job); err != nil {
+		_ = dbTransaction.Rollback()
+
+		return job, err
+	}
+
 	if err := dbTransaction.Commit(); err != nil {
 		_ = dbTransaction.Rollback()
 
@@ -166,6 +172,36 @@ func updateJobBenefits(
 
 			return err
 		}
+	}
+
+	return nil
+}
+
+func updateJobVideoQuestions(
+	ctx context.Context,
+	dbTransaction *sql.Tx,
+	job *model.Job,
+) error {
+	job.VideoQuestions.UpdatedAt = job.UpdatedAt
+
+	questionsString, err := json.Marshal(job.VideoQuestions.Questions)
+	if err != nil {
+		logrus.WithError(err).Error("Error to marshal job video questions")
+
+		return err
+	}
+
+	_, err = dbTransaction.ExecContext(
+		ctx,
+		`UPDATE job_video_questions SET questions = ?, updated_at = ? WHERE id = ?`,
+		questionsString,
+		job.VideoQuestions.UpdatedAt,
+		job.VideoQuestions.ID,
+	)
+	if err != nil {
+		logrus.WithError(err).Error("Error to update job video questions")
+
+		return err
 	}
 
 	return nil

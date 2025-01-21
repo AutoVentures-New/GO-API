@@ -139,6 +139,12 @@ func CreateJob(
 		return job, err
 	}
 
+	if err := createJobVideoQuestions(ctx, dbTransaction, &job); err != nil {
+		_ = dbTransaction.Rollback()
+
+		return job, err
+	}
+
 	if err := dbTransaction.Commit(); err != nil {
 		_ = dbTransaction.Rollback()
 
@@ -215,6 +221,49 @@ func CreateJobBenefits(
 
 			return err
 		}
+	}
+
+	return nil
+}
+
+func createJobVideoQuestions(
+	ctx context.Context,
+	dbTransaction *sql.Tx,
+	job *model.Job,
+) error {
+	job.VideoQuestions.CompanyID = job.CompanyID
+	job.VideoQuestions.JobID = job.ID
+	job.VideoQuestions.CreatedAt = job.CreatedAt
+	job.VideoQuestions.UpdatedAt = job.CreatedAt
+
+	questionsString, err := json.Marshal(job.VideoQuestions.Questions)
+	if err != nil {
+		logrus.WithError(err).Error("Error to marshal job video questions")
+
+		return err
+	}
+
+	result, err := dbTransaction.ExecContext(
+		ctx,
+		`INSERT INTO job_video_questions(company_id,job_id,questions,created_at,updated_at) 
+					VALUES(?,?,?,?,?)`,
+		job.VideoQuestions.CompanyID,
+		job.VideoQuestions.JobID,
+		questionsString,
+		job.VideoQuestions.CreatedAt,
+		job.VideoQuestions.UpdatedAt,
+	)
+	if err != nil {
+		logrus.WithError(err).Error("Error to insert job video questions")
+
+		return err
+	}
+
+	job.VideoQuestions.ID, err = result.LastInsertId()
+	if err != nil {
+		logrus.WithError(err).Error("Error to get last insert job video questions id")
+
+		return err
 	}
 
 	return nil

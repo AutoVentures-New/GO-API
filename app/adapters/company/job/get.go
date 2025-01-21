@@ -71,6 +71,11 @@ func GetJob(
 		return job, err
 	}
 
+	job.VideoQuestions, err = getJobVideoQuestions(ctx, id, companyID)
+	if err != nil {
+		return job, err
+	}
+
 	return job, nil
 }
 
@@ -129,7 +134,7 @@ func getJobRequirements(
 	err := database.Database.QueryRowContext(
 		ctx,
 		`SELECT id,company_id,job_id,items,min_match,created_at,updated_at 
-				FROM job_requirements WHERE company_id = ? AND job_id = ? LIMIT 1`,
+				FROM job_requirements WHERE company_id = ? AND job_id = ?`,
 		companyID,
 		id,
 	).Scan(
@@ -203,4 +208,46 @@ func getJobBenefits(
 	}
 
 	return benefits, nil
+}
+
+func getJobVideoQuestions(
+	ctx context.Context,
+	id int64,
+	companyID int64,
+) (model.JobVideoQuestions, error) {
+	jobVideoQuestions := model.JobVideoQuestions{}
+
+	var questionsJSON []byte
+
+	err := database.Database.QueryRowContext(
+		ctx,
+		`SELECT id,company_id,job_id,questions,created_at,updated_at 
+				FROM job_video_questions WHERE company_id = ? AND job_id = ?`,
+		companyID,
+		id,
+	).Scan(
+		&jobVideoQuestions.ID,
+		&jobVideoQuestions.CompanyID,
+		&jobVideoQuestions.JobID,
+		&questionsJSON,
+		&jobVideoQuestions.CreatedAt,
+		&jobVideoQuestions.UpdatedAt,
+	)
+	if errors.Is(err, sql.ErrNoRows) {
+		return jobVideoQuestions, ErrJobNotFound
+	}
+
+	if err != nil {
+		logrus.WithError(err).Error("Error to get job video questions")
+
+		return jobVideoQuestions, err
+	}
+
+	if err = json.Unmarshal(questionsJSON, &jobVideoQuestions.Questions); err != nil {
+		logrus.WithError(err).Error("Error to unmarshal job video questions")
+
+		return jobVideoQuestions, err
+	}
+
+	return jobVideoQuestions, nil
 }

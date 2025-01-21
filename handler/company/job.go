@@ -39,7 +39,10 @@ type CreateJobRequest struct {
 			Required bool   `json:"required"`
 		} `json:"items"`
 	} `json:"requirements"`
-	Benefits []int64 `json:"benefits"`
+	Benefits       []int64 `json:"benefits"`
+	VideoQuestions struct {
+		Questions []string `json:"questions"`
+	} `json:"video_questions"`
 }
 
 func CreateJob(fiberCtx *fiber.Ctx) error {
@@ -99,6 +102,7 @@ func CreateJob(fiberCtx *fiber.Ctx) error {
 			JobCulturalFit:      jobCulturalFit,
 			JobRequirement:      jobRequirement,
 			Benefits:            benefits,
+			VideoQuestions:      model.JobVideoQuestions{Questions: request.VideoQuestions.Questions},
 		},
 	)
 	if errors.Is(err, company_job_adp.ErrJobAlreadyExists) {
@@ -183,7 +187,10 @@ type UpdateJobRequest struct {
 			Required bool   `json:"required"`
 		} `json:"items"`
 	} `json:"requirements"`
-	Benefits []int64 `json:"benefits"`
+	Benefits       []int64 `json:"benefits"`
+	VideoQuestions struct {
+		Questions []string `json:"questions"`
+	} `json:"video_questions"`
 }
 
 func UpdateJob(fiberCtx *fiber.Ctx) error {
@@ -258,6 +265,7 @@ func UpdateJob(fiberCtx *fiber.Ctx) error {
 	job.PublishAt = request.PublishAt
 	job.FinishAt = request.FinishAt
 	job.Benefits = benefits
+	job.VideoQuestions.Questions = request.VideoQuestions.Questions
 
 	job, err = company_job_adp.UpdateJob(
 		fiberCtx.UserContext(),

@@ -21,6 +21,20 @@ func DeleteJob(
 
 	_, err = dbTransaction.ExecContext(
 		ctx,
+		`DELETE FROM job_video_questions WHERE company_id = ? AND job_id = ?`,
+		companyID,
+		id,
+	)
+	if err != nil {
+		_ = dbTransaction.Rollback()
+
+		logrus.WithError(err).Error("Error to delete job video questions")
+
+		return err
+	}
+
+	_, err = dbTransaction.ExecContext(
+		ctx,
 		`DELETE FROM job_benefits WHERE company_id = ? AND job_id = ?`,
 		companyID,
 		id,

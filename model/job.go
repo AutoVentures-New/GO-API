@@ -24,9 +24,10 @@ type Job struct {
 	CreatedAt           time.Time `json:"created_at"`
 	UpdatedAt           time.Time `json:"updated_at"`
 
-	JobCulturalFit JobCulturalFit `json:"cultural_fit"`
-	JobRequirement JobRequirement `json:"requirements"`
-	Benefits       []Benefit      `json:"benefits"`
+	JobCulturalFit JobCulturalFit    `json:"cultural_fit"`
+	JobRequirement JobRequirement    `json:"requirements"`
+	Benefits       []Benefit         `json:"benefits"`
+	VideoQuestions JobVideoQuestions `json:"video_questions"`
 }
 
 type JobCulturalFit struct {
@@ -57,4 +58,13 @@ type JobRequirementItem struct {
 	ID       int64  `json:"id"`
 	Name     string `json:"name"`
 	Required bool   `json:"required"`
+}
+
+type JobVideoQuestions struct {
+	ID        int64     `json:"id"`
+	CompanyID int64     `json:"company_id"`
+	JobID     int64     `json:"job_id"`
+	Questions []string  `json:"questions"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
