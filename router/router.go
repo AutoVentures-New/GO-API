@@ -14,4 +14,5 @@ func SetupRoutes(app *fiber.App) {
 	setupCompanyRoute(api.Group("/company"))
 	setupCandidateRoute(api.Group("/candidate"))
 	setupConfigurationRoute(api.Group("/configuration"))
+	setupJobRoute(api.Group("/job"))
 }

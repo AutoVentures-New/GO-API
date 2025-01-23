@@ -49,10 +49,11 @@ func CreateJob(
 
 	result, err := dbTransaction.ExecContext(
 		ctx,
-		`INSERT INTO jobs(title,company_id,is_talent_bank,is_special_needs,description,job_mode,contracting_modality,state,city,responsibilities,questionnaire,video_link,status,publish_at,finish_at,created_at,updated_at) 
-					VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+		`INSERT INTO jobs(title,company_id,area_id,is_talent_bank,is_special_needs,description,job_mode,contracting_modality,state,city,responsibilities,questionnaire,video_link,status,publish_at,finish_at,created_at,updated_at) 
+					VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
 		job.Title,
 		job.CompanyID,
+		job.AreaID,
 		job.IsTalentBank,
 		job.IsSpecialNeeds,
 		job.Description,

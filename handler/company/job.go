@@ -107,10 +107,10 @@ func CreateJob(fiberCtx *fiber.Ctx) error {
 			Status:              request.Status,
 			PublishAt:           request.PublishAt,
 			FinishAt:            request.FinishAt,
-			JobCulturalFit:      jobCulturalFit,
-			JobRequirement:      jobRequirement,
+			JobCulturalFit:      &jobCulturalFit,
+			JobRequirement:      &jobRequirement,
 			Benefits:            benefits,
-			VideoQuestions:      model.JobVideoQuestions{Questions: request.VideoQuestions.Questions},
+			VideoQuestions:      &model.JobVideoQuestions{Questions: request.VideoQuestions.Questions},
 			Questions:           questions,
 		},
 	)

@@ -8,6 +8,7 @@ type Job struct {
 	ID                  int64     `json:"id"`
 	Title               string    `json:"title"`
 	CompanyID           int64     `json:"company_id"`
+	AreaID              int64     `json:"area_id"`
 	IsTalentBank        bool      `json:"is_talent_bank"`
 	IsSpecialNeeds      bool      `json:"is_special_needs"`
 	Description         string    `json:"description"`
@@ -24,11 +25,12 @@ type Job struct {
 	CreatedAt           time.Time `json:"created_at"`
 	UpdatedAt           time.Time `json:"updated_at"`
 
-	JobCulturalFit JobCulturalFit    `json:"cultural_fit"`
-	JobRequirement JobRequirement    `json:"requirements"`
-	Benefits       []Benefit         `json:"benefits"`
-	VideoQuestions JobVideoQuestions `json:"video_questions"`
-	Questions      []Question        `json:"questions"`
+	JobCulturalFit *JobCulturalFit    `json:"cultural_fit"`
+	JobRequirement *JobRequirement    `json:"requirements"`
+	Benefits       []Benefit          `json:"benefits"`
+	VideoQuestions *JobVideoQuestions `json:"video_questions"`
+	Questions      []Question         `json:"questions"`
+	Area           *Area              `json:"area"`
 }
 
 type JobCulturalFit struct {
@@ -66,6 +68,13 @@ type JobVideoQuestions struct {
 	CompanyID int64     `json:"company_id"`
 	JobID     int64     `json:"job_id"`
 	Questions []string  `json:"questions"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+type Area struct {
+	ID        int64     `json:"id"`
+	Title     string    `json:"title"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }

@@ -22,7 +22,7 @@ func GetJob(
 
 	err := database.Database.QueryRowContext(
 		ctx,
-		`SELECT id,title,company_id,is_talent_bank,is_special_needs,description,job_mode,contracting_modality,state,city,responsibilities,questionnaire,video_link,status,publish_at,finish_at,created_at,updated_at 
+		`SELECT id,title,company_id,area_id,is_talent_bank,is_special_needs,description,job_mode,contracting_modality,state,city,responsibilities,questionnaire,video_link,status,publish_at,finish_at,created_at,updated_at 
 				FROM jobs WHERE company_id = ? AND id = ?`,
 		companyID,
 		id,
@@ -30,6 +30,7 @@ func GetJob(
 		&job.ID,
 		&job.Title,
 		&job.CompanyID,
+		&job.AreaID,
 		&job.IsTalentBank,
 		&job.IsSpecialNeeds,
 		&job.Description,
@@ -81,6 +82,11 @@ func GetJob(
 		return job, err
 	}
 
+	job.Area, err = getArea(ctx, job.AreaID)
+	if err != nil {
+		return job, err
+	}
+
 	return job, nil
 }
 
@@ -88,7 +94,7 @@ func getJobCulturalFit(
 	ctx context.Context,
 	id int64,
 	companyID int64,
-) (model.JobCulturalFit, error) {
+) (*model.JobCulturalFit, error) {
 	jobCulturalFit := model.JobCulturalFit{}
 
 	var answersJSON []byte
@@ -108,30 +114,30 @@ func getJobCulturalFit(
 		&jobCulturalFit.UpdatedAt,
 	)
 	if errors.Is(err, sql.ErrNoRows) {
-		return jobCulturalFit, ErrJobNotFound
+		return nil, ErrJobNotFound
 	}
 
 	if err != nil {
 		logrus.WithError(err).Error("Error to get job cultural fit")
 
-		return jobCulturalFit, err
+		return nil, err
 	}
 
 	err = json.Unmarshal(answersJSON, &jobCulturalFit.Answers)
 	if err != nil {
 		logrus.WithError(err).Error("Error to unmarshal job cultural fit")
 
-		return jobCulturalFit, err
+		return nil, err
 	}
 
-	return jobCulturalFit, nil
+	return &jobCulturalFit, nil
 }
 
 func getJobRequirements(
 	ctx context.Context,
 	id int64,
 	companyID int64,
-) (model.JobRequirement, error) {
+) (*model.JobRequirement, error) {
 	jobRequirement := model.JobRequirement{}
 
 	var itemsJSON []byte
@@ -152,22 +158,22 @@ func getJobRequirements(
 		&jobRequirement.UpdatedAt,
 	)
 	if errors.Is(err, sql.ErrNoRows) {
-		return jobRequirement, ErrJobNotFound
+		return nil, ErrJobNotFound
 	}
 
 	if err != nil {
 		logrus.WithError(err).Error("Error to get job requirement")
 
-		return jobRequirement, err
+		return nil, err
 	}
 
 	if err = json.Unmarshal(itemsJSON, &jobRequirement.Items); err != nil {
 		logrus.WithError(err).Error("Error to unmarshal job requirement")
 
-		return jobRequirement, err
+		return nil, err
 	}
 
-	return jobRequirement, nil
+	return &jobRequirement, nil
 }
 
 func getJobBenefits(
@@ -219,7 +225,7 @@ func getJobVideoQuestions(
 	ctx context.Context,
 	id int64,
 	companyID int64,
-) (model.JobVideoQuestions, error) {
+) (*model.JobVideoQuestions, error) {
 	jobVideoQuestions := model.JobVideoQuestions{}
 
 	var questionsJSON []byte
@@ -239,22 +245,22 @@ func getJobVideoQuestions(
 		&jobVideoQuestions.UpdatedAt,
 	)
 	if errors.Is(err, sql.ErrNoRows) {
-		return jobVideoQuestions, ErrJobNotFound
+		return nil, ErrJobNotFound
 	}
 
 	if err != nil {
 		logrus.WithError(err).Error("Error to get job video questions")
 
-		return jobVideoQuestions, err
+		return nil, err
 	}
 
 	if err = json.Unmarshal(questionsJSON, &jobVideoQuestions.Questions); err != nil {
 		logrus.WithError(err).Error("Error to unmarshal job video questions")
 
-		return jobVideoQuestions, err
+		return nil, err
 	}
 
-	return jobVideoQuestions, nil
+	return &jobVideoQuestions, nil
 }
 
 func getJobQuestions(
@@ -308,4 +314,34 @@ func getJobQuestions(
 	}
 
 	return questions, nil
+}
+
+func getArea(
+	ctx context.Context,
+	id int64,
+) (*model.Area, error) {
+	area := model.Area{}
+
+	err := database.Database.QueryRowContext(
+		ctx,
+		`SELECT id,title,created_at,updated_at 
+				FROM areas WHERE id = ?`,
+		id,
+	).Scan(
+		&area.ID,
+		&area.Title,
+		&area.CreatedAt,
+		&area.UpdatedAt,
+	)
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, ErrJobNotFound
+	}
+
+	if err != nil {
+		logrus.WithError(err).Error("Error to get area")
+
+		return nil, err
+	}
+
+	return &area, nil
 }
