@@ -16,3 +16,11 @@ func SetupRoutes(app *fiber.App) {
 	setupConfigurationRoute(api.Group("/configuration"))
 	setupJobRoute(api.Group("/job"))
 }
+
+func RouteNotFound() fiber.Handler {
+	return func(fiberCtx *fiber.Ctx) error {
+		return fiberCtx.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error": "ROUTE_NOT_FOUND",
+		})
+	}
+}

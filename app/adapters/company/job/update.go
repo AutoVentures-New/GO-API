@@ -26,10 +26,11 @@ func UpdateJob(
 
 	_, err = dbTransaction.ExecContext(
 		ctx,
-		`UPDATE jobs set title = ?,is_talent_bank = ?,is_special_needs = ?,description = ?,job_mode = ?,
+		`UPDATE jobs set title = ?,area_id=?,is_talent_bank = ?,is_special_needs = ?,description = ?,job_mode = ?,
                 contracting_modality = ?,state = ?,city = ?,responsibilities = ?,questionnaire = ?,video_link = ?,
                 status = ?,publish_at = ?,finish_at = ?,updated_at = ? WHERE id = ?`,
 		job.Title,
+		job.AreaID,
 		job.IsTalentBank,
 		job.IsSpecialNeeds,
 		job.Description,

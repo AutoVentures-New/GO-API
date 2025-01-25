@@ -115,7 +115,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Vitor Ruschoni\",\n    \"email\": \"email4@email.com\"\n}",
+									"raw": "{\n    \"name\": \"Vitor Ruschoni\",\n    \"email\": \"email5@email.com\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -517,7 +517,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"title\": \"job 12\",\n    \"is_talent_bank\": false,\n    \"is_special_needs\": false,\n    \"description\": \"desc\",\n    \"job_mode\": \"IN_PERSON\",\n    \"contracting_modality\": \"CLT\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara\",\n    \"responsibilities\": \"responsa\",\n    \"questionnaire\": \"PROFESSIONAL\",\n    \"video_link\": \"http://link.com\",\n    \"publish_at\": \"2025-01-30T01:49:01.977009Z\",\n    \"finish_at\": \"2025-02-25T01:49:01.977009Z\",\n    \"cultural_fit\": {\n        \"answers\": [\n            {\n                \"cultural_fit_id\": 1,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"cultural_fit_id\": 2,\n                \"answer\": \"answer_b\"\n            },\n            {\n                \"cultural_fit_id\": 3,\n                \"answer\": \"answer_a\"\n            }\n        ]\n    },\n    \"requirements\": {\n        \"min_match\": 80,\n        \"items\": [\n            {\n                \"name\": \"Requirement 1\",\n                \"required\": false\n            },\n            {\n                \"name\": \"Requirement 2\",\n                \"required\": false\n            },\n            {\n                \"name\": \"Requirement 3\",\n                \"required\": true\n            }\n        ]\n    },\n    \"benefits\": [\n        3,\n        4,\n        5,\n        6\n    ],\n    \"video_questions\": {\n        \"questions\": [\n            \"questions 1\",\n            \"questions 2\",\n            \"questions 3\"\n        ]\n    },\n    \"questions\": [\n        4,\n        5,\n        6\n    ]\n}",
+									"raw": "{\n    \"title\": \"job 12\",\n    \"area_id\": 3,\n    \"is_talent_bank\": false,\n    \"is_special_needs\": false,\n    \"description\": \"desc\",\n    \"job_mode\": \"IN_PERSON\",\n    \"contracting_modality\": \"CLT\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara\",\n    \"responsibilities\": \"responsa\",\n    \"questionnaire\": \"PROFESSIONAL\",\n    \"video_link\": \"http://link.com\",\n    \"publish_at\": \"2025-01-15T01:49:01.977009Z\",\n    \"finish_at\": \"2025-02-25T01:49:01.977009Z\",\n    \"cultural_fit\": {\n        \"answers\": [\n            {\n                \"cultural_fit_id\": 1,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"cultural_fit_id\": 2,\n                \"answer\": \"answer_b\"\n            },\n            {\n                \"cultural_fit_id\": 3,\n                \"answer\": \"answer_a\"\n            }\n        ]\n    },\n    \"requirements\": {\n        \"min_match\": 80,\n        \"items\": [\n            {\n                \"name\": \"Requirement 1\",\n                \"required\": false\n            },\n            {\n                \"name\": \"Requirement 2\",\n                \"required\": false\n            },\n            {\n                \"name\": \"Requirement 3\",\n                \"required\": true\n            }\n        ]\n    },\n    \"benefits\": [\n        3,\n        4,\n        5,\n        6\n    ],\n    \"video_questions\": {\n        \"questions\": [\n            \"questions 1\",\n            \"questions 2\",\n            \"questions 3\"\n        ]\n    },\n    \"questions\": [\n        4,\n        5,\n        6\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -647,7 +647,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"title\": \"job 999999\",\n    \"is_talent_bank\": false,\n    \"is_special_needs\": false,\n    \"description\": \"desc\",\n    \"job_mode\": \"IN_PERSON\",\n    \"contracting_modality\": \"CLT\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara\",\n    \"responsibilities\": \"responsa\",\n    \"questionnaire\": \"PROFESSIONAL\",\n    \"video_link\": \"http://link.com\",\n    \"status\": \"ACTIVE\",\n    \"publish_at\": \"2025-01-30T01:49:01.977009Z\",\n    \"finish_at\": \"2025-02-25T01:49:01.977009Z\",\n    \"cultural_fit\": {\n        \"answers\": [\n            {\n                \"cultural_fit_id\": 1,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"cultural_fit_id\": 2,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"cultural_fit_id\": 3,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"cultural_fit_id\": 4,\n                \"answer\": \"answer_b\"\n            }\n        ]\n    },\n    \"requirements\": {\n        \"min_match\": 70,\n        \"items\": [\n            {\n                \"name\": \"Requirement 1\",\n                \"required\": true\n            },\n            {\n                \"name\": \"Requirement 2\",\n                \"required\": true\n            },\n            {\n                \"name\": \"Requirement 3\",\n                \"required\": true\n            }\n        ]\n    },\n    \"benefits\": [\n        5,\n        6\n    ],\n     \"video_questions\": {\n        \"questions\": [\n            \"questions 1\",\n            \"questions 3\"\n        ]\n    },\n    \"questions\": [\n        5,\n        6\n    ]\n}",
+									"raw": "{\n    \"title\": \"job 999999\",\n    \"area_id\": 3,\n    \"is_talent_bank\": false,\n    \"is_special_needs\": false,\n    \"description\": \"desc\",\n    \"job_mode\": \"IN_PERSON\",\n    \"contracting_modality\": \"CLT\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara\",\n    \"responsibilities\": \"responsa\",\n    \"questionnaire\": \"PROFESSIONAL\",\n    \"video_link\": \"http://link.com\",\n    \"status\": \"ACTIVE\",\n    \"publish_at\": \"2025-01-30T01:49:01.977009Z\",\n    \"finish_at\": \"2025-02-25T01:49:01.977009Z\",\n    \"cultural_fit\": {\n        \"answers\": [\n            {\n                \"cultural_fit_id\": 1,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"cultural_fit_id\": 2,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"cultural_fit_id\": 3,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"cultural_fit_id\": 4,\n                \"answer\": \"answer_b\"\n            }\n        ]\n    },\n    \"requirements\": {\n        \"min_match\": 70,\n        \"items\": [\n            {\n                \"name\": \"Requirement 1\",\n                \"required\": true\n            },\n            {\n                \"name\": \"Requirement 2\",\n                \"required\": true\n            },\n            {\n                \"name\": \"Requirement 3\",\n                \"required\": true\n            }\n        ]\n    },\n    \"benefits\": [\n        5,\n        6\n    ],\n     \"video_questions\": {\n        \"questions\": [\n            \"questions 1\",\n            \"questions 3\"\n        ]\n    },\n    \"questions\": [\n        5,\n        6\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1384,6 +1384,104 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "Job",
+					"item": [
+						{
+							"name": "Start application",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{CANDIDATE_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"job_id\": 18\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/candidate/job/application/start",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"candidate",
+										"job",
+										"application",
+										"start"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get application",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{CANDIDATE_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/candidate/job/application/18",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"candidate",
+										"job",
+										"application",
+										"18"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
@@ -1425,6 +1523,61 @@
 							"path": [
 								"configuration",
 								"cultural-fit"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Job",
+			"item": [
+				{
+					"name": "List jobs",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/job?size=20&page=1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"job"
+							],
+							"query": [
+								{
+									"key": "company_id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "state",
+									"value": "SP",
+									"disabled": true
+								},
+								{
+									"key": "city",
+									"value": "Matão",
+									"disabled": true
+								},
+								{
+									"key": "area_id",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "size",
+									"value": "20"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
 							]
 						}
 					},

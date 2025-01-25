@@ -40,6 +40,8 @@ func main() {
 
 	router.SetupRoutes(app)
 
+	app.Use(router.RouteNotFound())
+
 	logrus.Info("API stated with success")
 
 	go func() {

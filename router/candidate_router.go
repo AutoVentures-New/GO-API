@@ -17,4 +17,9 @@ func setupCandidateRoute(router fiber.Router) {
 	auth.Post("/login", candidate.Login)
 
 	auth.Get("/me", middleware.ProtectedCandidate(), candidate.Me)
+
+	job := router.Group("/job/application", middleware.ProtectedCandidate())
+
+	job.Post("start", candidate.StartApplication)
+	job.Get("/:job_id", candidate.GetApplication)
 }

@@ -13,6 +13,7 @@ import (
 
 type CreateJobRequest struct {
 	Title               string    `json:"title"`
+	AreaID              int64     `json:"area_id"`
 	IsTalentBank        bool      `json:"is_talent_bank"`
 	IsSpecialNeeds      bool      `json:"is_special_needs"`
 	Description         string    `json:"description"`
@@ -93,6 +94,7 @@ func CreateJob(fiberCtx *fiber.Ctx) error {
 		fiberCtx.UserContext(),
 		model.Job{
 			Title:               request.Title,
+			AreaID:              request.AreaID,
 			CompanyID:           user.CompanyID,
 			IsTalentBank:        request.IsTalentBank,
 			IsSpecialNeeds:      request.IsSpecialNeeds,
@@ -170,6 +172,7 @@ func GetJob(fiberCtx *fiber.Ctx) error {
 
 type UpdateJobRequest struct {
 	Title               string    `json:"title"`
+	AreaID              int64     `json:"area_id"`
 	IsTalentBank        bool      `json:"is_talent_bank"`
 	IsSpecialNeeds      bool      `json:"is_special_needs"`
 	Description         string    `json:"description"`
@@ -268,6 +271,7 @@ func UpdateJob(fiberCtx *fiber.Ctx) error {
 	}
 
 	job.Title = request.Title
+	job.AreaID = request.AreaID
 	job.IsTalentBank = request.IsTalentBank
 	job.IsSpecialNeeds = request.IsSpecialNeeds
 	job.Description = request.Description
