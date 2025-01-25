@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/hubjob/api/handler/candidate"
+	"github.com/hubjob/api/handler/candidate/steps"
 	"github.com/hubjob/api/middleware"
 )
 
@@ -22,4 +23,9 @@ func setupCandidateRoute(router fiber.Router) {
 
 	job.Post("start", candidate.StartApplication)
 	job.Get("/:job_id", candidate.GetApplication)
+	job.Delete("/:job_id", candidate.CanceledApplication)
+
+	stepsRoute := router.Group("/job/application/:job_id/steps", middleware.ProtectedCandidate())
+
+	stepsRoute.Post("requirements", steps.SaveRequirements)
 }

@@ -605,14 +605,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{HOST}}/company/job/15",
+									"raw": "{{HOST}}/company/job/18",
 									"host": [
 										"{{HOST}}"
 									],
 									"path": [
 										"company",
 										"job",
-										"15"
+										"18"
 									]
 								}
 							},
@@ -1389,6 +1389,64 @@
 					"name": "Job",
 					"item": [
 						{
+							"name": "Steps",
+							"item": [
+								{
+									"name": "Step Requirements",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{CANDIDATE_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"job_id\": 18,\n    \"job_requirement_items\": [\n        {\n            \"id\": 1,\n            \"name\": \"Requirement 1\",\n            \"checked\": true\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Requirement 2\",\n            \"checked\": true\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Requirement 3\",\n            \"checked\": true\n        }\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/candidate/job/application/18/steps/requirements",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"candidate",
+												"job",
+												"application",
+												"18",
+												"steps",
+												"requirements"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
 							"name": "Start application",
 							"event": [
 								{
@@ -1465,6 +1523,48 @@
 									]
 								},
 								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/candidate/job/application/18",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"candidate",
+										"job",
+										"application",
+										"18"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Canceled application",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{CANDIDATE_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
 								"header": [],
 								"url": {
 									"raw": "{{HOST}}/candidate/job/application/18",

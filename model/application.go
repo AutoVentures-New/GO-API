@@ -30,4 +30,21 @@ type Application struct {
 	Status      string    `json:"status"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
+
+	JobApplicationRequirementItem []JobApplicationRequirementItem `json:"job_requirement_items"`
+}
+
+type JobApplicationRequirement struct {
+	ID            int64                           `json:"id"`
+	ApplicationID int64                           `json:"application_id"`
+	Items         []JobApplicationRequirementItem `json:"items"`
+	MatchValue    int64                           `json:"match_value"`
+	CreatedAt     time.Time                       `json:"created_at"`
+	UpdatedAt     time.Time                       `json:"updated_at"`
+}
+
+type JobApplicationRequirementItem struct {
+	ID      int64  `json:"id"`
+	Name    string `json:"name"`
+	Checked bool   `json:"checked"`
 }
