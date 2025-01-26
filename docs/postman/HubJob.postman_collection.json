@@ -1443,6 +1443,59 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "Step Job Questions",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{CANDIDATE_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"job_id\": 18,\n    \"questions\":\n    [\n        {\n            \"id\": 4,\n            \"title\": \"question 3\",\n            \"type\": \"SINGLE_CHOICE\",\n            \"answers\":\n            [\n                {\n                    \"id\": 23,\n                    \"title\": \"answer 1\",\n                    \"checked\": true,\n                    \"answer\": \"\"\n                },\n                {\n                    \"id\": 24,\n                    \"title\": \"answer 2\",\n                    \"checked\": false,\n                    \"answer\": \"asdsdsd\"\n                },\n                {\n                    \"id\": 25,\n                    \"title\": \"answer 3\",\n                    \"checked\": false,\n                    \"answer\": \"sss aaaaa\"\n                }\n            ]\n        },\n        {\n            \"id\": 5,\n            \"title\": \"question 1\",\n            \"type\": \"SINGLE_CHOICE\",\n            \"answers\":\n            [\n                {\n                    \"id\": 26,\n                    \"title\": \"answer 1\",\n                    \"checked\": false,\n                    \"answer\": \"asasas\"\n                },\n                {\n                    \"id\": 27,\n                    \"title\": \"answer 2\",\n                    \"checked\": true,\n                    \"answer\": \"\"\n                },\n                {\n                    \"id\": 28,\n                    \"title\": \"answer 3\",\n                    \"checked\": false,\n                    \"answer\": \"asasas\"\n                }\n            ]\n        },\n        {\n            \"id\": 6,\n            \"title\": \"question 2\",\n            \"type\": \"SINGLE_CHOICE\",\n            \"answers\":\n            [\n                {\n                    \"id\": 29,\n                    \"title\": \"answer 1\",\n                    \"checked\": false,\n                    \"answer\": \"\"\n                },\n                {\n                    \"id\": 30,\n                    \"title\": \"answer 2\",\n                    \"checked\": false,\n                    \"answer\": \"asasaas\"\n                },\n                {\n                    \"id\": 31,\n                    \"title\": \"answer 3\",\n                    \"checked\": false,\n                    \"answer\": \"\"\n                }\n            ]\n        }\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/candidate/job/application/18/steps/job-questions",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"candidate",
+												"job",
+												"application",
+												"18",
+												"steps",
+												"job-questions"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						},

@@ -32,6 +32,7 @@ type Application struct {
 	UpdatedAt   time.Time `json:"updated_at"`
 
 	JobApplicationRequirementItem []JobApplicationRequirementItem `json:"job_requirement_items"`
+	Questions                     []ApplicationQuestion           `json:"questions"`
 }
 
 type JobApplicationRequirement struct {
@@ -47,4 +48,26 @@ type JobApplicationRequirementItem struct {
 	ID      int64  `json:"id"`
 	Name    string `json:"name"`
 	Checked bool   `json:"checked"`
+}
+
+type ApplicationQuestion struct {
+	ID      int64               `json:"id"`
+	Title   string              `json:"title"`
+	Type    string              `json:"type"`
+	Answers []ApplicationAnswer `json:"answers"`
+}
+
+type ApplicationAnswer struct {
+	ID      int64  `json:"id"`
+	Title   string `json:"title"`
+	Checked bool   `json:"checked"`
+	Answer  string `json:"answer"`
+}
+
+type JobApplicationQuestion struct {
+	ID            int64                 `json:"id"`
+	ApplicationID int64                 `json:"application_id"`
+	Questions     []ApplicationQuestion `json:"questions"`
+	CreatedAt     time.Time             `json:"created_at"`
+	UpdatedAt     time.Time             `json:"updated_at"`
 }

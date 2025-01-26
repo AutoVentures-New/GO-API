@@ -170,7 +170,7 @@ func updateApplication(
 		application.Status = model.REPROVED
 	} else {
 		for index, value := range application.Steps {
-			if value == model.REQUIREMENTS && len(application.Steps) > index+1 {
+			if value == application.CurrentStep && len(application.Steps) > index+1 {
 				application.CurrentStep = application.Steps[index+1]
 
 				break

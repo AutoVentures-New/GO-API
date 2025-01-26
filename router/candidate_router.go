@@ -28,4 +28,5 @@ func setupCandidateRoute(router fiber.Router) {
 	stepsRoute := router.Group("/job/application/:job_id/steps", middleware.ProtectedCandidate())
 
 	stepsRoute.Post("requirements", steps.SaveRequirements)
+	stepsRoute.Post("job-questions", steps.SaveJobQuestions)
 }
