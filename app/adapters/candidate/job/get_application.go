@@ -79,5 +79,8 @@ func GetJobApplication(
 		}
 	}
 
+	if application.CurrentStep == model.CULTURAL_FIT {
+	}
+
 	return application, nil
 }

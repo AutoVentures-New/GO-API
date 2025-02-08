@@ -33,6 +33,7 @@ type Application struct {
 
 	JobApplicationRequirementItem []JobApplicationRequirementItem `json:"job_requirement_items"`
 	Questions                     []ApplicationQuestion           `json:"questions"`
+	CulturalFit                   *JobApplicationCulturalFit      `json:"cultural_fit"`
 }
 
 type JobApplicationRequirement struct {
@@ -70,4 +71,18 @@ type JobApplicationQuestion struct {
 	Questions     []ApplicationQuestion `json:"questions"`
 	CreatedAt     time.Time             `json:"created_at"`
 	UpdatedAt     time.Time             `json:"updated_at"`
+}
+
+type JobApplicationCulturalFit struct {
+	ID            int64                             `json:"id"`
+	ApplicationID int64                             `json:"application_id"`
+	Answers       []JobApplicationCulturalFitAnswer `json:"answers"`
+	MatchValue    int64                             `json:"match_value"`
+	CreatedAt     time.Time                         `json:"created_at"`
+	UpdatedAt     time.Time                         `json:"updated_at"`
+}
+
+type JobApplicationCulturalFitAnswer struct {
+	CulturalFitID int64  `json:"cultural_fit_id"`
+	Answer        string `json:"answer"`
 }

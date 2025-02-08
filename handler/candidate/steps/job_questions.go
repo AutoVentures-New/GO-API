@@ -12,7 +12,6 @@ import (
 )
 
 type SaveJobQuestionsRequest struct {
-	JobID     int64                       `json:"job_id"`
 	Questions []model.ApplicationQuestion `json:"questions"`
 }
 

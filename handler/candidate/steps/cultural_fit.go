@@ -11,13 +11,13 @@ import (
 	"github.com/hubjob/api/model"
 )
 
-type SaveRequirementsRequest struct {
-	JobApplicationRequirementItem []model.JobApplicationRequirementItem `json:"job_requirement_items"`
+type SaveCulturalFitRequest struct {
+	CulturalFit model.JobApplicationCulturalFit `json:"cultural_fit"`
 }
 
-func SaveRequirements(fiberCtx *fiber.Ctx) error {
+func SaveCulturalFit(fiberCtx *fiber.Ctx) error {
 	candidate := fiberCtx.Locals("candidate").(model.Candidate)
-	request := new(SaveRequirementsRequest)
+	request := new(SaveCulturalFitRequest)
 
 	if err := fiberCtx.BodyParser(&request); err != nil {
 		return responses.InvalidBodyRequest(fiberCtx, err)
@@ -46,13 +46,13 @@ func SaveRequirements(fiberCtx *fiber.Ctx) error {
 		return responses.InternalServerError(fiberCtx, err)
 	}
 
-	if application.Status != model.FILLING || application.CurrentStep != model.REQUIREMENTS {
+	if application.Status != model.FILLING || application.CurrentStep != model.CULTURAL_FIT {
 		return responses.BadRequest(fiberCtx, "Invalid step")
 	}
 
-	application.JobApplicationRequirementItem = request.JobApplicationRequirementItem
+	application.CulturalFit = &request.CulturalFit
 
-	application, err = steps.SaveRequirements(fiberCtx.UserContext(), application)
+	application, err = steps.SaveCulturalFit(fiberCtx.UserContext(), application)
 	if err != nil {
 		return responses.InternalServerError(fiberCtx, err)
 	}
