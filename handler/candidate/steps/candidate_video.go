@@ -2,6 +2,8 @@ package steps
 
 import (
 	"errors"
+	"mime"
+	"path/filepath"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -46,7 +48,12 @@ func SaveCandidateVideo(fiberCtx *fiber.Ctx) error {
 		return responses.BadRequest(fiberCtx, "Invalid step")
 	}
 
-	application, err = steps.SaveCandidateVideo(fiberCtx.UserContext(), application, video)
+	contentType := video.Header.Get("Content-Type")
+	if contentType == "" {
+		contentType = mime.TypeByExtension(filepath.Ext(video.Filename))
+	}
+
+	application, err = steps.SaveCandidateVideo(fiberCtx.UserContext(), application, video, contentType)
 	if err != nil {
 		return responses.InternalServerError(fiberCtx, err)
 	}

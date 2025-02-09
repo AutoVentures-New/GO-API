@@ -19,6 +19,7 @@ func SaveCandidateVideo(
 	ctx context.Context,
 	application model.Application,
 	video *multipart.FileHeader,
+	contentType string,
 ) (model.Application, error) {
 	fileReader, err := video.Open()
 	if err != nil {
@@ -38,9 +39,10 @@ func SaveCandidateVideo(
 	)
 
 	_, err = pkg.S3Uploader.Upload(&s3manager.UploadInput{
-		Bucket: aws.String(config.Config.S3.Bucket),
-		Key:    aws.String(videoPath),
-		Body:   fileReader,
+		Bucket:      aws.String(config.Config.S3.Bucket),
+		Key:         aws.String(videoPath),
+		Body:        fileReader,
+		ContentType: aws.String(contentType),
 	})
 	if err != nil {
 		logrus.WithError(err).Error("Error to upload video file")
