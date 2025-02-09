@@ -30,18 +30,34 @@ func StartApplication(
 		return model.Application{}, err
 	}
 
+	hashQuestionnaire, err := hasCandidateQuestionnaire(ctx, candidateID, job.Questionnaire)
+	if err != nil {
+		return model.Application{}, err
+	}
+
+	questionnaire := model.QUESTIONNAIRE_BEHAVIORAL
+	if job.Questionnaire == model.PROFESSIONAL {
+		questionnaire = model.QUESTIONNAIRE_PROFESSIONAL
+	}
+
+	steps := []string{
+		model.REQUIREMENTS,
+		model.JOB_QUESTIONS,
+		model.CULTURAL_FIT,
+	}
+
+	if !hashQuestionnaire {
+		steps = append(steps, questionnaire)
+	}
+
+	steps = append(steps, model.CANDIDATE_VIDEO)
+
 	now := time.Now().UTC()
 	application := model.Application{
 		CompanyID:   job.CompanyID,
 		JobID:       job.ID,
 		CandidateID: candidateID,
-		Steps: []string{
-			model.REQUIREMENTS,
-			model.JOB_QUESTIONS,
-			model.CULTURAL_FIT,
-			model.QUESTIONNAIRE,
-			model.CANDIDATE_VIDEO,
-		},
+		Steps:       steps,
 		CurrentStep: model.REQUIREMENTS,
 		Status:      model.FILLING,
 		CreatedAt:   now,
@@ -163,4 +179,31 @@ func alreadyExist(
 	}
 
 	return nil
+}
+
+func hasCandidateQuestionnaire(
+	ctx context.Context,
+	candidateID int64,
+	questionnaireType string,
+) (bool, error) {
+	var count int
+
+	err := database.Database.QueryRowContext(
+		ctx,
+		`SELECT COUNT(0) FROM candidate_questionnaires WHERE candidate_id = ? AND type = ? AND expired_at > ? ORDER BY id DESC LIMIT 1`,
+		candidateID,
+		questionnaireType,
+		time.Now().UTC(),
+	).Scan(&count)
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
+		logrus.WithError(err).Error("Error to validate candidate questionnaire")
+
+		return false, err
+	}
+
+	if count > 0 {
+		return true, nil
+	}
+
+	return false, nil
 }

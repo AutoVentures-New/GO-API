@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
-	"github.com/hubjob/api/app/adapters/candidate/job/get_application"
 
+	"github.com/hubjob/api/app/adapters/candidate/job/get_application"
 	"github.com/hubjob/api/database"
 	"github.com/hubjob/api/model"
 	"github.com/sirupsen/logrus"
@@ -77,9 +77,6 @@ func GetJobApplication(
 		if err != nil {
 			return application, err
 		}
-	}
-
-	if application.CurrentStep == model.CULTURAL_FIT {
 	}
 
 	return application, nil

@@ -11,6 +11,14 @@ func GetCulturalFit(fiberCtx *fiber.Ctx) error {
 	return responses.Success(fiberCtx, model.CulturalFit)
 }
 
+func GetQuestionnaireBehavioral(fiberCtx *fiber.Ctx) error {
+	return responses.Success(fiberCtx, model.QuestionnaireBehavioral)
+}
+
+func GetQuestionnaireProfessional(fiberCtx *fiber.Ctx) error {
+	return responses.Success(fiberCtx, model.QuestionnaireProfessional)
+}
+
 func ListAreas(fiberCtx *fiber.Ctx) error {
 	areas, err := area.ListAreas(fiberCtx.UserContext())
 	if err != nil {

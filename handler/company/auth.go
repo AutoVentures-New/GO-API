@@ -2,7 +2,6 @@ package company
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -222,7 +221,6 @@ func checkPasswordHash(password, hash string) bool {
 }
 
 func Me(fiberCtx *fiber.Ctx) error {
-	fmt.Println("me")
 	user := fiberCtx.Locals("user").(model.User)
 
 	return fiberCtx.JSON(fiber.Map{"data": user})
