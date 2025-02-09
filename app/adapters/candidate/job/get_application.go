@@ -79,5 +79,12 @@ func GetJobApplication(
 		}
 	}
 
+	if application.CurrentStep == model.CANDIDATE_VIDEO {
+		application.JobVideoQuestions, err = get_application.GetJobVideoQuestions(ctx, application.JobID, application.CompanyID)
+		if err != nil {
+			return application, err
+		}
+	}
+
 	return application, nil
 }
