@@ -14,6 +14,8 @@ services:
   hubjob-redis:
     image: redis:alpine
     container_name: hubjob-redis
+    ports:
+      - "6379:6379"
 
 volumes:
   hubjob-database-volume:

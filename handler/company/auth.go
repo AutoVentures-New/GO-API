@@ -1,7 +1,9 @@
 package company
 
 import (
+	"encoding/json"
 	"errors"
+	"github.com/hubjob/api/pkg"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -184,7 +186,7 @@ func Login(fiberCtx *fiber.Ctx) error {
 		return responses.InvalidBodyRequest(fiberCtx, err)
 	}
 
-	user, err := company_auth_adp.LoginUser(fiberCtx.UserContext(), request.Email)
+	user, err := company_auth_adp.GetUser(fiberCtx.UserContext(), request.Email)
 	if err != nil {
 		return responses.Unauthorized(fiberCtx)
 	}
@@ -200,10 +202,16 @@ func createToken(fiberCtx *fiber.Ctx, user model.User) error {
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	claims := token.Claims.(jwt.MapClaims)
-	claims["user"] = user
 	claims["exp"] = time.Now().UTC().Add(time.Hour * 72).Unix()
 
 	t, err := token.SignedString([]byte(config.Config.JwtSecret))
+	if err != nil {
+		return responses.InternalServerError(fiberCtx, err)
+	}
+
+	userString, _ := json.Marshal(user)
+
+	err = pkg.SessionClient.Set(fiberCtx.UserContext(), pkg.FormatToken(t), string(userString), time.Hour*72).Err()
 	if err != nil {
 		return responses.InternalServerError(fiberCtx, err)
 	}
@@ -223,5 +231,10 @@ func checkPasswordHash(password, hash string) bool {
 func Me(fiberCtx *fiber.Ctx) error {
 	user := fiberCtx.Locals("user").(model.User)
 
-	return fiberCtx.JSON(fiber.Map{"data": user})
+	user, err := company_auth_adp.GetUser(fiberCtx.UserContext(), user.Email)
+	if err != nil {
+		return responses.Forbidden(fiberCtx)
+	}
+
+	return responses.Success(fiberCtx, user)
 }

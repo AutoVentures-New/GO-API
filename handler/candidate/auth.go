@@ -1,7 +1,9 @@
 package candidate
 
 import (
+	"encoding/json"
 	"errors"
+	"github.com/hubjob/api/pkg"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -195,10 +197,16 @@ func createToken(fiberCtx *fiber.Ctx, candidate model.Candidate) error {
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	claims := token.Claims.(jwt.MapClaims)
-	claims["candidate"] = candidate
 	claims["exp"] = time.Now().UTC().Add(time.Hour * 72).Unix()
 
 	t, err := token.SignedString([]byte(config.Config.JwtSecret))
+	if err != nil {
+		return responses.InternalServerError(fiberCtx, err)
+	}
+
+	candidateString, _ := json.Marshal(candidate)
+	
+	err = pkg.SessionClient.Set(fiberCtx.UserContext(), pkg.FormatToken(t), string(candidateString), time.Hour*72).Err()
 	if err != nil {
 		return responses.InternalServerError(fiberCtx, err)
 	}

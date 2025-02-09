@@ -6,3 +6,6 @@ up:
 
 run:
 	go run .
+
+redis:
+	docker compose exec hubjob-redis redis-cli

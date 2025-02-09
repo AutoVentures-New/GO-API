@@ -2,12 +2,14 @@ package middleware
 
 import (
 	"encoding/json"
+
 	jwtware "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/hubjob/api/config"
 	"github.com/hubjob/api/handler/responses"
 	"github.com/hubjob/api/model"
+	"github.com/hubjob/api/pkg"
 )
 
 func ProtectedCompany() fiber.Handler {
@@ -18,9 +20,14 @@ func ProtectedCompany() fiber.Handler {
 		},
 		SuccessHandler: func(fiberCtx *fiber.Ctx) error {
 			token := fiberCtx.Locals("user").(*jwt.Token)
+
+			value, err := pkg.SessionClient.Get(fiberCtx.UserContext(), pkg.FormatToken(token.Raw)).Result()
+			if err != nil {
+				return responses.Forbidden(fiberCtx)
+			}
+
 			user := model.User{}
-			userString, _ := json.Marshal(token.Claims.(jwt.MapClaims)["user"])
-			_ = json.Unmarshal(userString, &user)
+			_ = json.Unmarshal([]byte(value), &user)
 
 			fiberCtx.Locals("user", user)
 
@@ -37,9 +44,14 @@ func ProtectedCandidate() fiber.Handler {
 		},
 		SuccessHandler: func(fiberCtx *fiber.Ctx) error {
 			token := fiberCtx.Locals("user").(*jwt.Token)
+
+			value, err := pkg.SessionClient.Get(fiberCtx.UserContext(), pkg.FormatToken(token.Raw)).Result()
+			if err != nil {
+				return responses.Forbidden(fiberCtx)
+			}
+
 			candidate := model.Candidate{}
-			candidateString, _ := json.Marshal(token.Claims.(jwt.MapClaims)["candidate"])
-			_ = json.Unmarshal(candidateString, &candidate)
+			_ = json.Unmarshal([]byte(value), &candidate)
 
 			fiberCtx.Locals("candidate", candidate)
 

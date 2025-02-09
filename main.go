@@ -24,6 +24,7 @@ func main() {
 	database.RunMigrations()
 	sendgrid.InitSendGrid()
 	pkg.InitS3Client()
+	pkg.InitRedis()
 
 	app := fiber.New(fiber.Config{
 		Prefork:                  false,
@@ -63,6 +64,7 @@ func main() {
 	_ = app.Shutdown()
 
 	database.CloseDatabase()
+	pkg.CloseRedis()
 
-	logrus.Info("API finish with sucess")
+	logrus.Info("API finish with success")
 }

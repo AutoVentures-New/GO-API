@@ -10,7 +10,9 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func LoginUser(
+var ErrUserNotFound = errors.New("user not found")
+
+func GetUser(
 	ctx context.Context,
 	email string,
 ) (model.User, error) {
@@ -32,7 +34,7 @@ func LoginUser(
 		&user.UpdatedAt,
 	)
 	if errors.Is(err, sql.ErrNoRows) {
-		return user, nil
+		return user, ErrUserNotFound
 	}
 
 	if err != nil {
