@@ -64,16 +64,16 @@ func StartApplication(
 		UpdatedAt:   now,
 	}
 
-	dbTransaction, err := database.Database.Begin()
+	stepsString, err := json.Marshal(application.Steps)
 	if err != nil {
-		logrus.WithError(err).Error("Error to open db transaction")
+		logrus.WithError(err).Error("Error to marshal application steps")
 
 		return application, err
 	}
 
-	stepsString, err := json.Marshal(application.Steps)
+	dbTransaction, err := database.Database.Begin()
 	if err != nil {
-		logrus.WithError(err).Error("Error to marshal application steps")
+		logrus.WithError(err).Error("Error to open db transaction")
 
 		return application, err
 	}
@@ -127,13 +127,14 @@ func getJob(
 
 	err := database.Database.QueryRowContext(
 		ctx,
-		`SELECT id,company_id,status,publish_at,finish_at 
+		`SELECT id,company_id,status,questionnaire,publish_at,finish_at 
 				FROM jobs WHERE id = ?`,
 		id,
 	).Scan(
 		&job.ID,
 		&job.CompanyID,
 		&job.Status,
+		&job.Questionnaire,
 		&job.PublishAt,
 		&job.FinishAt,
 	)

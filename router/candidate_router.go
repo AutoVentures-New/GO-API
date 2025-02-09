@@ -21,11 +21,12 @@ func setupCandidateRoute(router fiber.Router) {
 
 	job := router.Group("/job/application", middleware.ProtectedCandidate())
 
-	job.Post("start", candidate.StartApplication)
+	job.Get("", candidate.ListApplications)
 	job.Get("/:job_id", candidate.GetApplication)
 	job.Delete("/:job_id", candidate.CanceledApplication)
+	job.Post("/:job_id/start", candidate.StartApplication)
 
-	stepsRoute := router.Group("/job/application/:job_id/steps", middleware.ProtectedCandidate())
+	stepsRoute := job.Group("/:job_id/steps", middleware.ProtectedCandidate())
 
 	stepsRoute.Post("requirements", steps.SaveRequirements)
 	stepsRoute.Post("job-questions", steps.SaveJobQuestions)

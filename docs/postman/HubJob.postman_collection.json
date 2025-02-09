@@ -517,7 +517,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"title\": \"job 12\",\n    \"area_id\": 3,\n    \"is_talent_bank\": false,\n    \"is_special_needs\": false,\n    \"description\": \"desc\",\n    \"job_mode\": \"IN_PERSON\",\n    \"contracting_modality\": \"CLT\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara\",\n    \"responsibilities\": \"responsa\",\n    \"questionnaire\": \"PROFESSIONAL\",\n    \"video_link\": \"http://link.com\",\n    \"publish_at\": \"2025-01-15T01:49:01.977009Z\",\n    \"finish_at\": \"2025-02-25T01:49:01.977009Z\",\n    \"cultural_fit\": {\n        \"answers\": [\n            {\n                \"cultural_fit_id\": 1,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"cultural_fit_id\": 2,\n                \"answer\": \"answer_b\"\n            },\n            {\n                \"cultural_fit_id\": 3,\n                \"answer\": \"answer_a\"\n            }\n        ]\n    },\n    \"requirements\": {\n        \"min_match\": 80,\n        \"items\": [\n            {\n                \"name\": \"Requirement 1\",\n                \"required\": false\n            },\n            {\n                \"name\": \"Requirement 2\",\n                \"required\": false\n            },\n            {\n                \"name\": \"Requirement 3\",\n                \"required\": true\n            }\n        ]\n    },\n    \"benefits\": [\n        3,\n        4,\n        5,\n        6\n    ],\n    \"video_questions\": {\n        \"questions\": [\n            \"questions 1\",\n            \"questions 2\",\n            \"questions 3\"\n        ]\n    },\n    \"questions\": [\n        4,\n        5,\n        6\n    ]\n}",
+									"raw": "{\n    \"title\": \"job 14\",\n    \"area_id\": 3,\n    \"is_talent_bank\": false,\n    \"is_special_needs\": false,\n    \"description\": \"desc\",\n    \"job_mode\": \"IN_PERSON\",\n    \"contracting_modality\": \"CLT\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara\",\n    \"responsibilities\": \"responsa\",\n    \"questionnaire\": \"BEHAVIORAL\",\n    \"video_link\": \"http://link.com\",\n    \"publish_at\": \"2025-01-15T01:49:01.977009Z\",\n    \"finish_at\": \"2025-02-25T01:49:01.977009Z\",\n    \"cultural_fit\": {\n        \"answers\": [\n            {\n                \"cultural_fit_id\": 1,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"cultural_fit_id\": 2,\n                \"answer\": \"answer_b\"\n            },\n            {\n                \"cultural_fit_id\": 3,\n                \"answer\": \"answer_a\"\n            }\n        ]\n    },\n    \"requirements\": {\n        \"min_match\": 80,\n        \"items\": [\n            {\n                \"name\": \"Requirement 1\",\n                \"required\": false\n            },\n            {\n                \"name\": \"Requirement 2\",\n                \"required\": false\n            },\n            {\n                \"name\": \"Requirement 3\",\n                \"required\": true\n            }\n        ]\n    },\n    \"benefits\": [\n        3,\n        4,\n        5,\n        6\n    ],\n    \"video_questions\": {\n        \"questions\": [\n            \"questions 1\",\n            \"questions 2\",\n            \"questions 3\"\n        ]\n    },\n    \"questions\": [\n        4,\n        5,\n        6\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1420,7 +1420,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"job_id\": 18,\n    \"job_requirement_items\": [\n        {\n            \"id\": 1,\n            \"name\": \"Requirement 1\",\n            \"checked\": true\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Requirement 2\",\n            \"checked\": true\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Requirement 3\",\n            \"checked\": true\n        }\n    ]\n}",
+											"raw": "{\n    \"job_requirement_items\": [\n        {\n            \"id\": 1,\n            \"name\": \"Requirement 1\",\n            \"checked\": true\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Requirement 2\",\n            \"checked\": true\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Requirement 3\",\n            \"checked\": true\n        }\n    ]\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1473,7 +1473,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"job_id\": 18,\n    \"questions\":\n    [\n        {\n            \"id\": 4,\n            \"title\": \"question 3\",\n            \"type\": \"SINGLE_CHOICE\",\n            \"answers\":\n            [\n                {\n                    \"id\": 23,\n                    \"title\": \"answer 1\",\n                    \"checked\": true,\n                    \"answer\": \"\"\n                },\n                {\n                    \"id\": 24,\n                    \"title\": \"answer 2\",\n                    \"checked\": false,\n                    \"answer\": \"asdsdsd\"\n                },\n                {\n                    \"id\": 25,\n                    \"title\": \"answer 3\",\n                    \"checked\": false,\n                    \"answer\": \"sss aaaaa\"\n                }\n            ]\n        },\n        {\n            \"id\": 5,\n            \"title\": \"question 1\",\n            \"type\": \"SINGLE_CHOICE\",\n            \"answers\":\n            [\n                {\n                    \"id\": 26,\n                    \"title\": \"answer 1\",\n                    \"checked\": false,\n                    \"answer\": \"asasas\"\n                },\n                {\n                    \"id\": 27,\n                    \"title\": \"answer 2\",\n                    \"checked\": true,\n                    \"answer\": \"\"\n                },\n                {\n                    \"id\": 28,\n                    \"title\": \"answer 3\",\n                    \"checked\": false,\n                    \"answer\": \"asasas\"\n                }\n            ]\n        },\n        {\n            \"id\": 6,\n            \"title\": \"question 2\",\n            \"type\": \"SINGLE_CHOICE\",\n            \"answers\":\n            [\n                {\n                    \"id\": 29,\n                    \"title\": \"answer 1\",\n                    \"checked\": false,\n                    \"answer\": \"\"\n                },\n                {\n                    \"id\": 30,\n                    \"title\": \"answer 2\",\n                    \"checked\": false,\n                    \"answer\": \"asasaas\"\n                },\n                {\n                    \"id\": 31,\n                    \"title\": \"answer 3\",\n                    \"checked\": false,\n                    \"answer\": \"\"\n                }\n            ]\n        }\n    ]\n}",
+											"raw": "{\n    \"questions\":\n    [\n        {\n            \"id\": 4,\n            \"title\": \"question 3\",\n            \"type\": \"SINGLE_CHOICE\",\n            \"answers\":\n            [\n                {\n                    \"id\": 23,\n                    \"title\": \"answer 1\",\n                    \"checked\": true,\n                    \"answer\": \"\"\n                },\n                {\n                    \"id\": 24,\n                    \"title\": \"answer 2\",\n                    \"checked\": false,\n                    \"answer\": \"asdsdsd\"\n                },\n                {\n                    \"id\": 25,\n                    \"title\": \"answer 3\",\n                    \"checked\": false,\n                    \"answer\": \"sss aaaaa\"\n                }\n            ]\n        },\n        {\n            \"id\": 5,\n            \"title\": \"question 1\",\n            \"type\": \"SINGLE_CHOICE\",\n            \"answers\":\n            [\n                {\n                    \"id\": 26,\n                    \"title\": \"answer 1\",\n                    \"checked\": false,\n                    \"answer\": \"asasas\"\n                },\n                {\n                    \"id\": 27,\n                    \"title\": \"answer 2\",\n                    \"checked\": true,\n                    \"answer\": \"\"\n                },\n                {\n                    \"id\": 28,\n                    \"title\": \"answer 3\",\n                    \"checked\": false,\n                    \"answer\": \"asasas\"\n                }\n            ]\n        },\n        {\n            \"id\": 6,\n            \"title\": \"question 2\",\n            \"type\": \"SINGLE_CHOICE\",\n            \"answers\":\n            [\n                {\n                    \"id\": 29,\n                    \"title\": \"answer 1\",\n                    \"checked\": false,\n                    \"answer\": \"\"\n                },\n                {\n                    \"id\": 30,\n                    \"title\": \"answer 2\",\n                    \"checked\": false,\n                    \"answer\": \"asasaas\"\n                },\n                {\n                    \"id\": 31,\n                    \"title\": \"answer 3\",\n                    \"checked\": false,\n                    \"answer\": \"\"\n                }\n            ]\n        }\n    ]\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1492,6 +1492,166 @@
 												"18",
 												"steps",
 												"job-questions"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Step Job Cultural Fit",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{CANDIDATE_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"cultural_fit\": {\n        \"answers\": [\n            {\n                \"cultural_fit_id\": 1,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"cultural_fit_id\": 2,\n                \"answer\": \"answer_b\"\n            },\n            {\n                \"cultural_fit_id\": 3,\n                \"answer\": \"answer_a\"\n            }\n        ]\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/candidate/job/application/18/steps/cultural-fit",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"candidate",
+												"job",
+												"application",
+												"18",
+												"steps",
+												"cultural-fit"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Step Candidate Questionnaire",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{CANDIDATE_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"questionnaire\": {\n        \"answers\": [\n            {\n                \"question_id\": 1,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"question_id\": 2,\n                \"answer\": \"answer_b\"\n            },\n            {\n                \"question_id\": 3,\n                \"answer\": \"answer_a\"\n            }\n        ]\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/candidate/job/application/18/steps/questionnaire",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"candidate",
+												"job",
+												"application",
+												"18",
+												"steps",
+												"questionnaire"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Step Candidate Video",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{CANDIDATE_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "video",
+													"type": "file",
+													"src": "/Users/vitorruschoni/Desktop/meu/foto-perfil.jpg"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{HOST}}/candidate/job/application/18/steps/candidate-video",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"candidate",
+												"job",
+												"application",
+												"18",
+												"steps",
+												"candidate-video"
 											]
 										}
 									},
@@ -1526,17 +1686,8 @@
 								},
 								"method": "POST",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"job_id\": 18\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
 								"url": {
-									"raw": "{{HOST}}/candidate/job/application/start",
+									"raw": "{{HOST}}/candidate/job/application/20/start",
 									"host": [
 										"{{HOST}}"
 									],
@@ -1544,6 +1695,7 @@
 										"candidate",
 										"job",
 										"application",
+										"20",
 										"start"
 									]
 								}
@@ -1587,6 +1739,47 @@
 										"job",
 										"application",
 										"18"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List applications",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{CANDIDATE_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/candidate/job/application",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"candidate",
+										"job",
+										"application"
 									]
 								}
 							},
@@ -1657,14 +1850,7 @@
 					],
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{CANDIDATE_ACCESS_TOKEN}}",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "GET",
 						"header": [],
@@ -1676,6 +1862,95 @@
 							"path": [
 								"configuration",
 								"cultural-fit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Questionnaire Behavioral",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/configuration/questionnaires/behavioral",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"configuration",
+								"questionnaires",
+								"behavioral"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Questionnaire Professional",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/configuration/questionnaires/professional",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"configuration",
+								"questionnaires",
+								"professional"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List areas",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/configuration/list-areas",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"configuration",
+								"list-areas"
 							]
 						}
 					},

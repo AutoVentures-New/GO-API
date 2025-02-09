@@ -10,22 +10,23 @@ import (
 	"github.com/hubjob/api/model"
 )
 
-type StartApplicationRequest struct {
-	JobID int64 `json:"job_id"`
-}
-
 func StartApplication(fiberCtx *fiber.Ctx) error {
 	candidate := fiberCtx.Locals("candidate").(model.Candidate)
-	request := new(StartApplicationRequest)
 
-	if err := fiberCtx.BodyParser(&request); err != nil {
-		return responses.InvalidBodyRequest(fiberCtx, err)
+	id := fiberCtx.Params("job_id")
+	if len(id) == 0 {
+		return responses.BadRequest(fiberCtx, "Params {job_id} is required")
+	}
+
+	idInt, err := strconv.Atoi(id)
+	if err != nil {
+		return responses.BadRequest(fiberCtx, "Invalid params {job_id}")
 	}
 
 	application, err := candidate_job_adp.StartApplication(
 		fiberCtx.UserContext(),
 		candidate.ID,
-		request.JobID,
+		int64(idInt),
 	)
 	if errors.Is(err, candidate_job_adp.ErrJobNotFound) {
 		return responses.NotFound(fiberCtx, "Job not found")
@@ -101,7 +102,7 @@ func CanceledApplication(fiberCtx *fiber.Ctx) error {
 		return responses.InternalServerError(fiberCtx, err)
 	}
 
-	if application.Status == model.CANCELED {
+	if application.Status != model.FILLING && application.Status != model.WAITING_EVALUATION {
 		return responses.Success(fiberCtx, application)
 	}
 
@@ -111,4 +112,18 @@ func CanceledApplication(fiberCtx *fiber.Ctx) error {
 	}
 
 	return responses.Success(fiberCtx, application)
+}
+
+func ListApplications(fiberCtx *fiber.Ctx) error {
+	candidate := fiberCtx.Locals("candidate").(model.Candidate)
+
+	applications, err := candidate_job_adp.ListJobApplications(
+		fiberCtx.UserContext(),
+		candidate.ID,
+	)
+	if err != nil {
+		return responses.InternalServerError(fiberCtx, err)
+	}
+
+	return responses.Success(fiberCtx, applications)
 }
