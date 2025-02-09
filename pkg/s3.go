@@ -4,12 +4,15 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/hubjob/api/config"
 	"github.com/sirupsen/logrus"
 )
 
 var S3Uploader *s3manager.Uploader
+
+var S3Client *s3.S3
 
 func InitS3Client() {
 	sess, err := session.NewSession(&aws.Config{
@@ -21,4 +24,6 @@ func InitS3Client() {
 	}
 
 	S3Uploader = s3manager.NewUploader(sess)
+
+	S3Client = s3.New(sess)
 }

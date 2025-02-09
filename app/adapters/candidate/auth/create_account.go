@@ -66,6 +66,26 @@ func CreateAccount(
 		return model.Candidate{}, err
 	}
 
+	candidate.Address.CreatedAt = candidate.CreatedAt
+	candidate.Address.UpdatedAt = candidate.CreatedAt
+
+	_, err = dbTransaction.ExecContext(
+		ctx,
+		`INSERT INTO candidate_addresses(candidate_id,city,state,created_at,updated_at) VALUES(?,?,?,?,?)`,
+		lastInsertID,
+		candidate.Address.City,
+		candidate.Address.State,
+		candidate.CreatedAt,
+		candidate.UpdatedAt,
+	)
+	if err != nil {
+		_ = dbTransaction.Rollback()
+
+		logrus.WithError(err).Error("Error to insert candidate address")
+
+		return model.Candidate{}, err
+	}
+
 	_, err = dbTransaction.ExecContext(
 		ctx,
 		`DELETE FROM email_validations WHERE email = ? AND code = ?`,

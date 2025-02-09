@@ -101,6 +101,8 @@ type CreateAccountRequest struct {
 	Password  string `json:"password"`
 	Phone     string `json:"phone"`
 	BirthDate string `json:"birth_date"`
+	State     string `json:"state"`
+	City      string `json:"city"`
 }
 
 func CreateAccount(fiberCtx *fiber.Ctx) error {
@@ -135,6 +137,10 @@ func CreateAccount(fiberCtx *fiber.Ctx) error {
 		Phone:     request.Phone,
 		BirthDate: birthDate,
 		Password:  request.Password,
+		Address: model.Address{
+			State: request.State,
+			City:  request.City,
+		},
 	}
 
 	err = candidate_auth_adp.CheckAlreadyExist(
@@ -173,7 +179,7 @@ func Login(fiberCtx *fiber.Ctx) error {
 		return responses.InvalidBodyRequest(fiberCtx, err)
 	}
 
-	candidate, err := candidate_auth_adp.LoginCandidate(fiberCtx.UserContext(), request.Email)
+	candidate, err := candidate_auth_adp.GetCandidate(fiberCtx.UserContext(), request.Email)
 	if err != nil {
 		return responses.Unauthorized(fiberCtx)
 	}
@@ -212,5 +218,10 @@ func checkPasswordHash(password, hash string) bool {
 func Me(fiberCtx *fiber.Ctx) error {
 	candidate := fiberCtx.Locals("candidate").(model.Candidate)
 
-	return fiberCtx.JSON(fiber.Map{"data": candidate})
+	candidate, err := candidate_auth_adp.GetCandidate(fiberCtx.UserContext(), candidate.Email)
+	if err != nil {
+		return responses.Forbidden(fiberCtx)
+	}
+
+	return responses.Success(fiberCtx, candidate)
 }

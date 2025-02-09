@@ -15,6 +15,7 @@ type Candidate struct {
 	BirthDate time.Time `json:"birth_date"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+	Address   Address   `json:"address"`
 }
 
 type CandidateQuestionnaire struct {

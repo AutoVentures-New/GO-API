@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/hubjob/api/handler/candidate"
+	"github.com/hubjob/api/handler/candidate/profile"
 	"github.com/hubjob/api/handler/candidate/steps"
 	"github.com/hubjob/api/middleware"
 )
@@ -18,6 +19,13 @@ func setupCandidateRoute(router fiber.Router) {
 	auth.Post("/login", candidate.Login)
 
 	auth.Get("/me", middleware.ProtectedCandidate(), candidate.Me)
+
+	prof := router.Group("/profile", middleware.ProtectedCandidate())
+
+	prof.Patch("", profile.UpdateCandidate)
+	prof.Patch("update-email", profile.UpdateCandidateEmail)
+	prof.Get("photo", profile.DownloadCandidatePhoto)
+	prof.Post("photo", profile.UpdateCandidatePhoto)
 
 	job := router.Group("/job/application", middleware.ProtectedCandidate())
 

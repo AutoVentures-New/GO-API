@@ -1159,7 +1159,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"email\": \"candidate@email.com\",\n    \"password\": \"q1w2e3\"\n}",
+									"raw": "{\n    \"email\": \"email2@email.com\",\n    \"password\": \"q1w2e3\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1201,7 +1201,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"full name\",\n    \"email\": \"candidate@email.com\",\n    \"password\": \"q1w2e3\",\n    \"cpf\": \"12345\",\n    \"code\": \"984023\",\n    \"phone\": \"16997531996\",\n    \"birth_date\": \"1996-02-01\"\n}",
+									"raw": "{\n    \"name\": \"full name\",\n    \"email\": \"candidate@email.com\",\n    \"password\": \"q1w2e3\",\n    \"cpf\": \"12345\",\n    \"code\": \"984023\",\n    \"phone\": \"16997531996\",\n    \"birth_date\": \"1996-02-01\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1241,7 +1241,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"email\": \"candidate@email.com\"\n}",
+									"raw": "{\n    \"email\": \"email2@email.com\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1822,6 +1822,209 @@
 										"job",
 										"application",
 										"18"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "Update Photo",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{CANDIDATE_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "photo",
+											"type": "file",
+											"src": "/Users/vitorruschoni/Desktop/meu/foto-perfil.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{HOST}}/candidate/profile/photo",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"candidate",
+										"profile",
+										"photo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Download Photo",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{CANDIDATE_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{HOST}}/candidate/profile/photo",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"candidate",
+										"profile",
+										"photo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update infos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{CANDIDATE_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"full name222\",\n    \"cpf\": \"12342225\",\n    \"phone\": \"16997531997\",\n    \"birth_date\": \"1997-02-01\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara2\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/candidate/profile",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"candidate",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{CANDIDATE_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"email2@email.com\",\n    \"code\": \"785427\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/candidate/profile/update-email",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"candidate",
+										"profile",
+										"update-email"
 									]
 								}
 							},

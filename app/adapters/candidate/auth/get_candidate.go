@@ -10,7 +10,9 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func LoginCandidate(
+var ErrCandidateNotFound = errors.New("not found")
+
+func GetCandidate(
 	ctx context.Context,
 	email string,
 ) (model.Candidate, error) {
@@ -33,7 +35,7 @@ func LoginCandidate(
 		&candidate.UpdatedAt,
 	)
 	if errors.Is(err, sql.ErrNoRows) {
-		return candidate, nil
+		return candidate, ErrCandidateNotFound
 	}
 
 	if err != nil {
@@ -41,6 +43,16 @@ func LoginCandidate(
 
 		return candidate, err
 	}
+
+	_ = database.Database.QueryRowContext(
+		ctx,
+		`SELECT state, city FROM candidate_addresses WHERE candidate_id = ?`,
+		email,
+	).Scan(
+		&candidate.Address.State,
+		&candidate.Address.City,
+		&candidate.ID,
+	)
 
 	return candidate, nil
 }
