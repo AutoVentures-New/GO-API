@@ -31,4 +31,5 @@ func setupCandidateRoute(router fiber.Router) {
 	stepsRoute.Post("job-questions", steps.SaveJobQuestions)
 	stepsRoute.Post("cultural-fit", steps.SaveCulturalFit)
 	stepsRoute.Post("questionnaire", steps.SaveQuestionnaire)
+	stepsRoute.Post("candidate-video", steps.SaveCandidateVideo)
 }

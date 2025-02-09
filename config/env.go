@@ -22,6 +22,13 @@ type configEnv struct {
 		Sender   string `env:"SENDGRID_SENDER"`
 		EmailDev string `env:"SENDGRID_EMAIL_DEV"`
 	}
+
+	S3 struct {
+		Bucket          string `env:"S3_BUCKET_NAME"`
+		BucketRegion    string `env:"S3_BUCKET_REGION"`
+		AccessKey       string `env:"S3_ACCESS_KEY"`
+		SecretAccessKey string `env:"S3_SECRET_ACCESS_KEY"`
+	}
 }
 
 func InitConfig() {

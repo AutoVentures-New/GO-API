@@ -88,3 +88,12 @@ type JobApplicationCulturalFitAnswer struct {
 	CulturalFitID int64  `json:"cultural_fit_id"`
 	Answer        string `json:"answer"`
 }
+
+type JobApplicationCandidateVideo struct {
+	ID            int64     `json:"id"`
+	ApplicationID int64     `json:"application_id"`
+	BucketName    string    `json:"bucket_name"`
+	VideoPath     string    `json:"video_path"`
+	CreatedAt     time.Time `json:"created_at"`
+	UpdatedAt     time.Time `json:"updated_at"`
+}

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/hubjob/api/pkg"
 	"os"
 	"os/signal"
 	"syscall"
@@ -22,6 +23,7 @@ func main() {
 	database.InitDatabase()
 	database.RunMigrations()
 	sendgrid.InitSendGrid()
+	pkg.InitS3Client()
 
 	app := fiber.New(fiber.Config{
 		Prefork:                  false,

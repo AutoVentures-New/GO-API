@@ -3,6 +3,7 @@ module github.com/hubjob/api
 go 1.23.1
 
 require (
+	github.com/aws/aws-sdk-go v1.55.6
 	github.com/caarlos0/env/v11 v11.3.1
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/gofiber/contrib/jwt v1.0.10
@@ -21,6 +22,7 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
+	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect

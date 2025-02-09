@@ -3,10 +3,9 @@ package steps
 import (
 	"context"
 	"database/sql"
-	"time"
-
 	"github.com/hubjob/api/model"
 	"github.com/sirupsen/logrus"
+	"time"
 )
 
 func updateApplication(
@@ -15,19 +14,23 @@ func updateApplication(
 	application *model.Application,
 	reproved bool,
 ) error {
-	application.UpdatedAt = time.Now().UTC()
-
 	if reproved {
 		application.Status = model.REPROVED
 	} else {
-		for index, value := range application.Steps {
-			if value == application.CurrentStep && len(application.Steps) > index+1 {
-				application.CurrentStep = application.Steps[index+1]
+		if application.CurrentStep == application.Steps[len(application.Steps)-1] {
+			application.Status = model.WAITING_EVALUATION
+		} else {
+			for index, value := range application.Steps {
+				if value == application.CurrentStep && len(application.Steps) > index+1 {
+					application.CurrentStep = application.Steps[index+1]
 
-				break
+					break
+				}
 			}
 		}
 	}
+
+	application.UpdatedAt = time.Now().UTC()
 
 	_, err := dbTransaction.ExecContext(
 		ctx,
