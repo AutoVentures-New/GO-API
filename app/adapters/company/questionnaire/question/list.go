@@ -3,6 +3,7 @@ package questionnaire_question
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"strings"
 
 	"github.com/hubjob/api/database"
@@ -24,8 +25,10 @@ func ListQuestions(
 	if len(questionnaireIDs) > 0 {
 		rows, err = database.Database.QueryContext(
 			ctx,
-			`SELECT id, title, type, questionnaire_id, created_at, updated_at FROM questionnaire_questions WHERE questionnaire_id in (?)`,
-			strings.Join(questionnaireIDs, ","),
+			fmt.Sprintf(
+				"SELECT id, title, type, questionnaire_id, created_at, updated_at FROM questionnaire_questions WHERE questionnaire_id in (%s)",
+				strings.Join(questionnaireIDs, ","),
+			),
 		)
 	} else {
 		rows, err = database.Database.QueryContext(
