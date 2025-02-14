@@ -2,6 +2,8 @@ package questionnaire_question
 
 import (
 	"context"
+	"database/sql"
+	"strings"
 
 	"github.com/hubjob/api/database"
 	"github.com/hubjob/api/model"
@@ -11,14 +13,28 @@ import (
 func ListQuestions(
 	ctx context.Context,
 	questionnaireID int64,
+	questionnaireIDs []string,
 ) ([]model.Question, error) {
 	questions := make([]model.Question, 0)
 
-	rows, err := database.Database.QueryContext(
-		ctx,
-		`SELECT id, title, type, questionnaire_id, created_at, updated_at FROM questionnaire_questions WHERE questionnaire_id = ?`,
-		questionnaireID,
-	)
+	var err error
+
+	var rows *sql.Rows
+
+	if len(questionnaireIDs) > 0 {
+		rows, err = database.Database.QueryContext(
+			ctx,
+			`SELECT id, title, type, questionnaire_id, created_at, updated_at FROM questionnaire_questions WHERE questionnaire_id in (?)`,
+			strings.Join(questionnaireIDs, ","),
+		)
+	} else {
+		rows, err = database.Database.QueryContext(
+			ctx,
+			`SELECT id, title, type, questionnaire_id, created_at, updated_at FROM questionnaire_questions WHERE questionnaire_id = ?`,
+			questionnaireID,
+		)
+	}
+
 	if err != nil {
 		logrus.WithError(err).Error("Error to list questions")
 

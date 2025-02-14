@@ -82,6 +82,7 @@ func ListQuestions(fiberCtx *fiber.Ctx) error {
 	questions, err := company_questionnaire_question_adp.ListQuestions(
 		fiberCtx.UserContext(),
 		int64(questionnaireIdInt),
+		nil,
 	)
 	if err != nil {
 		return responses.InternalServerError(fiberCtx, err)

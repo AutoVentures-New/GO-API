@@ -42,7 +42,7 @@ func GetQuestionnaire(
 		return questionnaire, err
 	}
 
-	questionnaire.Questions, err = questionnaire_question.ListQuestions(ctx, questionnaire.ID)
+	questionnaire.Questions, err = questionnaire_question.ListQuestions(ctx, questionnaire.ID, nil)
 	if err != nil {
 		logrus.WithError(err).Error("Error to list questions")
 
