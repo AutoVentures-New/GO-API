@@ -24,3 +24,13 @@ var CulturalFit = []CulturalFitQuestion{
 	{Id: 14, Title: "Para você, o que define melhor Responsabilidae Social e Ambiental", AnswerA: "a empresa manter ações sociais corporativas que beneficiam a comunidade, ou", AnswerB: "empresa e colaboradores protegerem o meio ambiente e serem bons integrantes da comunidade?"},
 	{Id: 15, Title: "Você prefere", AnswerA: "se adaptar a novas situações e desafios, muitas vezes imprevisiveis, ou", AnswerB: "fazer com ótima qualidade trabalhos que você já domina?"},
 }
+
+type CompanyCulturalFit struct {
+	CompanyID int64                      `json:"company_id"`
+	Answers   []CompanyCulturalFitAnswer `json:"answers"`
+}
+
+type CompanyCulturalFitAnswer struct {
+	CulturalFitID int64  `json:"cultural_fit_id"`
+	Answer        string `json:"answer"`
+}

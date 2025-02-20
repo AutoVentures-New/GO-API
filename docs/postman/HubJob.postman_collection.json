@@ -1129,6 +1129,51 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "Cultural Fit",
+					"item": [
+						{
+							"name": "Get Last Cultural Fit",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{COMPANY_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/company/cultural-fit",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"cultural-fit"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
