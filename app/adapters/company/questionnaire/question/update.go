@@ -42,46 +42,50 @@ func UpdateQuestion(
 		return question, err
 	}
 
-	newAnswer := make([]model.Answer, 0)
-	idsToIgnore := make([]string, 0)
+	if question.Type != model.OPEN_FIELD {
+		newAnswer := make([]model.Answer, 0)
+		idsToIgnore := make([]string, 0)
 
-	for _, answer := range question.Answers {
-		if answer.ID == 0 {
-			answer.QuestionnaireID = question.QuestionnaireID
-			answer.QuestionID = question.ID
-			answer.CreatedAt = question.UpdatedAt
-			answer.UpdatedAt = answer.CreatedAt
+		for _, answer := range question.Answers {
+			if answer.ID == 0 {
+				answer.QuestionnaireID = question.QuestionnaireID
+				answer.QuestionID = question.ID
+				answer.CreatedAt = question.UpdatedAt
+				answer.UpdatedAt = answer.CreatedAt
 
-			answer.ID, err = createAnswer(
-				ctx,
-				dbTransaction,
-				answer,
-			)
-			if err != nil {
-				_ = dbTransaction.Rollback()
+				answer.ID, err = createAnswer(
+					ctx,
+					dbTransaction,
+					answer,
+				)
+				if err != nil {
+					_ = dbTransaction.Rollback()
 
-				return question, err
+					return question, err
+				}
+			} else {
+				answer.UpdatedAt = question.UpdatedAt
+
+				err = updateAnswer(ctx, dbTransaction, answer)
+				if err != nil {
+					_ = dbTransaction.Rollback()
+
+					return question, err
+				}
 			}
-		} else {
-			answer.UpdatedAt = question.UpdatedAt
 
-			err = updateAnswer(ctx, dbTransaction, answer)
-			if err != nil {
-				_ = dbTransaction.Rollback()
-
-				return question, err
-			}
+			idsToIgnore = append(idsToIgnore, fmt.Sprintf("%d", answer.ID))
+			newAnswer = append(newAnswer, answer)
 		}
 
-		idsToIgnore = append(idsToIgnore, fmt.Sprintf("%d", answer.ID))
-		newAnswer = append(newAnswer, answer)
-	}
+		err = deleteAnswers(ctx, dbTransaction, question.ID, idsToIgnore)
+		if err != nil {
+			_ = dbTransaction.Rollback()
 
-	err = deleteAnswers(ctx, dbTransaction, question.ID, idsToIgnore)
-	if err != nil {
-		_ = dbTransaction.Rollback()
+			return question, err
+		}
 
-		return question, err
+		question.Answers = newAnswer
 	}
 
 	if err := dbTransaction.Commit(); err != nil {
@@ -91,8 +95,6 @@ func UpdateQuestion(
 
 		return question, err
 	}
-
-	question.Answers = newAnswer
 
 	return question, nil
 }
