@@ -83,3 +83,12 @@ type Area struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
+
+type State struct {
+	Name   string `json:"name"`
+	Cities []City `json:"cities"`
+}
+
+type City struct {
+	Name string `json:"name"`
+}

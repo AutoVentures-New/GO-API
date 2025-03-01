@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/hubjob/api/handler/company"
+	"github.com/hubjob/api/handler/company/profile"
 	"github.com/hubjob/api/middleware"
 )
 
@@ -50,4 +51,9 @@ func setupCompanyRoute(router fiber.Router) {
 	job.Delete("/:id", company.DeleteJob)
 
 	router.Get("/cultural-fit", middleware.ProtectedCompany(), company.GetLastCulturalFit)
+
+	prof := router.Group("/profile", middleware.ProtectedCompany())
+
+	prof.Get("", profile.GetCompany)
+	prof.Patch("", profile.UpdateCompany)
 }

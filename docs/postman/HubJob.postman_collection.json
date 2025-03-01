@@ -1174,6 +1174,100 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "Update Company Info",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{COMPANY_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Company name 3333\",\n    \"description\": \"descccc c ccccc\",\n    \"cnpj\": \"123123123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/company/profile",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Company",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{COMPANY_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/company/profile",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
@@ -2199,6 +2293,34 @@
 							"path": [
 								"configuration",
 								"list-areas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List state cities by company",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/configuration/state-cities/:company_id",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"configuration",
+								"state-cities",
+								":company_id"
+							],
+							"variable": [
+								{
+									"key": "company_id",
+									"value": "1"
+								}
 							]
 						}
 					},
