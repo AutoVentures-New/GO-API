@@ -3,6 +3,7 @@ package company
 import (
 	"encoding/json"
 	"errors"
+	"github.com/hubjob/api/app/adapters/company/profile"
 	"github.com/hubjob/api/pkg"
 	"time"
 
@@ -235,6 +236,13 @@ func Me(fiberCtx *fiber.Ctx) error {
 	if err != nil {
 		return responses.Forbidden(fiberCtx)
 	}
+
+	company, err := profile.GetCompany(fiberCtx.UserContext(), user.CompanyID)
+	if err != nil {
+		return responses.InternalServerError(fiberCtx, err)
+	}
+
+	user.Company = &company
 
 	return responses.Success(fiberCtx, user)
 }

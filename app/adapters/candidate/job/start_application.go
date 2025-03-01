@@ -46,7 +46,7 @@ func StartApplication(
 		model.CULTURAL_FIT,
 	}
 
-	if !hashQuestionnaire {
+	if job.Questionnaire != model.NONE && !hashQuestionnaire {
 		steps = append(steps, questionnaire)
 	}
 

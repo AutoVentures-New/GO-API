@@ -36,6 +36,7 @@ type Application struct {
 	Questions                     []ApplicationQuestion           `json:"questions"`
 	CulturalFit                   *JobApplicationCulturalFit      `json:"cultural_fit"`
 	JobVideoQuestions             *JobVideoQuestions              `json:"job_video_questions"`
+	Candidate                     *Candidate                      `json:"candidate"`
 }
 
 type JobApplicationRequirement struct {

@@ -7,6 +7,7 @@ import (
 const (
 	BEHAVIORAL   = "BEHAVIORAL"
 	PROFESSIONAL = "PROFESSIONAL"
+	NONE         = "NONE"
 )
 
 type Job struct {

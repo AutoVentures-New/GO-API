@@ -489,6 +489,53 @@
 					"name": "Job",
 					"item": [
 						{
+							"name": "Application",
+							"item": [
+								{
+									"name": "List Application",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{COMPANY_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{HOST}}/company/job/25/application",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"company",
+												"job",
+												"25",
+												"application"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
 							"name": "Create Job",
 							"event": [
 								{
@@ -1826,7 +1873,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{HOST}}/candidate/job/application/20/start",
+									"raw": "{{HOST}}/candidate/job/application/25/start",
 									"host": [
 										"{{HOST}}"
 									],
@@ -1834,7 +1881,7 @@
 										"candidate",
 										"job",
 										"application",
-										"20",
+										"25",
 										"start"
 									]
 								}
