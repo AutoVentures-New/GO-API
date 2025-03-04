@@ -2,22 +2,34 @@ package job
 
 import (
 	"context"
-
 	"github.com/hubjob/api/database"
 	"github.com/hubjob/api/model"
 	"github.com/sirupsen/logrus"
 )
 
+const (
+	CREATED_AT_DESC = "CREATED_AT_DESC"
+	CREATED_AT_ASC  = "CREATED_AT_ASC"
+	HIGHEST_SCORE   = "HIGHEST_SCORE"
+	LOWEST_SCORE    = "LOWEST_SCORE"
+)
+
+type ListJobApplicationsRequest struct {
+	FilterCandidateName string `json:"candidate_name"`
+	OrderBy             string `json:"order_by"`
+}
+
 func ListJobApplications(
 	ctx context.Context,
 	companyID int64,
 	jobID int64,
+	request ListJobApplicationsRequest,
 ) ([]model.Application, error) {
 	applications := make([]model.Application, 0)
 
-	rows, err := database.Database.QueryContext(
-		ctx,
-		`SELECT 
+	args := make([]any, 0)
+
+	query := `SELECT 
     					j.id,
     					j.company_id,
     					j.job_id,
@@ -35,10 +47,22 @@ func ListJobApplications(
 				LEFT JOIN job_application_requirements r on j.id = r.application_id
 				LEFT JOIN job_application_cultural_fit f on j.id = f.application_id
 				LEFT JOIN job_application_candidate_videos v on j.id = v.application_id
-				WHERE j.company_id = ? AND j.job_id = ?
-				ORDER BY id DESC`,
-		companyID,
-		jobID,
+				WHERE j.company_id = ? AND j.job_id = ?`
+
+	args = append(args, companyID)
+	args = append(args, jobID)
+
+	if len(request.FilterCandidateName) > 0 {
+		query = query + " AND c.name LIKE ?"
+		args = append(args, "%"+request.FilterCandidateName+"%")
+	}
+
+	query += " ORDER BY j.id DESC"
+
+	rows, err := database.Database.QueryContext(
+		ctx,
+		query,
+		args...,
 	)
 	if err != nil {
 		logrus.WithError(err).Error("Error to list job application")

@@ -53,7 +53,7 @@ func setupCompanyRoute(router fiber.Router) {
 
 	applications := job.Group("/:id/application")
 
-	applications.Get("", job2.ListJobApplications)
+	applications.Post("", job2.ListJobApplications)
 
 	application := applications.Group("/:application_id")
 

@@ -2,6 +2,7 @@ package job
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
 	job "github.com/hubjob/api/app/adapters/company/job/application"
@@ -22,7 +23,15 @@ func ListJobApplications(fiberCtx *fiber.Ctx) error {
 		return responses.BadRequest(fiberCtx, "Invalid params {id}")
 	}
 
-	applications, err := job.ListJobApplications(fiberCtx.UserContext(), user.CompanyID, int64(idInt))
+	request := new(job.ListJobApplicationsRequest)
+
+	if err := fiberCtx.BodyParser(&request); err != nil {
+		return responses.InvalidBodyRequest(fiberCtx, err)
+	}
+
+	request.FilterCandidateName = strings.TrimSpace(request.FilterCandidateName)
+
+	applications, err := job.ListJobApplications(fiberCtx.UserContext(), user.CompanyID, int64(idInt), *request)
 	if err != nil {
 		return responses.InternalServerError(fiberCtx, err)
 	}
