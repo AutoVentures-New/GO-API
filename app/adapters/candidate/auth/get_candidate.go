@@ -47,11 +47,10 @@ func GetCandidate(
 	_ = database.Database.QueryRowContext(
 		ctx,
 		`SELECT state, city FROM candidate_addresses WHERE candidate_id = ?`,
-		email,
+		candidate.ID,
 	).Scan(
 		&candidate.Address.State,
 		&candidate.Address.City,
-		&candidate.ID,
 	)
 
 	return candidate, nil

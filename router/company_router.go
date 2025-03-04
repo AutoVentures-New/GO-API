@@ -57,6 +57,7 @@ func setupCompanyRoute(router fiber.Router) {
 
 	application := applications.Group("/:application_id")
 
+	application.Get("", job2.GetJobApplication)
 	application.Patch("/candidate-video-score", job2.UpdateCandidateVideoScore)
 	application.Patch("/evaluate-candidate", job2.EvaluateCandidate)
 

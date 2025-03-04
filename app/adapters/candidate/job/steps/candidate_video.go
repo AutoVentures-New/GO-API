@@ -68,10 +68,11 @@ func SaveCandidateVideo(
 
 	_, err = dbTransaction.ExecContext(
 		ctx,
-		`INSERT INTO job_application_candidate_videos(application_id,bucket_name,video_path,created_at,updated_at) VALUES(?,?,?,?,?)`,
+		`INSERT INTO job_application_candidate_videos(application_id,bucket_name,video_path,score,created_at,updated_at) VALUES(?,?,?,?,?,?)`,
 		candidateVideo.ApplicationID,
 		candidateVideo.BucketName,
 		candidateVideo.VideoPath,
+		candidateVideo.Score,
 		candidateVideo.CreatedAt,
 		candidateVideo.UpdatedAt,
 	)

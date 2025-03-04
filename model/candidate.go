@@ -5,17 +5,18 @@ import (
 )
 
 type Candidate struct {
-	ID        int64     `json:"id"`
-	Name      string    `json:"name"`
-	CPF       string    `json:"cpf"`
-	Email     string    `json:"email"`
-	Password  string    `json:"-"`
-	Status    Status    `json:"status"`
-	Phone     string    `json:"phone"`
-	BirthDate time.Time `json:"birth_date"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-	Address   Address   `json:"address"`
+	ID         int64       `json:"id"`
+	Name       string      `json:"name"`
+	CPF        string      `json:"cpf"`
+	Email      string      `json:"email"`
+	Password   string      `json:"-"`
+	Status     Status      `json:"status"`
+	Phone      string      `json:"phone"`
+	BirthDate  time.Time   `json:"birth_date"`
+	CreatedAt  time.Time   `json:"created_at"`
+	UpdatedAt  time.Time   `json:"updated_at"`
+	Address    Address     `json:"address"`
+	Curriculum *Curriculum `json:"curriculum"`
 }
 
 type CandidateQuestionnaire struct {

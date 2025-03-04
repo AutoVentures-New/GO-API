@@ -543,6 +543,49 @@
 									"response": []
 								},
 								{
+									"name": "Get Application",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{COMPANY_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{HOST}}/company/job/18/application/10",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"company",
+												"job",
+												"18",
+												"application",
+												"10"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "Update candidate video score",
 									"event": [
 										{
@@ -1937,7 +1980,7 @@
 												{
 													"key": "video",
 													"type": "file",
-													"src": "/Users/vitorruschoni/Desktop/meu/foto-perfil.jpg"
+													"src": "/Users/vitorruschoni/Desktop/video-test.mov"
 												}
 											]
 										},
