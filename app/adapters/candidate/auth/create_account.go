@@ -88,6 +88,27 @@ func CreateAccount(
 
 	_, err = dbTransaction.ExecContext(
 		ctx,
+		`INSERT INTO candidate_curriculum(candidate_id,gender,gender_identifier,color,is_special_needs,languages,created_at,updated_at) 
+				VALUES(?,?,?,?,?,?,?,?)`,
+		lastInsertID,
+		"",
+		"",
+		"",
+		false,
+		"[]",
+		candidate.CreatedAt,
+		candidate.UpdatedAt,
+	)
+	if err != nil {
+		_ = dbTransaction.Rollback()
+
+		logrus.WithError(err).Error("Error to insert candidate curriculum")
+
+		return model.Candidate{}, err
+	}
+
+	_, err = dbTransaction.ExecContext(
+		ctx,
 		`DELETE FROM email_validations WHERE email = ? AND code = ?`,
 		candidate.Email,
 		code,

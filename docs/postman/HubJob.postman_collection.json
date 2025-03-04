@@ -492,7 +492,7 @@
 							"name": "Application",
 							"item": [
 								{
-									"name": "List Application",
+									"name": "List Applications",
 									"event": [
 										{
 											"listen": "test",
@@ -516,18 +516,133 @@
 												}
 											]
 										},
-										"method": "GET",
+										"method": "POST",
 										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"candidate_name\": \"\",\n    \"order_by\": \"CREATED_AT_DESC\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": {
-											"raw": "{{HOST}}/company/job/25/application",
+											"raw": "{{HOST}}/company/job/18/application",
 											"host": [
 												"{{HOST}}"
 											],
 											"path": [
 												"company",
 												"job",
-												"25",
+												"18",
 												"application"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update candidate video score",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{COMPANY_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"score\": 80\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/company/job/18/application/2/candidate-video-score",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"company",
+												"job",
+												"18",
+												"application",
+												"2",
+												"candidate-video-score"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Evaluate candidate",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{COMPANY_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"status\": \"REPROVED\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/company/job/18/application/2/evaluate-candidate",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"company",
+												"job",
+												"18",
+												"application",
+												"2",
+												"evaluate-candidate"
 											]
 										}
 									},
@@ -564,7 +679,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"title\": \"job 14\",\n    \"area_id\": 3,\n    \"is_talent_bank\": false,\n    \"is_special_needs\": false,\n    \"description\": \"desc\",\n    \"job_mode\": \"IN_PERSON\",\n    \"contracting_modality\": \"CLT\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara\",\n    \"responsibilities\": \"responsa\",\n    \"questionnaire\": \"BEHAVIORAL\",\n    \"video_link\": \"http://link.com\",\n    \"publish_at\": \"2025-01-15T01:49:01.977009Z\",\n    \"finish_at\": \"2025-02-25T01:49:01.977009Z\",\n    \"cultural_fit\": {\n        \"answers\": [\n            {\n                \"cultural_fit_id\": 1,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"cultural_fit_id\": 2,\n                \"answer\": \"answer_b\"\n            },\n            {\n                \"cultural_fit_id\": 3,\n                \"answer\": \"answer_a\"\n            }\n        ]\n    },\n    \"requirements\": {\n        \"min_match\": 80,\n        \"items\": [\n            {\n                \"name\": \"Requirement 1\",\n                \"required\": false\n            },\n            {\n                \"name\": \"Requirement 2\",\n                \"required\": false\n            },\n            {\n                \"name\": \"Requirement 3\",\n                \"required\": true\n            }\n        ]\n    },\n    \"benefits\": [\n        3,\n        4,\n        5,\n        6\n    ],\n    \"video_questions\": {\n        \"questions\": [\n            \"questions 1\",\n            \"questions 2\",\n            \"questions 3\"\n        ]\n    },\n    \"questions\": [\n        4,\n        5,\n        6\n    ]\n}",
+									"raw": "{\n    \"title\": \"job 15\",\n    \"area_id\": 3,\n    \"is_talent_bank\": false,\n    \"is_special_needs\": false,\n    \"description\": \"desc\",\n    \"job_mode\": \"IN_PERSON\",\n    \"contracting_modality\": \"CLT\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara\",\n    \"responsibilities\": \"responsa\",\n    \"questionnaire\": \"NONE\",\n    \"video_link\": \"http://link.com\",\n    \"publish_at\": \"2025-01-15T01:49:01.977009Z\",\n    \"finish_at\": \"2025-03-25T01:49:01.977009Z\",\n    \"cultural_fit\": {\n        \"answers\": [\n            {\n                \"cultural_fit_id\": 1,\n                \"answer\": \"answer_a\"\n            },\n            {\n                \"cultural_fit_id\": 2,\n                \"answer\": \"answer_b\"\n            },\n            {\n                \"cultural_fit_id\": 3,\n                \"answer\": \"answer_a\"\n            }\n        ]\n    },\n    \"requirements\": {\n        \"min_match\": 80,\n        \"items\": [\n            {\n                \"name\": \"Requirement 1\",\n                \"required\": false\n            },\n            {\n                \"name\": \"Requirement 2\",\n                \"required\": false\n            },\n            {\n                \"name\": \"Requirement 3\",\n                \"required\": true\n            }\n        ]\n    },\n    \"benefits\": [\n        3,\n        4,\n        5,\n        6\n    ],\n    \"video_questions\": {\n        \"questions\": [\n            \"questions 1\",\n            \"questions 2\",\n            \"questions 3\"\n        ]\n    },\n    \"questions\": [\n        4,\n        5,\n        6\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1387,7 +1502,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"full name\",\n    \"email\": \"candidate@email.com\",\n    \"password\": \"q1w2e3\",\n    \"cpf\": \"12345\",\n    \"code\": \"984023\",\n    \"phone\": \"16997531996\",\n    \"birth_date\": \"1996-02-01\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara\"\n}",
+									"raw": "{\n    \"name\": \"full name\",\n    \"email\": \"email3@email.com\",\n    \"password\": \"q1w2e3\",\n    \"cpf\": \"12345\",\n    \"code\": \"605676\",\n    \"phone\": \"16997531996\",\n    \"birth_date\": \"1996-02-01\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1427,7 +1542,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"email\": \"email2@email.com\"\n}",
+									"raw": "{\n    \"email\": \"email3@email.com\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2211,6 +2326,107 @@
 										"candidate",
 										"profile",
 										"update-email"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Curriculum",
+					"item": [
+						{
+							"name": "Get curriculum",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{CANDIDATE_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{HOST}}/candidate/curriculum",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"candidate",
+										"curriculum"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update curriculum",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{CANDIDATE_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"gender\": \"Masculino\",\n    \"gender_identifier\": \"Masculino\",\n    \"color\": \"Branco\",\n    \"special_needs\": false,\n    \"languages\": [\n        {\n            \"name\": \"Portugues\",\n            \"level\": \"Nativo\"\n        },\n        {\n            \"name\": \"Ingles\",\n            \"level\": \"Avançado\"\n        }\n    ],\n    \"professional_experiences\": [\n        {\n            \"title\": \"Dev senior front\",\n            \"company\": \"Stone\",\n            \"area_id\": 2,\n            \"city\": \"São Paulo\",\n            \"state\": \"SP\",\n            \"job_mode\": \"HOME_OFFICE\",\n            \"current_job\": true,\n            \"start_date\": \"2025-03-04T19:09:18.045043Z\",\n            \"end_date\": \"2025-03-04T19:09:18.045043Z\"\n        }\n    ],\n    \"academic_experiences\": [\n        {\n            \"title\": \"Analise e desenvolvimento de sistemas\",\n            \"company\": \"UNIARA\",\n            \"area_id\": 2,\n            \"status\": \"FINISHED\",\n            \"level\": \"HIGHER_EDUCATION\",\n            \"start_date\": \"2025-03-04T19:09:18.045043Z\",\n            \"end_date\": \"2025-03-20T19:09:18.045043Z\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/candidate/curriculum",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"candidate",
+										"curriculum"
 									]
 								}
 							},
