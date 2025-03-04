@@ -55,6 +55,11 @@ func setupCompanyRoute(router fiber.Router) {
 
 	applications.Get("", job2.ListJobApplications)
 
+	application := applications.Group("/:application_id")
+
+	application.Patch("/candidate-video-score", job2.UpdateCandidateVideoScore)
+	application.Patch("/evaluate-candidate", job2.EvaluateCandidate)
+
 	router.Get("/cultural-fit", middleware.ProtectedCompany(), company.GetLastCulturalFit)
 
 	prof := router.Group("/profile", middleware.ProtectedCompany())

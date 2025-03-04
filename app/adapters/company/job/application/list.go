@@ -17,9 +17,24 @@ func ListJobApplications(
 
 	rows, err := database.Database.QueryContext(
 		ctx,
-		`SELECT j.id,j.company_id,j.job_id,j.candidate_id,j.current_step,j.status,j.created_at,j.updated_at,c.name 
+		`SELECT 
+    					j.id,
+    					j.company_id,
+    					j.job_id,
+    					j.candidate_id,
+    					j.current_step,
+    					j.status,
+    					j.created_at,
+    					j.updated_at,
+    					c.name,
+    					r.match_value as r_match_value,
+    					f.match_value as f_match_value,
+    					v.score
 				FROM job_applications j 
 				JOIN candidates c on c.id = j.candidate_id
+				LEFT JOIN job_application_requirements r on j.id = r.application_id
+				LEFT JOIN job_application_cultural_fit f on j.id = f.application_id
+				LEFT JOIN job_application_candidate_videos v on j.id = v.application_id
 				WHERE j.company_id = ? AND j.job_id = ?
 				ORDER BY id DESC`,
 		companyID,
@@ -38,6 +53,8 @@ func ListJobApplications(
 
 		var candidate model.Candidate
 
+		var requirementMatchValue, culturalFitMatchValue, candidateVideoScore *int64
+
 		err = rows.Scan(
 			&application.ID,
 			&application.CompanyID,
@@ -49,6 +66,9 @@ func ListJobApplications(
 			&application.UpdatedAt,
 
 			&candidate.Name,
+			&requirementMatchValue,
+			&culturalFitMatchValue,
+			&candidateVideoScore,
 		)
 		if err != nil {
 			logrus.WithError(err).Error("Error to unmarshal application")
@@ -57,6 +77,22 @@ func ListJobApplications(
 		}
 
 		application.Candidate = &candidate
+		application.JobApplicationRequirement = &model.JobApplicationRequirement{}
+		application.CulturalFit = &model.JobApplicationCulturalFit{}
+		application.JobApplicationCandidateVideo = &model.JobApplicationCandidateVideo{}
+
+		if requirementMatchValue != nil {
+			application.JobApplicationRequirement.MatchValue = *requirementMatchValue
+		}
+
+		if culturalFitMatchValue != nil {
+			application.CulturalFit.MatchValue = *culturalFitMatchValue
+		}
+
+		if candidateVideoScore != nil {
+			application.JobApplicationCandidateVideo.Score = *candidateVideoScore
+		}
+
 		applications = append(applications, application)
 	}
 

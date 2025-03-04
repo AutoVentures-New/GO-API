@@ -36,7 +36,10 @@ type Application struct {
 	Questions                     []ApplicationQuestion           `json:"questions"`
 	CulturalFit                   *JobApplicationCulturalFit      `json:"cultural_fit"`
 	JobVideoQuestions             *JobVideoQuestions              `json:"job_video_questions"`
-	Candidate                     *Candidate                      `json:"candidate"`
+
+	Candidate                    *Candidate                    `json:"candidate"`
+	JobApplicationRequirement    *JobApplicationRequirement    `json:"job_application_requirement"`
+	JobApplicationCandidateVideo *JobApplicationCandidateVideo `json:"job_application_candidate_video"`
 }
 
 type JobApplicationRequirement struct {
@@ -95,6 +98,7 @@ type JobApplicationCandidateVideo struct {
 	ApplicationID int64     `json:"application_id"`
 	BucketName    string    `json:"bucket_name"`
 	VideoPath     string    `json:"video_path"`
+	Score         int64     `json:"score"`
 	CreatedAt     time.Time `json:"created_at"`
 	UpdatedAt     time.Time `json:"updated_at"`
 }

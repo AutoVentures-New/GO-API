@@ -1,0 +1,1 @@
+ALTER TABLE job_application_candidate_videos ADD COLUMN score INT NOT NULL AFTER video_path;
