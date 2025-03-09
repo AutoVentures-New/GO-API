@@ -2635,7 +2635,7 @@
 			]
 		},
 		{
-			"name": "Job",
+			"name": "Public",
 			"item": [
 				{
 					"name": "List jobs",
@@ -2646,12 +2646,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/job?size=20&page=1",
+							"raw": "{{HOST}}/public/list-jobs?size=20&page=1",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"job"
+								"public",
+								"list-jobs"
 							],
 							"query": [
 								{
@@ -2682,6 +2683,50 @@
 									"key": "page",
 									"value": "1"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Company details",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/public/company-details/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"public",
+								"company-details",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Job details",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/public/job-details/18",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"public",
+								"job-details",
+								"18"
 							]
 						}
 					},

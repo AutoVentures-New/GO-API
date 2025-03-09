@@ -1,13 +1,15 @@
-package job
+package public
 
 import (
+	"errors"
 	"github.com/gofiber/fiber/v2"
-	job_adp "github.com/hubjob/api/app/adapters/job"
+	public_adp "github.com/hubjob/api/app/adapters/public"
 	"github.com/hubjob/api/handler/responses"
+	"strconv"
 )
 
 func ListJobs(fiberCtx *fiber.Ctx) error {
-	filter := job_adp.Filter{}
+	filter := public_adp.Filter{}
 
 	err := fiberCtx.QueryParser(&filter)
 	if err != nil {
@@ -22,7 +24,7 @@ func ListJobs(fiberCtx *fiber.Ctx) error {
 		filter.Size = 5
 	}
 
-	jobs, total, err := job_adp.ListJobs(
+	jobs, total, err := public_adp.ListJobs(
 		fiberCtx.UserContext(),
 		filter,
 	)
@@ -47,4 +49,27 @@ func ListJobs(fiberCtx *fiber.Ctx) error {
 		"previous_page": previousPage,
 		"jobs":          jobs,
 	})
+}
+
+func GetJob(fiberCtx *fiber.Ctx) error {
+	id := fiberCtx.Params("job_id")
+	if len(id) == 0 {
+		return responses.BadRequest(fiberCtx, "Params {job_id} is required")
+	}
+
+	idInt, err := strconv.Atoi(id)
+	if err != nil {
+		return responses.BadRequest(fiberCtx, "Invalid params {job_id}")
+	}
+
+	company, err := public_adp.GetJob(fiberCtx.UserContext(), int64(idInt))
+	if errors.Is(err, public_adp.ErrJobNotFound) {
+		return responses.NotFound(fiberCtx, err.Error())
+	}
+
+	if err != nil {
+		return responses.InternalServerError(fiberCtx, err)
+	}
+
+	return responses.Success(fiberCtx, company)
 }
