@@ -3,6 +3,7 @@ package public
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"errors"
 
 	"github.com/hubjob/api/database"
@@ -60,6 +61,11 @@ func GetJob(
 	}
 
 	job.Area, err = getArea(ctx, job.AreaID)
+	if err != nil {
+		return job, err
+	}
+
+	job.JobRequirement, err = getJobRequirements(ctx, id)
 	if err != nil {
 		return job, err
 	}
@@ -138,4 +144,39 @@ func getArea(
 	}
 
 	return &area, nil
+}
+
+func getJobRequirements(
+	ctx context.Context,
+	jobID int64,
+) (*model.JobRequirement, error) {
+	jobRequirement := model.JobRequirement{}
+
+	var itemsJSON []byte
+
+	err := database.Database.QueryRowContext(
+		ctx,
+		`SELECT items 
+				FROM job_requirements WHERE job_id = ?`,
+		jobID,
+	).Scan(
+		&itemsJSON,
+	)
+	if err != nil {
+		logrus.WithError(err).Error("Error to get job requirement")
+
+		return nil, err
+	}
+
+	if err = json.Unmarshal(itemsJSON, &jobRequirement.Items); err != nil {
+		logrus.WithError(err).Error("Error to unmarshal job requirement")
+
+		return nil, err
+	}
+
+	for index, _ := range jobRequirement.Items {
+		jobRequirement.Items[index].Required = false
+	}
+
+	return &jobRequirement, nil
 }
