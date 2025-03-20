@@ -67,6 +67,21 @@ func GetApplication(
 		return application, err
 	}
 
+	application.CulturalFit, err = getJobApplicationCulturalFit(ctx, application.ID)
+	if err != nil {
+		return application, err
+	}
+
+	application.JobApplicationQuestion, err = getJobApplicationQuestion(ctx, application.ID)
+	if err != nil {
+		return application, err
+	}
+
+	application.JobApplicationCandidateVideo, err = getJobApplicationCandidateVideo(ctx, application.ID)
+	if err != nil {
+		return application, err
+	}
+
 	return application, nil
 }
 
@@ -154,4 +169,110 @@ func getJobApplicationRequirement(
 	}
 
 	return &jobApplicationRequirement, nil
+}
+
+func getJobApplicationCulturalFit(
+	ctx context.Context,
+	applicationID int64,
+) (*model.JobApplicationCulturalFit, error) {
+	var jobApplicationCulturalFit model.JobApplicationCulturalFit
+
+	var answersString []byte
+
+	err := database.Database.QueryRowContext(
+		ctx,
+		`SELECT application_id,answers,match_value,created_at,updated_at FROM job_application_cultural_fit WHERE application_id = ?`,
+		applicationID,
+	).Scan(
+		&jobApplicationCulturalFit.ApplicationID,
+		&answersString,
+		&jobApplicationCulturalFit.MatchValue,
+		&jobApplicationCulturalFit.CreatedAt,
+		&jobApplicationCulturalFit.UpdatedAt,
+	)
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, nil
+	}
+
+	if err != nil {
+		logrus.WithError(err).Error("Error to get job application cultural fit")
+
+		return nil, err
+	}
+
+	err = json.Unmarshal(answersString, &jobApplicationCulturalFit.Answers)
+	if err != nil {
+		logrus.WithError(err).Error("Error to unmarshal application cultural fit")
+
+		return nil, err
+	}
+
+	return &jobApplicationCulturalFit, nil
+}
+
+func getJobApplicationQuestion(
+	ctx context.Context,
+	applicationID int64,
+) (*model.JobApplicationQuestion, error) {
+	var jobApplicationQuestion model.JobApplicationQuestion
+
+	var questionsString []byte
+
+	err := database.Database.QueryRowContext(
+		ctx,
+		`SELECT application_id,questions,created_at,updated_at FROM job_application_questions WHERE application_id = ?`,
+		applicationID,
+	).Scan(
+		&jobApplicationQuestion.ApplicationID,
+		&questionsString,
+		&jobApplicationQuestion.CreatedAt,
+		&jobApplicationQuestion.UpdatedAt,
+	)
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, nil
+	}
+
+	if err != nil {
+		logrus.WithError(err).Error("Error to get job application question")
+
+		return nil, err
+	}
+
+	err = json.Unmarshal(questionsString, &jobApplicationQuestion.Questions)
+	if err != nil {
+		logrus.WithError(err).Error("Error to unmarshal application question")
+
+		return nil, err
+	}
+
+	return &jobApplicationQuestion, nil
+}
+
+func getJobApplicationCandidateVideo(
+	ctx context.Context,
+	applicationID int64,
+) (*model.JobApplicationCandidateVideo, error) {
+	var jobApplicationCandidateVideo model.JobApplicationCandidateVideo
+
+	err := database.Database.QueryRowContext(
+		ctx,
+		`SELECT application_id,score,created_at,updated_at FROM job_application_candidate_videos WHERE application_id = ?`,
+		applicationID,
+	).Scan(
+		&jobApplicationCandidateVideo.ApplicationID,
+		&jobApplicationCandidateVideo.Score,
+		&jobApplicationCandidateVideo.CreatedAt,
+		&jobApplicationCandidateVideo.UpdatedAt,
+	)
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, nil
+	}
+
+	if err != nil {
+		logrus.WithError(err).Error("Error to get job application candidate video")
+
+		return nil, err
+	}
+
+	return &jobApplicationCandidateVideo, nil
 }
