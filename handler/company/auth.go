@@ -175,6 +175,36 @@ func CreateAccount(fiberCtx *fiber.Ctx) error {
 	return createToken(fiberCtx, userResponse)
 }
 
+type CreateUserPasswordRequest struct {
+	Code     string `json:"code"`
+	Password string `json:"password"`
+}
+
+func CreateUserPassword(fiberCtx *fiber.Ctx) error {
+	request := new(CreateUserPasswordRequest)
+
+	if err := fiberCtx.BodyParser(&request); err != nil {
+		return responses.InvalidBodyRequest(fiberCtx, err)
+	}
+
+	userModel, err := company_auth_adp.CreateUserPassword(
+		fiberCtx.UserContext(),
+		model.User{
+			Password: request.Password,
+		},
+		request.Code,
+	)
+	if errors.Is(err, company_auth_adp.ErrUserNotFound) {
+		return responses.NotFound(fiberCtx, err.Error())
+	}
+
+	if err != nil {
+		return responses.InternalServerError(fiberCtx, err)
+	}
+
+	return createToken(fiberCtx, userModel)
+}
+
 type LoginRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`

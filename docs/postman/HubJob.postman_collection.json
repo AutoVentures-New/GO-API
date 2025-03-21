@@ -97,6 +97,48 @@
 							"response": []
 						},
 						{
+							"name": "Create user password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"    // set acces_token ",
+											"pm.environment.set(\"COMPANY_ACCESS_TOKEN\", jsonData.data.token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"password\": \"q1w2e3\",\n    \"code\": \"718376\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/company/auth/create-user-password",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"auth",
+										"create-user-password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Send Email Validation",
 							"event": [
 								{
@@ -517,7 +559,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"user 1\",\n    \"email\": \"user2@email.com\",\n    \"cpf\": \"12313122\"\n}",
+									"raw": "{\n    \"name\": \"user 1\",\n    \"email\": \"user3@email.com\",\n    \"cpf\": \"12313123\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"

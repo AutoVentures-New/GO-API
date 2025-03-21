@@ -17,6 +17,7 @@ func setupCompanyRoute(router fiber.Router) {
 
 	auth.Post("/create-account", company.CreateAccount)
 	auth.Post("/login", company.Login)
+	auth.Post("/create-user-password", company.CreateUserPassword)
 
 	auth.Get("/me", middleware.ProtectedCompany(), company.Me)
 
