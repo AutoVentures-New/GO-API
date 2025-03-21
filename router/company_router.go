@@ -69,4 +69,11 @@ func setupCompanyRoute(router fiber.Router) {
 
 	prof.Get("", profile.GetCompany)
 	prof.Patch("", profile.UpdateCompany)
+
+	users := router.Group("/users", middleware.ProtectedCompany())
+
+	users.Post("", company.CreateUser)
+	users.Get("", company.ListUsers)
+	users.Patch("/:id", company.UpdateUser)
+	users.Delete("/:id", company.DeleteUser)
 }

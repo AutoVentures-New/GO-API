@@ -486,6 +486,232 @@
 					]
 				},
 				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Create user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{COMPANY_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"user 1\",\n    \"email\": \"user2@email.com\",\n    \"cpf\": \"12313122\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/company/users",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{COMPANY_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/company/users",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Benefit",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{COMPANY_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/company/benefit/2",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"benefit",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{COMPANY_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"user 11111\",\n    \"email\": \"user2@emai11l.com\",\n    \"cpf\": \"123131221212\",\n    \"status\": \"INACTIVE\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/company/users/5",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"users",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{COMPANY_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/company/users/6",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"users",
+										"6"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Job",
 					"item": [
 						{
@@ -624,6 +850,50 @@
 												"application",
 												"10",
 												"candidate-video"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Download candidate photo",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{COMPANY_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{HOST}}/company/job/18/application/10/candidate-photo",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"company",
+												"job",
+												"18",
+												"application",
+												"10",
+												"candidate-photo"
 											]
 										}
 									},
