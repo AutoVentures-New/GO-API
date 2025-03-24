@@ -222,6 +222,10 @@ func Login(fiberCtx *fiber.Ctx) error {
 		return responses.Unauthorized(fiberCtx)
 	}
 
+	if user.Status != model.ACTIVE || user.Password == model.NULL_PASSWORD {
+		return responses.Unauthorized(fiberCtx)
+	}
+
 	if !checkPasswordHash(request.Password, user.Password) {
 		return responses.Unauthorized(fiberCtx)
 	}

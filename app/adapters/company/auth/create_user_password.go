@@ -55,7 +55,7 @@ func CreateUserPassword(
 
 	_, err = dbTransaction.ExecContext(
 		ctx,
-		`UPDATE users SET password = ?, status = ?, updated_at = ? WHERE id = ?`,
+		`UPDATE users SET password = ?, status = ?, updated_at = ? WHERE id = ? AND status = 'PENDING'`,
 		user.Password,
 		user.Status,
 		user.UpdatedAt,

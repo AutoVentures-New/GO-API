@@ -54,8 +54,8 @@ func CreateUser(
 		return user, ErrUserCPFAlreadyExists
 	}
 
-	user.Password = "NULL_PASSWORD"
-	user.Status = model.INACTIVE
+	user.Password = model.NULL_PASSWORD
+	user.Status = model.PENDING
 	user.CreatedAt = time.Now().UTC()
 	user.UpdatedAt = user.CreatedAt
 
