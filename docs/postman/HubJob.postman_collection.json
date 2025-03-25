@@ -2128,7 +2128,7 @@
 											}
 										},
 										"url": {
-											"raw": "{{HOST}}/candidate/job/application/18/steps/requirements",
+											"raw": "{{HOST}}/candidate/job/application/:job_id/steps/requirements",
 											"host": [
 												"{{HOST}}"
 											],
@@ -2136,9 +2136,15 @@
 												"candidate",
 												"job",
 												"application",
-												"18",
+												":job_id",
 												"steps",
 												"requirements"
+											],
+											"variable": [
+												{
+													"key": "job_id",
+													"value": "24"
+												}
 											]
 										}
 									},
@@ -2181,7 +2187,7 @@
 											}
 										},
 										"url": {
-											"raw": "{{HOST}}/candidate/job/application/18/steps/job-questions",
+											"raw": "{{HOST}}/candidate/job/application/:job_id/steps/job-questions",
 											"host": [
 												"{{HOST}}"
 											],
@@ -2189,9 +2195,15 @@
 												"candidate",
 												"job",
 												"application",
-												"18",
+												":job_id",
 												"steps",
 												"job-questions"
+											],
+											"variable": [
+												{
+													"key": "job_id",
+													"value": "24"
+												}
 											]
 										}
 									},
@@ -2234,7 +2246,7 @@
 											}
 										},
 										"url": {
-											"raw": "{{HOST}}/candidate/job/application/18/steps/cultural-fit",
+											"raw": "{{HOST}}/candidate/job/application/:job_id/steps/cultural-fit",
 											"host": [
 												"{{HOST}}"
 											],
@@ -2242,9 +2254,15 @@
 												"candidate",
 												"job",
 												"application",
-												"18",
+												":job_id",
 												"steps",
 												"cultural-fit"
+											],
+											"variable": [
+												{
+													"key": "job_id",
+													"value": "24"
+												}
 											]
 										}
 									},
@@ -2287,7 +2305,7 @@
 											}
 										},
 										"url": {
-											"raw": "{{HOST}}/candidate/job/application/18/steps/questionnaire",
+											"raw": "{{HOST}}/candidate/job/application/:job_id/steps/questionnaire",
 											"host": [
 												"{{HOST}}"
 											],
@@ -2295,9 +2313,15 @@
 												"candidate",
 												"job",
 												"application",
-												"18",
+												":job_id",
 												"steps",
 												"questionnaire"
+											],
+											"variable": [
+												{
+													"key": "job_id",
+													"value": "24"
+												}
 											]
 										}
 									},
@@ -2341,7 +2365,7 @@
 											]
 										},
 										"url": {
-											"raw": "{{HOST}}/candidate/job/application/18/steps/candidate-video",
+											"raw": "{{HOST}}/candidate/job/application/:job_id/steps/candidate-video",
 											"host": [
 												"{{HOST}}"
 											],
@@ -2349,9 +2373,15 @@
 												"candidate",
 												"job",
 												"application",
-												"18",
+												":job_id",
 												"steps",
 												"candidate-video"
+											],
+											"variable": [
+												{
+													"key": "job_id",
+													"value": "24"
+												}
 											]
 										}
 									},
@@ -2387,7 +2417,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{HOST}}/candidate/job/application/25/start",
+									"raw": "{{HOST}}/candidate/job/application/:job_id/start",
 									"host": [
 										"{{HOST}}"
 									],
@@ -2395,8 +2425,14 @@
 										"candidate",
 										"job",
 										"application",
-										"25",
+										":job_id",
 										"start"
+									],
+									"variable": [
+										{
+											"key": "job_id",
+											"value": "24"
+										}
 									]
 								}
 							},
@@ -2430,7 +2466,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{HOST}}/candidate/job/application/18",
+									"raw": "{{HOST}}/candidate/job/application/:job_id",
 									"host": [
 										"{{HOST}}"
 									],
@@ -2438,7 +2474,13 @@
 										"candidate",
 										"job",
 										"application",
-										"18"
+										":job_id"
+									],
+									"variable": [
+										{
+											"key": "job_id",
+											"value": "24"
+										}
 									]
 								}
 							},

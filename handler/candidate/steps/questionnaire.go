@@ -56,5 +56,14 @@ func SaveQuestionnaire(fiberCtx *fiber.Ctx) error {
 		return responses.InternalServerError(fiberCtx, err)
 	}
 
+	application, err = candidate_job_adp.GetJobApplication(
+		fiberCtx.UserContext(),
+		int64(idInt),
+		candidate.ID,
+	)
+	if errors.Is(err, candidate_job_adp.ErrApplicationNotFound) {
+		return responses.NotFound(fiberCtx, err.Error())
+	}
+
 	return responses.Success(fiberCtx, application)
 }
