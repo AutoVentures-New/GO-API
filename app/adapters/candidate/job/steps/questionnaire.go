@@ -3,6 +3,7 @@ package steps
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/hubjob/api/database"
@@ -52,6 +53,40 @@ func SaveQuestionnaire(
 	)
 	if err != nil {
 		logrus.WithError(err).Error("Error to insert candidate questionnaires")
+
+		_ = dbTransaction.Rollback()
+
+		return application, err
+	}
+
+	queueJob := model.QueueJob{
+		Type:   fmt.Sprintf("CANDIDATE-QUESTIONNAIRE-%s", questionnaire.Type),
+		Status: model.PENDING_JOB,
+		Configurations: model.Configurations{
+			CandidateID: questionnaire.CandidateID,
+		},
+		CreatedAt: now,
+		UpdatedAt: now,
+	}
+
+	configurationsString, err := json.Marshal(queueJob.Configurations)
+	if err != nil {
+		logrus.WithError(err).Error("Error to marshal queue job configurations")
+
+		return application, err
+	}
+
+	_, err = dbTransaction.ExecContext(
+		ctx,
+		`INSERT INTO queue_jobs(type,status,configurations,created_at,updated_at) VALUES(?,?,?,?,?)`,
+		queueJob.Type,
+		queueJob.Status,
+		configurationsString,
+		queueJob.CreatedAt,
+		queueJob.UpdatedAt,
+	)
+	if err != nil {
+		logrus.WithError(err).Error("Error to insert queue job")
 
 		_ = dbTransaction.Rollback()
 

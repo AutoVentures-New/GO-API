@@ -26,7 +26,7 @@ func ListQuestions(
 		rows, err = database.Database.QueryContext(
 			ctx,
 			fmt.Sprintf(
-				"SELECT id, title, type, questionnaire_id, created_at, updated_at FROM questionnaire_questions WHERE questionnaire_id in (%s)",
+				"SELECT id, title, type, questionnaire_id, created_at, updated_at FROM questionnaire_questions WHERE questionnaire_id IN (%s)",
 				strings.Join(questionnaireIDs, ","),
 			),
 		)

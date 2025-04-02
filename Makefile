@@ -5,7 +5,10 @@ up:
 	docker compose up -d
 
 run:
-	go run .
+	go run . api
+
+cronjob:
+	go run . cronjob
 
 redis:
 	docker compose exec hubjob-redis redis-cli
