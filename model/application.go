@@ -41,6 +41,7 @@ type Application struct {
 	JobApplicationRequirement    *JobApplicationRequirement    `json:"job_application_requirement"`
 	JobApplicationCandidateVideo *JobApplicationCandidateVideo `json:"job_application_candidate_video"`
 	JobApplicationQuestion       *JobApplicationQuestion       `json:"job_application_question"`
+	Job                          *Job                          `json:"job"`
 }
 
 type JobApplicationRequirement struct {
