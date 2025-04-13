@@ -2,7 +2,9 @@ package profile
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
+	"errors"
 
 	"github.com/hubjob/api/database"
 	"github.com/hubjob/api/model"
@@ -12,7 +14,7 @@ import (
 func GetCurriculum(
 	ctx context.Context,
 	candidateID int64,
-) (model.Curriculum, error) {
+) (*model.Curriculum, error) {
 	curriculum := model.Curriculum{}
 
 	var languagesJSON []byte
@@ -33,30 +35,34 @@ func GetCurriculum(
 		&curriculum.CreatedAt,
 		&curriculum.UpdatedAt,
 	)
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, nil
+	}
+
 	if err != nil {
 		logrus.WithError(err).Error("Error to get candidate curriculum")
 
-		return curriculum, err
+		return nil, err
 	}
 
 	err = json.Unmarshal(languagesJSON, &curriculum.Languages)
 	if err != nil {
 		logrus.WithError(err).Error("Error to unmarshal candidate curriculum languages")
 
-		return curriculum, err
+		return nil, err
 	}
 
 	curriculum.ProfessionalExperiences, err = getCurriculumProfessionalExperience(ctx, candidateID)
 	if err != nil {
-		return curriculum, err
+		return nil, err
 	}
 
 	curriculum.AcademicExperiences, err = getCurriculumAcademicExperience(ctx, candidateID)
 	if err != nil {
-		return curriculum, err
+		return nil, err
 	}
 
-	return curriculum, nil
+	return &curriculum, nil
 }
 
 func getCurriculumAcademicExperience(

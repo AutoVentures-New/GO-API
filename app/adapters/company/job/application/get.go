@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
+	questions_adp "github.com/hubjob/api/app/adapters/questions"
 
 	profile "github.com/hubjob/api/app/adapters/candidate/curriculum"
 	"github.com/hubjob/api/database"
@@ -67,12 +68,12 @@ func GetApplication(
 		return application, err
 	}
 
-	application.CulturalFit, err = getJobApplicationCulturalFit(ctx, application.ID)
+	application.CulturalFit, err = getJobApplicationCulturalFit(ctx, application.ID, application.JobID)
 	if err != nil {
 		return application, err
 	}
 
-	application.JobApplicationQuestion, err = getJobApplicationQuestion(ctx, application.ID)
+	application.JobApplicationQuestion, err = getJobApplicationQuestion(ctx, application.ID, application.JobID)
 	if err != nil {
 		return application, err
 	}
@@ -122,12 +123,10 @@ func getCandidate(
 		&candidate.Address.City,
 	)
 
-	curriculum, err := profile.GetCurriculum(ctx, candidate.ID)
+	candidate.Curriculum, err = profile.GetCurriculum(ctx, candidate.ID)
 	if err != nil {
 		return nil, err
 	}
-
-	candidate.Curriculum = &curriculum
 
 	return &candidate, nil
 }
@@ -174,6 +173,7 @@ func getJobApplicationRequirement(
 func getJobApplicationCulturalFit(
 	ctx context.Context,
 	applicationID int64,
+	jobID int64,
 ) (*model.JobApplicationCulturalFit, error) {
 	var jobApplicationCulturalFit model.JobApplicationCulturalFit
 
@@ -207,12 +207,18 @@ func getJobApplicationCulturalFit(
 		return nil, err
 	}
 
+	jobApplicationCulturalFit.JobCulturalFit, err = getJobCulturalFit(ctx, jobID)
+	if err != nil {
+		return nil, err
+	}
+
 	return &jobApplicationCulturalFit, nil
 }
 
 func getJobApplicationQuestion(
 	ctx context.Context,
 	applicationID int64,
+	jobID int64,
 ) (*model.JobApplicationQuestion, error) {
 	var jobApplicationQuestion model.JobApplicationQuestion
 
@@ -220,11 +226,12 @@ func getJobApplicationQuestion(
 
 	err := database.Database.QueryRowContext(
 		ctx,
-		`SELECT application_id,questions,created_at,updated_at FROM job_application_questions WHERE application_id = ?`,
+		`SELECT application_id,questions,score,created_at,updated_at FROM job_application_questions WHERE application_id = ?`,
 		applicationID,
 	).Scan(
 		&jobApplicationQuestion.ApplicationID,
 		&questionsString,
+		&jobApplicationQuestion.Score,
 		&jobApplicationQuestion.CreatedAt,
 		&jobApplicationQuestion.UpdatedAt,
 	)
@@ -243,6 +250,17 @@ func getJobApplicationQuestion(
 		logrus.WithError(err).Error("Error to unmarshal application question")
 
 		return nil, err
+	}
+
+	questionsMap, err := questions_adp.ListQuestions(ctx, jobID)
+	if err != nil {
+		return nil, err
+	}
+
+	jobApplicationQuestion.JobQuestions = make([]model.Question, 0)
+
+	for _, question := range questionsMap {
+		jobApplicationQuestion.JobQuestions = append(jobApplicationQuestion.JobQuestions, question)
 	}
 
 	return &jobApplicationQuestion, nil
@@ -275,4 +293,33 @@ func getJobApplicationCandidateVideo(
 	}
 
 	return &jobApplicationCandidateVideo, nil
+}
+
+func getJobCulturalFit(
+	ctx context.Context,
+	jobID int64,
+) (*model.JobCulturalFit, error) {
+	jobCulturalFit := model.JobCulturalFit{}
+
+	var answersJSON []byte
+
+	err := database.Database.QueryRowContext(
+		ctx,
+		`SELECT answers 
+				FROM job_cultural_fit WHERE job_id = ?`,
+		jobID,
+	).Scan(&answersJSON)
+	if err != nil {
+		logrus.WithError(err).Error("Error to get job cultural answers")
+
+		return nil, err
+	}
+
+	if err = json.Unmarshal(answersJSON, &jobCulturalFit.Answers); err != nil {
+		logrus.WithError(err).Error("Error to unmarshal job cultural answers")
+
+		return nil, err
+	}
+
+	return &jobCulturalFit, nil
 }

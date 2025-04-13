@@ -18,7 +18,8 @@ func ListQuestionnaires(
 
 	rows, err := database.Database.QueryContext(
 		ctx,
-		`SELECT id, name, company_id, created_at, updated_at FROM questionnaires WHERE company_id = ?`,
+		`SELECT id, name, company_id, created_at, updated_at FROM questionnaires WHERE company_id = ?
+				ORDER BY created_at DESC`,
 		companyID,
 	)
 	if err != nil {

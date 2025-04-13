@@ -1,6 +1,8 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 // steps
 const (
@@ -77,8 +79,11 @@ type JobApplicationQuestion struct {
 	ID            int64                 `json:"id"`
 	ApplicationID int64                 `json:"application_id"`
 	Questions     []ApplicationQuestion `json:"questions"`
+	Score         int64                 `json:"score"`
 	CreatedAt     time.Time             `json:"created_at"`
 	UpdatedAt     time.Time             `json:"updated_at"`
+
+	JobQuestions []Question `json:"job_questions"`
 }
 
 type JobApplicationCulturalFit struct {
@@ -88,6 +93,8 @@ type JobApplicationCulturalFit struct {
 	MatchValue    int64                             `json:"match_value"`
 	CreatedAt     time.Time                         `json:"created_at"`
 	UpdatedAt     time.Time                         `json:"updated_at"`
+
+	JobCulturalFit *JobCulturalFit `json:"job_cultural_fit"`
 }
 
 type JobApplicationCulturalFitAnswer struct {

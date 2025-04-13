@@ -17,7 +17,8 @@ func ListJobs(
 	rows, err := database.Database.QueryContext(
 		ctx,
 		`SELECT id,title,company_id,area_id,is_talent_bank,is_special_needs,description,job_mode,contracting_modality,state,city,responsibilities,questionnaire,video_link,status,publish_at,finish_at,created_at,updated_at
-				FROM jobs WHERE company_id = ?`,
+				FROM jobs WHERE company_id = ?
+				ORDER BY created_at DESC`,
 		companyID,
 	)
 	if err != nil {
