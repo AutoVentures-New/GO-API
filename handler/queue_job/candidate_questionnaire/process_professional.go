@@ -61,13 +61,23 @@ func ExecuteQuestionnaireProfessional(
 		categoryResult[result]++
 	}
 
-	err = createResultFile(ctx, categoryResult, candidate)
+	questionnaire.ResultFilePath, err = createResultFile(ctx, categoryResult, candidate, questionnaire)
 	if err != nil {
 		logrus.WithError(err).
 			WithField("category_result", categoryResult).
 			WithField("candidate", candidate).
 			Error("Error to create result file")
 
+		return err
+	}
+
+	questionnaire.BucketName = config.Config.S3.Bucket
+
+	err = professional.UpdateCandidateQuestionnaire(
+		ctx,
+		questionnaire,
+	)
+	if err != nil {
 		return err
 	}
 
@@ -82,12 +92,13 @@ func createResultFile(
 	ctx context.Context,
 	categoryResult map[int64]int64,
 	candidate model.Candidate,
-) error {
-	candidateFileName := fmt.Sprintf("result_professional_%d", candidate.ID)
+	questionnaire model.CandidateQuestionnaire,
+) (string, error) {
+	candidateFileName := fmt.Sprintf("result_professional_%d_%d", candidate.ID, questionnaire.ID)
 
 	candidateFileId, err := createFileCopy(ctx, candidateFileName)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	_, err = pkg.SheetsService.Spreadsheets.Values.Update(
@@ -98,18 +109,18 @@ func createResultFile(
 	if err != nil {
 		logrus.WithError(err).Error("Error to update value")
 
-		return err
+		return "", err
 	}
 
 	_, err = pkg.SheetsService.Spreadsheets.Values.Update(
 		candidateFileId,
 		"result!E4",
-		&sheets.ValueRange{Values: [][]interface{}{{time.Now().UTC().Format("01/02/2006")}}},
+		&sheets.ValueRange{Values: [][]interface{}{{time.Now().UTC().Format("02/01/2006")}}},
 	).ValueInputOption("RAW").Do()
 	if err != nil {
 		logrus.WithError(err).Error("Error to update value")
 
-		return err
+		return "", err
 	}
 
 	for category, result := range categoryResult {
@@ -121,7 +132,7 @@ func createResultFile(
 		if err != nil {
 			logrus.WithError(err).Error("Error to update value")
 
-			return err
+			return "", err
 		}
 	}
 
@@ -132,21 +143,23 @@ func createResultFile(
 	if err != nil {
 		logrus.WithError(err).Error("Error to export to pdf")
 
-		return err
+		return "", err
 	}
 
 	defer resp.Body.Close()
 
+	resultFileName := fmt.Sprintf("candidates/%d/%s.pdf", candidate.ID, candidateFileName)
+
 	_, err = pkg.S3Uploader.Upload(&s3manager.UploadInput{
 		Bucket:      aws.String(config.Config.S3.Bucket),
-		Key:         aws.String(fmt.Sprintf("candidates/public-files/%s.pdf", candidateFileName)),
+		Key:         aws.String(resultFileName),
 		Body:        resp.Body,
-		ContentType: aws.String("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
+		ContentType: aws.String("application/pdf"),
 	})
 	if err != nil {
 		logrus.WithError(err).Error("Error to upload result file")
 
-		return err
+		return "", err
 	}
 
 	err = pkg.DriveService.Files.Delete(candidateFileId).Do()
@@ -154,7 +167,7 @@ func createResultFile(
 		logrus.WithError(err).Error("Error to delete candidate file copy")
 	}
 
-	return nil
+	return resultFileName, nil
 }
 
 func createFileCopy(ctx context.Context, newFileName string) (string, error) {

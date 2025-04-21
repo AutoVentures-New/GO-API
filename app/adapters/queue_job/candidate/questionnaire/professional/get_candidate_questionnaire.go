@@ -3,6 +3,7 @@ package professional
 import (
 	"context"
 	"encoding/json"
+
 	"github.com/hubjob/api/database"
 	"github.com/hubjob/api/model"
 	"github.com/sirupsen/logrus"
@@ -18,12 +19,13 @@ func GetCandidateQuestionnaire(
 
 	err := database.Database.QueryRowContext(
 		ctx,
-		`SELECT candidate_id,type,answers,expired_at,created_at,updated_at 
+		`SELECT id,candidate_id,type,answers,expired_at,created_at,updated_at 
 				FROM candidate_questionnaires 
 				WHERE candidate_id = ? AND type = 'PROFESSIONAL' 
 				ORDER BY id DESC`,
 		candidateID,
 	).Scan(
+		&questionnaire.ID,
 		&questionnaire.CandidateID,
 		&questionnaire.Type,
 		&answersString,

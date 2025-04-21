@@ -63,6 +63,7 @@ func setupCompanyRoute(router fiber.Router) {
 	application.Patch("/evaluate-candidate", job2.EvaluateCandidate)
 	application.Get("/candidate-video", job2.DownloadCandidateVideo)
 	application.Get("/candidate-photo", job2.DownloadCandidatePhoto)
+	application.Get("/candidate-questionnaire-result", job2.DownloadCandidateQuestionnaire)
 
 	router.Get("/cultural-fit", middleware.ProtectedCompany(), company.GetLastCulturalFit)
 

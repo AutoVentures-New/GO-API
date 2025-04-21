@@ -6,3 +6,4 @@ gcp-credentials.json
 
 *.DS_Store
 
+/result-files/*

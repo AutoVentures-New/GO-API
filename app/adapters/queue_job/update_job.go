@@ -15,7 +15,6 @@ func UpdateJobsToProcessing(
 	ctx context.Context,
 	jobID []string,
 ) error {
-	return nil
 	_, err := database.Database.ExecContext(
 		ctx,
 		fmt.Sprintf(`UPDATE queue_jobs set status='PROCESSING',updated_at = ? WHERE id IN (%s)`, strings.Join(jobID, ",")),
@@ -34,7 +33,6 @@ func UpdateJob(
 	ctx context.Context,
 	job model.QueueJob,
 ) error {
-	return nil
 	_, err := database.Database.ExecContext(
 		ctx,
 		`UPDATE queue_jobs set status=?,updated_at = ? WHERE id = ?`,

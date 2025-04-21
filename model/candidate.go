@@ -20,13 +20,15 @@ type Candidate struct {
 }
 
 type CandidateQuestionnaire struct {
-	ID          int64                          `json:"id"`
-	CandidateID int64                          `json:"candidate_id"`
-	Type        string                         `json:"type"`
-	Answers     []CandidateQuestionnaireAnswer `json:"answers"`
-	ExpiredAt   time.Time                      `json:"expired_at"`
-	CreatedAt   time.Time                      `json:"created_at"`
-	UpdatedAt   time.Time                      `json:"updated_at"`
+	ID             int64                          `json:"id"`
+	CandidateID    int64                          `json:"candidate_id"`
+	Type           string                         `json:"type"`
+	Answers        []CandidateQuestionnaireAnswer `json:"answers"`
+	BucketName     string                         `json:"bucket_name"`
+	ResultFilePath string                         `json:"result_file_path"`
+	ExpiredAt      time.Time                      `json:"expired_at"`
+	CreatedAt      time.Time                      `json:"created_at"`
+	UpdatedAt      time.Time                      `json:"updated_at"`
 }
 
 type CandidateQuestionnaireAnswer struct {
