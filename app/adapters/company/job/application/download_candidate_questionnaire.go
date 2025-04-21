@@ -53,8 +53,8 @@ func DownloadCandidateQuestionnaire(
 		&bucketName,
 		&resultFilePath,
 	)
-	if errors.Is(err, sql.ErrNoRows) {
-		return nil, ErrPhotoNotFound
+	if errors.Is(err, sql.ErrNoRows) || bucketName == "" || resultFilePath == "" {
+		return nil, ErrFileNotFound
 	}
 
 	if err != nil {
