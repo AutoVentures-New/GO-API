@@ -5,6 +5,7 @@ import (
 
 	"github.com/hubjob/api/app/adapters/queue_job"
 	"github.com/hubjob/api/handler/queue_job/candidate_questionnaire"
+	"github.com/hubjob/api/model"
 	"github.com/sirupsen/logrus"
 )
 
@@ -27,11 +28,23 @@ func Executor(ctx context.Context) {
 
 	for _, job := range jobs {
 		if job.Type == CANDIDATE_QUESTIONNAIRE_BEHAVIORAL {
-			candidate_questionnaire.ExecuteQuestionnaireBehavioral(ctx, job)
+			err = candidate_questionnaire.ExecuteQuestionnaireBehavioral(ctx, job)
 		}
 
 		if job.Type == CANDIDATE_QUESTIONNAIRE_PROFESSIONAL {
-			candidate_questionnaire.ExecuteQuestionnaireProfessional(ctx, job)
+			err = candidate_questionnaire.ExecuteQuestionnaireProfessional(ctx, job)
+		}
+
+		job.Status = model.FINISHED
+		if err != nil {
+			job.Status = model.ERROR
+		}
+
+		err = queue_job.UpdateJob(ctx, job)
+		if err != nil {
+			logrus.WithError(err).Error("Error updating job")
+
+			continue
 		}
 	}
 }

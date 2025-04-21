@@ -2,6 +2,7 @@ package queue_job
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/hubjob/api/database"
@@ -42,6 +43,13 @@ func ListJobs(
 		)
 		if err != nil {
 			logrus.WithError(err).Error("Error to scan queue jobs")
+
+			return nil, err
+		}
+
+		err = json.Unmarshal(configurations, &job.Configurations)
+		if err != nil {
+			logrus.WithError(err).Error("Error to unmarshal jobs configurations")
 
 			return nil, err
 		}

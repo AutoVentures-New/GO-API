@@ -30,6 +30,9 @@ type configEnv struct {
 		Password        string `env:"REDIS_PASSWORD"`
 		SessionDatabase int    `env:"REDIS_SESSION_DATABASE"`
 	}
+	GCP struct {
+		CredentialsFile string `env:"GCP_CREDENTIALS_FILE"`
+	}
 }
 
 func InitConfig() {

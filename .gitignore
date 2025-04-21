@@ -1,3 +1,8 @@
 .env
 
 .idea
+
+gcp-credentials.json
+
+*.DS_Store
+

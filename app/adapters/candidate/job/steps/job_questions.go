@@ -100,7 +100,7 @@ func SaveJobQuestions(
 
 	_, err = dbTransaction.ExecContext(
 		ctx,
-		`INSERT INTO job_application_questions(application_id,questions,score,created_at,updated_at) VALUES(?,?,?,?)`,
+		`INSERT INTO job_application_questions(application_id,questions,score,created_at,updated_at) VALUES(?,?,?,?,?)`,
 		jobApplicationQuestion.ApplicationID,
 		questionsString,
 		score,

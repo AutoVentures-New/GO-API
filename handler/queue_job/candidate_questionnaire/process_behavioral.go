@@ -2,6 +2,7 @@ package candidate_questionnaire
 
 import (
 	"context"
+
 	"github.com/hubjob/api/app/adapters/queue_job"
 	"github.com/hubjob/api/model"
 	"github.com/sirupsen/logrus"
@@ -10,7 +11,7 @@ import (
 func ExecuteQuestionnaireBehavioral(
 	ctx context.Context,
 	queueJob model.QueueJob,
-) {
+) error {
 	logrus.WithFields(logrus.Fields{
 		"queue_job": queueJob,
 	}).Info("Executing questionnaire professional")
@@ -21,6 +22,8 @@ func ExecuteQuestionnaireBehavioral(
 	if err != nil {
 		logrus.WithError(err).Error("Error updating job")
 
-		return
+		return err
 	}
+
+	return nil
 }
