@@ -13,6 +13,16 @@ import (
 func DownloadCandidateQuestionnaire(fiberCtx *fiber.Ctx) error {
 	user := fiberCtx.Locals("user").(model.User)
 
+	jobId := fiberCtx.Params("id")
+	if len(jobId) == 0 {
+		return responses.BadRequest(fiberCtx, "Params {job_id} is required")
+	}
+
+	jobIdInt, err := strconv.Atoi(jobId)
+	if err != nil {
+		return responses.BadRequest(fiberCtx, "Invalid params {job_id}")
+	}
+
 	id := fiberCtx.Params("application_id")
 	if len(id) == 0 {
 		return responses.BadRequest(fiberCtx, "Params {application_id} is required")
@@ -23,18 +33,13 @@ func DownloadCandidateQuestionnaire(fiberCtx *fiber.Ctx) error {
 		return responses.BadRequest(fiberCtx, "Invalid params {application_id}")
 	}
 
-	questionnaireType := fiberCtx.Query("type", "PROFESSIONAL")
-	if len(id) == 0 {
-		return responses.BadRequest(fiberCtx, "Params {application_id} is required")
-	}
-
-	file, err := job.DownloadCandidateQuestionnaire(fiberCtx.UserContext(), user.CompanyID, int64(idInt), questionnaireType)
-	if err != nil && !errors.Is(err, job.ErrPhotoNotFound) {
+	file, err := job.DownloadCandidateQuestionnaire(fiberCtx.UserContext(), int64(jobIdInt), user.CompanyID, int64(idInt))
+	if err != nil && !errors.Is(err, job.ErrApplicationNotFound) && !errors.Is(err, job.ErrFileNotFound) {
 		return responses.InternalServerError(fiberCtx, err)
 	}
 
-	if errors.Is(err, job.ErrFileNotFound) || file == nil {
-		return responses.NotFound(fiberCtx, "file not found")
+	if errors.Is(err, job.ErrFileNotFound) || errors.Is(err, job.ErrApplicationNotFound) || file == nil {
+		return responses.NotFound(fiberCtx, err.Error())
 	}
 
 	return responses.Download(fiberCtx, "file", file)

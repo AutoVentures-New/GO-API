@@ -20,6 +20,7 @@ var cronjobCmd = &cobra.Command{
 		pkg.InitS3Client()
 		pkg.InitSheetsService(cmd.Context())
 		pkg.InitDriveService(cmd.Context())
+		pkg.InitSlideService(cmd.Context())
 
 		queue_job.Executor(cmd.Context())
 

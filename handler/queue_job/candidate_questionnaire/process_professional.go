@@ -7,7 +7,7 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
-	"github.com/hubjob/api/app/adapters/queue_job/candidate/questionnaire/professional"
+	questionnaire_adp "github.com/hubjob/api/app/adapters/queue_job/candidate/questionnaire"
 	"github.com/hubjob/api/config"
 	"github.com/hubjob/api/model"
 	"github.com/hubjob/api/pkg"
@@ -18,14 +18,6 @@ import (
 
 const spreadsheetID = "1qn0wJtyU6q6AIdWBjt1rSe1wGUcBi85QEKTCCt178dE"
 
-type PdfResponse struct {
-	URL              string `json:"url"`
-	Error            bool   `json:"error"`
-	StatusCode       int    `json:"status"`
-	Name             string `json:"name"`
-	RemainingCredits int64  `json:"remainingCredits"`
-}
-
 func ExecuteQuestionnaireProfessional(
 	ctx context.Context,
 	queueJob model.QueueJob,
@@ -34,12 +26,12 @@ func ExecuteQuestionnaireProfessional(
 		"queue_job": queueJob,
 	}).Info("Executing questionnaire professional")
 
-	questionnaire, err := professional.GetCandidateQuestionnaire(ctx, queueJob.Configurations.CandidateID)
+	questionnaire, err := questionnaire_adp.GetCandidateQuestionnaire(ctx, queueJob.Configurations.CandidateID, model.PROFESSIONAL)
 	if err != nil {
 		return err
 	}
 
-	candidate, err := professional.GetCandidate(ctx, queueJob.Configurations.CandidateID)
+	candidate, err := questionnaire_adp.GetCandidate(ctx, queueJob.Configurations.CandidateID)
 	if err != nil {
 		return err
 	}
@@ -73,7 +65,7 @@ func ExecuteQuestionnaireProfessional(
 
 	questionnaire.BucketName = config.Config.S3.Bucket
 
-	err = professional.UpdateCandidateQuestionnaire(
+	err = questionnaire_adp.UpdateCandidateQuestionnaire(
 		ctx,
 		questionnaire,
 	)

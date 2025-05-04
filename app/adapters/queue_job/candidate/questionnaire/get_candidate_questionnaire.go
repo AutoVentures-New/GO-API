@@ -1,4 +1,4 @@
-package professional
+package questionnaire_adp
 
 import (
 	"context"
@@ -12,6 +12,7 @@ import (
 func GetCandidateQuestionnaire(
 	ctx context.Context,
 	candidateID int64,
+	questionnaireType string,
 ) (model.CandidateQuestionnaire, error) {
 	questionnaire := model.CandidateQuestionnaire{}
 
@@ -21,9 +22,10 @@ func GetCandidateQuestionnaire(
 		ctx,
 		`SELECT id,candidate_id,type,answers,expired_at,created_at,updated_at 
 				FROM candidate_questionnaires 
-				WHERE candidate_id = ? AND type = 'PROFESSIONAL' 
+				WHERE candidate_id = ? AND type = ? 
 				ORDER BY id DESC`,
 		candidateID,
+		questionnaireType,
 	).Scan(
 		&questionnaire.ID,
 		&questionnaire.CandidateID,

@@ -16,17 +16,18 @@ var ErrFileNotFound = errors.New("file not found")
 
 func DownloadCandidateQuestionnaire(
 	ctx context.Context,
+	jobID int64,
 	companyID int64,
 	applicationID int64,
-	questionnaireType string,
 ) (*s3.GetObjectOutput, error) {
 	var candidateID int64
 
 	err := database.Database.QueryRowContext(
 		ctx,
 		`SELECT candidate_id 
-				FROM job_applications WHERE company_id = ? AND id = ?`,
+				FROM job_applications WHERE company_id = ? AND job_id = ? AND id = ?`,
 		companyID,
+		jobID,
 		applicationID,
 	).Scan(&candidateID)
 	if errors.Is(err, sql.ErrNoRows) {
@@ -35,6 +36,24 @@ func DownloadCandidateQuestionnaire(
 
 	if err != nil {
 		logrus.WithError(err).Error("Error to get job application")
+
+		return nil, err
+	}
+
+	var questionnaireType string
+
+	err = database.Database.QueryRowContext(
+		ctx,
+		`SELECT questionnaire 
+				FROM jobs WHERE id = ?`,
+		jobID,
+	).Scan(&questionnaireType)
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, ErrApplicationNotFound
+	}
+
+	if err != nil {
+		logrus.WithError(err).Error("Error to get job")
 
 		return nil, err
 	}
