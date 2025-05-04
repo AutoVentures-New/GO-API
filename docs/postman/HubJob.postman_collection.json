@@ -969,7 +969,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{HOST}}/company/job/:job_id/application/:application_id/candidate-questionnaire-result?type=PROFESSIONAL",
+											"raw": "{{HOST}}/company/job/:job_id/application/:application_id/candidate-questionnaire-result",
 											"host": [
 												"{{HOST}}"
 											],
@@ -981,20 +981,14 @@
 												":application_id",
 												"candidate-questionnaire-result"
 											],
-											"query": [
-												{
-													"key": "type",
-													"value": "PROFESSIONAL"
-												}
-											],
 											"variable": [
 												{
 													"key": "job_id",
-													"value": "30"
+													"value": "31"
 												},
 												{
 													"key": "application_id",
-													"value": "18"
+													"value": "19"
 												}
 											]
 										}
