@@ -60,6 +60,7 @@ func setupCompanyRoute(router fiber.Router) {
 
 	application.Get("", job2.GetJobApplication)
 	application.Patch("/candidate-video-score", job2.UpdateCandidateVideoScore)
+	application.Patch("/question-score", job2.UpdateQuestionScore)
 	application.Patch("/evaluate-candidate", job2.EvaluateCandidate)
 	application.Get("/candidate-video", job2.DownloadCandidateVideo)
 	application.Get("/candidate-photo", job2.DownloadCandidatePhoto)

@@ -796,15 +796,21 @@
 											}
 										},
 										"url": {
-											"raw": "{{HOST}}/company/job/30/application",
+											"raw": "{{HOST}}/company/job/:job_id/application",
 											"host": [
 												"{{HOST}}"
 											],
 											"path": [
 												"company",
 												"job",
-												"30",
+												":job_id",
 												"application"
+											],
+											"variable": [
+												{
+													"key": "job_id",
+													"value": "32"
+												}
 											]
 										}
 									},
@@ -838,16 +844,26 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{HOST}}/company/job/30/application/17",
+											"raw": "{{HOST}}/company/job/:job_id/application/:application_id",
 											"host": [
 												"{{HOST}}"
 											],
 											"path": [
 												"company",
 												"job",
-												"30",
+												":job_id",
 												"application",
-												"17"
+												":application_id"
+											],
+											"variable": [
+												{
+													"key": "job_id",
+													"value": "32"
+												},
+												{
+													"key": "application_id",
+													"value": "21"
+												}
 											]
 										}
 									},
@@ -1043,6 +1059,69 @@
 												"application",
 												"2",
 												"candidate-video-score"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update question score",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{COMPANY_ACCESS_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"question_id\": 18,\n    \"score\": 5\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/company/job/:job_id/application/:application_id/question-score",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"company",
+												"job",
+												":job_id",
+												"application",
+												":application_id",
+												"question-score"
+											],
+											"variable": [
+												{
+													"key": "job_id",
+													"value": "32"
+												},
+												{
+													"key": "application_id",
+													"value": "21"
+												}
 											]
 										}
 									},
@@ -1913,7 +1992,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"email\": \"email2@email.com\",\n    \"password\": \"q1w2e3\"\n}",
+									"raw": "{\n    \"email\": \"vitorruschoni@gmail.com\",\n    \"password\": \"q1w2e3\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2756,7 +2835,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"full name222\",\n    \"cpf\": \"12342225\",\n    \"phone\": \"16997531997\",\n    \"birth_date\": \"1997-02-01\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara2\"\n}",
+									"raw": "{\n    \"name\": \"full nam3333\",\n    \"cpf\": \"12342225\",\n    \"phone\": \"16997531997\",\n    \"birth_date\": \"1997-02-01\",\n    \"state\": \"SP\",\n    \"city\": \"Araraquara3\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"

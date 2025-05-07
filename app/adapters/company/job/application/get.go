@@ -5,9 +5,9 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
-	questions_adp "github.com/hubjob/api/app/adapters/questions"
 
 	profile "github.com/hubjob/api/app/adapters/candidate/curriculum"
+	questions_adp "github.com/hubjob/api/app/adapters/questions"
 	"github.com/hubjob/api/database"
 	"github.com/hubjob/api/model"
 	"github.com/sirupsen/logrus"
@@ -18,6 +18,7 @@ var ErrApplicationNotFound = errors.New("Application not found")
 func GetApplication(
 	ctx context.Context,
 	companyID int64,
+	jobId int64,
 	id int64,
 ) (model.Application, error) {
 	application := model.Application{}
@@ -27,8 +28,9 @@ func GetApplication(
 	err := database.Database.QueryRowContext(
 		ctx,
 		`SELECT id,company_id,job_id,candidate_id,steps,current_step,status,created_at,updated_at 
-				FROM job_applications WHERE company_id = ? AND id = ?`,
+				FROM job_applications WHERE company_id = ? AND job_id = ? AND id = ?`,
 		companyID,
+		jobId,
 		id,
 	).Scan(
 		&application.ID,

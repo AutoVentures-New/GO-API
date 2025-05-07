@@ -66,6 +66,7 @@ type ApplicationQuestion struct {
 	Title   string              `json:"title"`
 	Type    string              `json:"type"`
 	Answers []ApplicationAnswer `json:"answers"`
+	Score   int64               `json:"score"`
 }
 
 type ApplicationAnswer struct {

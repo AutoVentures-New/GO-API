@@ -103,7 +103,7 @@ func SaveJobQuestions(
 		`INSERT INTO job_application_questions(application_id,questions,score,created_at,updated_at) VALUES(?,?,?,?,?)`,
 		jobApplicationQuestion.ApplicationID,
 		questionsString,
-		score,
+		jobApplicationQuestion.Score,
 		jobApplicationQuestion.CreatedAt,
 		jobApplicationQuestion.UpdatedAt,
 	)

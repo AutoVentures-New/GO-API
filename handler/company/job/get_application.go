@@ -1,6 +1,7 @@
 package job
 
 import (
+	"errors"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -12,6 +13,16 @@ import (
 func GetJobApplication(fiberCtx *fiber.Ctx) error {
 	user := fiberCtx.Locals("user").(model.User)
 
+	jobId := fiberCtx.Params("id")
+	if len(jobId) == 0 {
+		return responses.BadRequest(fiberCtx, "Params {job_id} is required")
+	}
+
+	jobIdInt, err := strconv.Atoi(jobId)
+	if err != nil {
+		return responses.BadRequest(fiberCtx, "Invalid params {job_id}")
+	}
+
 	id := fiberCtx.Params("application_id")
 	if len(id) == 0 {
 		return responses.BadRequest(fiberCtx, "Params {application_id} is required")
@@ -22,7 +33,11 @@ func GetJobApplication(fiberCtx *fiber.Ctx) error {
 		return responses.BadRequest(fiberCtx, "Invalid params {application_id}")
 	}
 
-	application, err := job.GetApplication(fiberCtx.UserContext(), user.CompanyID, int64(idInt))
+	application, err := job.GetApplication(fiberCtx.UserContext(), user.CompanyID, int64(jobIdInt), int64(idInt))
+	if err != nil && errors.Is(err, job.ErrApplicationNotFound) {
+		return responses.NotFound(fiberCtx, err.Error())
+	}
+
 	if err != nil {
 		return responses.InternalServerError(fiberCtx, err)
 	}
