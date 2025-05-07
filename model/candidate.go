@@ -17,6 +17,8 @@ type Candidate struct {
 	UpdatedAt  time.Time   `json:"updated_at"`
 	Address    Address     `json:"address"`
 	Curriculum *Curriculum `json:"curriculum"`
+
+	NeedCompleteProfile bool `json:"need_complete_profile"`
 }
 
 type CandidateQuestionnaire struct {

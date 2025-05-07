@@ -53,5 +53,30 @@ func GetCandidate(
 		&candidate.Address.City,
 	)
 
+	if candidate.Name == "" ||
+		candidate.CPF == "" ||
+		candidate.Email == "" ||
+		candidate.Phone == "" ||
+		candidate.Address.State == "" ||
+		candidate.Address.City == "" {
+		candidate.NeedCompleteProfile = true
+	}
+
+	if !candidate.NeedCompleteProfile {
+		var bucketName string
+
+		err := database.Database.QueryRowContext(
+			ctx,
+			`SELECT bucket_name,photo_path 
+				FROM candidate_photos WHERE candidate_id = ?`,
+			candidate.ID,
+		).Scan(
+			&bucketName,
+		)
+		if errors.Is(err, sql.ErrNoRows) {
+			candidate.NeedCompleteProfile = true
+		}
+	}
+
 	return candidate, nil
 }

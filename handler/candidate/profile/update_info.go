@@ -1,6 +1,7 @@
 package profile
 
 import (
+	candidate_auth_adp "github.com/hubjob/api/app/adapters/candidate/auth"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -42,6 +43,11 @@ func UpdateCandidate(fiberCtx *fiber.Ctx) error {
 	candidate, err = profile.UpdateInfo(fiberCtx.UserContext(), candidate)
 	if err != nil {
 		return responses.InternalServerError(fiberCtx, err)
+	}
+
+	candidate, err = candidate_auth_adp.GetCandidate(fiberCtx.UserContext(), candidate.Email)
+	if err != nil {
+		return responses.Unauthorized(fiberCtx)
 	}
 
 	return responses.Success(fiberCtx, candidate)

@@ -36,6 +36,8 @@ type ProfessionalExperience struct {
 	EndDate     *time.Time `json:"end_date"`
 	CreatedAt   time.Time  `json:"created_at"`
 	UpdatedAt   time.Time  `json:"updated_at"`
+
+	NeedComplete bool `json:"need_complete"`
 }
 
 type AcademicExperience struct {

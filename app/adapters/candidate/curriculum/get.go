@@ -157,6 +157,15 @@ func getCurriculumProfessionalExperience(
 			return nil, err
 		}
 
+		if professionalExperience.Title == "" ||
+			professionalExperience.Company == "" ||
+			professionalExperience.AreaID == 0 ||
+			professionalExperience.City == "" ||
+			professionalExperience.State == "" ||
+			professionalExperience.JobMode == "" {
+			professionalExperience.NeedComplete = true
+		}
+
 		professionalExperiences = append(professionalExperiences, professionalExperience)
 	}
 
