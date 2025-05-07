@@ -14,8 +14,6 @@ func GetCompany(
 ) (model.Company, error) {
 	company := model.Company{}
 
-	var desc, logo *string
-
 	err := database.Database.QueryRowContext(
 		ctx,
 		`SELECT id,name,cnpj,description,logo,status,created_at,updated_at 
@@ -25,8 +23,8 @@ func GetCompany(
 		&company.ID,
 		&company.Name,
 		&company.CNPJ,
-		&desc,
-		&logo,
+		&company.Description,
+		&company.Logo,
 		&company.Status,
 		&company.CreatedAt,
 		&company.UpdatedAt,
@@ -35,14 +33,6 @@ func GetCompany(
 		logrus.WithError(err).Error("Error to get company")
 
 		return company, err
-	}
-
-	if desc != nil {
-		company.Description = *desc
-	}
-
-	if logo != nil {
-		company.Logo = *logo
 	}
 
 	return company, nil

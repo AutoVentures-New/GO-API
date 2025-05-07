@@ -8,9 +8,9 @@ import (
 )
 
 type UpdateCompanyRequest struct {
-	Name        string `json:"name"`
-	CNPJ        string `json:"cnpj"`
-	Description string `json:"description"`
+	Name        string  `json:"name"`
+	CNPJ        string  `json:"cnpj"`
+	Description *string `json:"description"`
 }
 
 func UpdateCompany(fiberCtx *fiber.Ctx) error {

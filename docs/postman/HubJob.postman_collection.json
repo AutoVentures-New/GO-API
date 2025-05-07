@@ -3220,6 +3220,49 @@
 					"response": []
 				},
 				{
+					"name": "List companies",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/public/list-companies",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"public",
+								"list-companies"
+							],
+							"query": [
+								{
+									"key": "company_id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "state",
+									"value": "SP",
+									"disabled": true
+								},
+								{
+									"key": "city",
+									"value": "Matão",
+									"disabled": true
+								},
+								{
+									"key": "area_id",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Company details",
 					"request": {
 						"auth": {

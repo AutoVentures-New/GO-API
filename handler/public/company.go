@@ -31,3 +31,25 @@ func GetCompany(fiberCtx *fiber.Ctx) error {
 
 	return responses.Success(fiberCtx, company)
 }
+
+func ListCompanies(fiberCtx *fiber.Ctx) error {
+	filter := public.ListCompaniesFilter{}
+
+	err := fiberCtx.QueryParser(&filter)
+	if err != nil {
+		return responses.BadRequest(fiberCtx, "Invalid filters")
+	}
+
+	companies, total, err := public.ListCompanies(
+		fiberCtx.UserContext(),
+		filter,
+	)
+	if err != nil {
+		return responses.InternalServerError(fiberCtx, err)
+	}
+
+	return responses.Success(fiberCtx, map[string]any{
+		"total":     total,
+		"companies": companies,
+	})
+}
