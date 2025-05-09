@@ -96,7 +96,7 @@ func ListJobs(
 		return nil, 0, err
 	}
 
-	query += " ORDER BY title ASC LIMIT ? OFFSET ?"
+	query += " ORDER BY id DESC LIMIT ? OFFSET ?"
 	attributes = append(attributes, filter.Size)
 	attributes = append(attributes, filter.Page*filter.Size)
 

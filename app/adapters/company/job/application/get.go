@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
-
 	profile "github.com/hubjob/api/app/adapters/candidate/curriculum"
 	questions_adp "github.com/hubjob/api/app/adapters/questions"
 	"github.com/hubjob/api/database"

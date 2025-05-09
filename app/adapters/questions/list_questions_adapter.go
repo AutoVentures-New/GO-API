@@ -2,7 +2,6 @@ package questions_adp
 
 import (
 	"context"
-
 	"github.com/hubjob/api/database"
 	"github.com/hubjob/api/model"
 	"github.com/sirupsen/logrus"
@@ -18,7 +17,7 @@ func ListQuestions(
 		ctx,
 		`SELECT id, title, type, questionnaire_id, created_at, updated_at 
 				FROM questionnaire_questions 
-				WHERE questionnaire_id in (SELECT question_id FROM job_questions WHERE job_id = ?)`,
+				WHERE id in (SELECT question_id FROM job_questions WHERE job_id = ?)`,
 		jobID,
 	)
 	if err != nil {

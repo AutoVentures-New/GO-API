@@ -20,8 +20,8 @@ func ListJobs(fiberCtx *fiber.Ctx) error {
 		filter.Page = 1
 	}
 
-	if filter.Size < 5 {
-		filter.Size = 5
+	if filter.Size < 20 {
+		filter.Size = 20
 	}
 
 	jobs, total, err := public_adp.ListJobs(
