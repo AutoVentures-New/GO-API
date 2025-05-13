@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/caarlos0/env/v11"
+	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 )
 
@@ -36,7 +37,12 @@ type configEnv struct {
 }
 
 func InitConfig() {
-	err := env.Parse(&Config)
+	err := godotenv.Load()
+	if err != nil {
+		logrus.WithError(err).Error("Error loading .env file")
+	}
+
+	err = env.Parse(&Config)
 	if err != nil {
 		logrus.WithError(err).Fatal("error parsing config")
 	}
