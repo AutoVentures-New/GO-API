@@ -42,7 +42,8 @@ func ListJobApplications(
     					r.match_value as r_match_value,
     					f.match_value as f_match_value,
     					v.score,
-    					q.score
+    					q.score,
+    					q.open_field_score
 				FROM job_applications j 
 				JOIN candidates c on c.id = j.candidate_id
 				LEFT JOIN job_application_requirements r on j.id = r.application_id
@@ -79,7 +80,7 @@ func ListJobApplications(
 
 		var candidate model.Candidate
 
-		var requirementMatchValue, culturalFitMatchValue, candidateVideoScore, jobQuestionsScore *int64
+		var requirementMatchValue, culturalFitMatchValue, candidateVideoScore, jobQuestionsScore, jobQuestionsOpenFieldScore *int64
 
 		err = rows.Scan(
 			&application.ID,
@@ -96,6 +97,7 @@ func ListJobApplications(
 			&culturalFitMatchValue,
 			&candidateVideoScore,
 			&jobQuestionsScore,
+			&jobQuestionsOpenFieldScore,
 		)
 		if err != nil {
 			logrus.WithError(err).Error("Error to unmarshal application")
@@ -123,6 +125,10 @@ func ListJobApplications(
 
 		if jobQuestionsScore != nil {
 			application.JobApplicationQuestion.Score = *jobQuestionsScore
+		}
+
+		if jobQuestionsOpenFieldScore != nil {
+			application.JobApplicationQuestion.OpenFieldScore = *jobQuestionsOpenFieldScore
 		}
 
 		applications = append(applications, application)

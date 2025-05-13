@@ -1,0 +1,1 @@
+ALTER TABLE job_application_questions ADD COLUMN open_field_score INT NOT NULL AFTER score;

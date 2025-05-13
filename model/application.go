@@ -77,12 +77,13 @@ type ApplicationAnswer struct {
 }
 
 type JobApplicationQuestion struct {
-	ID            int64                 `json:"id"`
-	ApplicationID int64                 `json:"application_id"`
-	Questions     []ApplicationQuestion `json:"questions"`
-	Score         int64                 `json:"score"`
-	CreatedAt     time.Time             `json:"created_at"`
-	UpdatedAt     time.Time             `json:"updated_at"`
+	ID             int64                 `json:"id"`
+	ApplicationID  int64                 `json:"application_id"`
+	Questions      []ApplicationQuestion `json:"questions"`
+	Score          int64                 `json:"score"`
+	OpenFieldScore int64                 `json:"open_field_score"`
+	CreatedAt      time.Time             `json:"created_at"`
+	UpdatedAt      time.Time             `json:"updated_at"`
 
 	JobQuestions []Question `json:"job_questions"`
 }
