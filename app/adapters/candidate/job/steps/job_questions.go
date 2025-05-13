@@ -3,6 +3,7 @@ package steps
 import (
 	"context"
 	"encoding/json"
+	"math"
 	"time"
 
 	questions_adp "github.com/hubjob/api/app/adapters/questions"
@@ -20,7 +21,7 @@ func SaveJobQuestions(
 		return application, err
 	}
 
-	var score int64
+	var score, correct int64
 
 	for _, questionC := range application.Questions {
 		question, ok := questions[questionC.ID]
@@ -38,6 +39,7 @@ func SaveJobQuestions(
 			for _, answer := range question.Answers {
 				if answer.IsCorrect {
 					correctAnswer = answer.ID
+					correct++
 				}
 			}
 
@@ -59,6 +61,7 @@ func SaveJobQuestions(
 		for _, answer := range question.Answers {
 			if answer.IsCorrect {
 				correctAnswer[answer.ID] = answer.ID
+				correct++
 			}
 		}
 
@@ -82,11 +85,13 @@ func SaveJobQuestions(
 		return application, err
 	}
 
+	percent := (float64(score) / float64(correct)) * 100
+
 	now := time.Now().UTC()
 	jobApplicationQuestion := model.JobApplicationQuestion{
 		ApplicationID: application.ID,
 		Questions:     application.Questions,
-		Score:         score,
+		Score:         int64(math.Round(percent)),
 		CreatedAt:     now,
 		UpdatedAt:     now,
 	}

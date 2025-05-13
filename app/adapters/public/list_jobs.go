@@ -3,6 +3,7 @@ package public
 import (
 	"context"
 	"strings"
+	"time"
 
 	"github.com/hubjob/api/database"
 	"github.com/hubjob/api/model"
@@ -75,6 +76,12 @@ func ListJobs(
 		where = append(where, `city = ?`)
 		attributes = append(attributes, filter.City)
 	}
+
+	where = append(where, `publish_at <= ?`)
+	attributes = append(attributes, time.Now().UTC())
+
+	where = append(where, `finish_at >= ?`)
+	attributes = append(attributes, time.Now().UTC())
 
 	if len(where) > 0 {
 		query += " WHERE " + strings.Join(where, " AND ")

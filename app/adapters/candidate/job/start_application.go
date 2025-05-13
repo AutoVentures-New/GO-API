@@ -13,7 +13,7 @@ import (
 )
 
 var ErrJobNotFound = errors.New("job not found")
-var ErrInvalidJob = errors.New("invalid job")
+var ErrInvalidJob = errors.New("invalid job dates")
 var ErrApplicationAlreadyExist = errors.New("application already exist")
 
 func StartApplication(
