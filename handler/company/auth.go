@@ -104,11 +104,13 @@ func ValidateEmailValidationCode(fiberCtx *fiber.Ctx) error {
 
 type CreateAccountRequest struct {
 	Name     string `json:"name"`
-	CNPJ     string `json:"cnpj"`
 	CPF      string `json:"cpf"`
 	Email    string `json:"email"`
 	Code     string `json:"code"`
 	Password string `json:"password"`
+
+	CompanyName string `json:"company_name"`
+	CNPJ        string `json:"cnpj"`
 
 	City  string `json:"city"`
 	State string `json:"state"`
@@ -143,6 +145,7 @@ func CreateAccount(fiberCtx *fiber.Ctx) error {
 
 	company := model.Company{
 		CNPJ: request.CNPJ,
+		Name: request.CompanyName,
 	}
 
 	err = company_auth_adp.CheckAlreadyExist(
