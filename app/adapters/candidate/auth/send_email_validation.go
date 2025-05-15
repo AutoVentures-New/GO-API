@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"github.com/hubjob/api/app/adapters/sendgrid"
 	"math/rand"
 	"strconv"
 	"time"
@@ -63,25 +64,25 @@ func SendEmailValidation(
 		return err
 	}
 
-	//htmlText := fmt.Sprintf(
-	//	"<html>Code: %s </html>",
-	//	code,
-	//)
-	//
-	//err = sendgrid.SendEmail(
-	//	ctx,
-	//	"Codigo de validação de email",
-	//	htmlText,
-	//	"",
-	//	email,
-	//)
-	//if err != nil {
-	//	_ = dbTransaction.Rollback()
-	//
-	//	logrus.WithError(err).Error("Error to send email validation")
-	//
-	//	return err
-	//}
+	htmlText := fmt.Sprintf(
+		"<html>Code: %s </html>",
+		code,
+	)
+
+	err = sendgrid.SendEmail(
+		ctx,
+		"Codigo de validação de email",
+		htmlText,
+		"",
+		email,
+	)
+	if err != nil {
+		_ = dbTransaction.Rollback()
+
+		logrus.WithError(err).Error("Error to send email validation")
+
+		return err
+	}
 	fmt.Println("Email candidate validation code: ", email, code)
 
 	err = dbTransaction.Commit()

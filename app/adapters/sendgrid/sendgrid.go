@@ -25,7 +25,7 @@ func SendEmail(
 ) error {
 	from := mail.NewEmail("HubJob", config.Config.SendGrid.Sender)
 
-	if config.Config.Env != "prod" {
+	if config.Config.SendGrid.EmailDev != "" {
 		emailTo = config.Config.SendGrid.EmailDev
 	}
 
