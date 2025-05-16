@@ -3,15 +3,13 @@ package model
 import "time"
 
 type Curriculum struct {
-	ID               int64      `json:"id"`
-	CandidateID      int64      `json:"candidate_id"`
-	Gender           string     `json:"gender"`
-	GenderIdentifier string     `json:"gender_identifier"`
-	Color            string     `json:"color"`
-	IsSpecialNeeds   bool       `json:"special_needs"`
-	Languages        []Language `json:"languages"`
-	CreatedAt        time.Time  `json:"created_at"`
-	UpdatedAt        time.Time  `json:"updated_at"`
+	ID             int64      `json:"id"`
+	CandidateID    int64      `json:"candidate_id"`
+	Gender         string     `json:"gender"`
+	IsSpecialNeeds bool       `json:"special_needs"`
+	Languages      []Language `json:"languages"`
+	CreatedAt      time.Time  `json:"created_at"`
+	UpdatedAt      time.Time  `json:"updated_at"`
 
 	ProfessionalExperiences []ProfessionalExperience `json:"professional_experiences"`
 	AcademicExperiences     []AcademicExperience     `json:"academic_experiences"`

@@ -21,15 +21,13 @@ func GetCurriculum(
 
 	err := database.Database.QueryRowContext(
 		ctx,
-		`SELECT id,candidate_id,gender,gender_identifier,color,is_special_needs,languages,created_at,updated_at 
+		`SELECT id,candidate_id,gender,is_special_needs,languages,created_at,updated_at 
 				FROM candidate_curriculum WHERE candidate_id = ?`,
 		candidateID,
 	).Scan(
 		&curriculum.ID,
 		&curriculum.CandidateID,
 		&curriculum.Gender,
-		&curriculum.GenderIdentifier,
-		&curriculum.Color,
 		&curriculum.IsSpecialNeeds,
 		&languagesJSON,
 		&curriculum.CreatedAt,

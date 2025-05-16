@@ -39,15 +39,11 @@ func UpdateCurriculum(
 		ctx,
 		`UPDATE candidate_curriculum set
     				gender = ?, 
-    				gender_identifier = ?,  
-    				color = ?,  
     				is_special_needs = ?,  
     				languages = ?,  
     				updated_at = ?
 				WHERE candidate_id = ?`,
 		curriculum.Gender,
-		curriculum.GenderIdentifier,
-		curriculum.Color,
 		curriculum.IsSpecialNeeds,
 		languagesString,
 		curriculum.UpdatedAt,
