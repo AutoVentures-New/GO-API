@@ -33,7 +33,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"email\": \"email3@email.com\",\n    \"password\": \"q1w2e3\"\n}",
+									"raw": "{\n    \"email\": \"empresatest@test.com\",\n    \"password\": \"q1w2e3\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3235,28 +3235,6 @@
 							"path": [
 								"public",
 								"list-companies"
-							],
-							"query": [
-								{
-									"key": "company_id",
-									"value": "1",
-									"disabled": true
-								},
-								{
-									"key": "state",
-									"value": "SP",
-									"disabled": true
-								},
-								{
-									"key": "city",
-									"value": "Matão",
-									"disabled": true
-								},
-								{
-									"key": "area_id",
-									"value": "2",
-									"disabled": true
-								}
 							]
 						}
 					},
@@ -3301,6 +3279,66 @@
 								"public",
 								"job-details",
 								"18"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"empresatest@test.com\",\n    \"exec_type\": \"COMPANY\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/public/forgot-password",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"public",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"ef06f90d-755e-4b7f-896b-6dfe89543468\",\n    \"password\": \"q1w2e3r4\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/public/change-password",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"public",
+								"change-password"
 							]
 						}
 					},
