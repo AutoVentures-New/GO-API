@@ -2,6 +2,8 @@ package job
 
 import (
 	"context"
+	"fmt"
+
 	"github.com/hubjob/api/database"
 	"github.com/hubjob/api/model"
 	"github.com/sirupsen/logrus"
@@ -13,10 +15,14 @@ func ListStateCities(
 ) (map[string]model.State, error) {
 	states := make(map[string]model.State)
 
+	where := ""
+	if companyID > 0 {
+		where += fmt.Sprintf(" AND company_id = %d", companyID)
+	}
+
 	rows, err := database.Database.QueryContext(
 		ctx,
-		`SELECT state,city FROM jobs WHERE company_id = ? and status = 'ACTIVE'`,
-		companyID,
+		`SELECT state,city FROM jobs WHERE status = 'ACTIVE'`+where,
 	)
 	if err != nil {
 		logrus.WithError(err).Error("Error to list states and cities")

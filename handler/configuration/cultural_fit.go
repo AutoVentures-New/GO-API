@@ -30,16 +30,8 @@ func ListAreas(fiberCtx *fiber.Ctx) error {
 	return responses.Success(fiberCtx, areas)
 }
 
-func ListStateCitiesByCompany(fiberCtx *fiber.Ctx) error {
-	id := fiberCtx.Params("company_id")
-	if len(id) == 0 {
-		return responses.BadRequest(fiberCtx, "Params {company_id} is required")
-	}
-
-	idInt, err := strconv.Atoi(id)
-	if len(id) == 0 {
-		return responses.BadRequest(fiberCtx, "Invalid params {company_id}")
-	}
+func ListStateCities(fiberCtx *fiber.Ctx) error {
+	idInt, _ := strconv.Atoi(fiberCtx.Query("company_id", "0"))
 
 	jobs, err := company_job_adp.ListStateCities(
 		fiberCtx.UserContext(),

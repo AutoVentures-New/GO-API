@@ -11,5 +11,5 @@ func setupConfigurationRoute(router fiber.Router) {
 	router.Get("/questionnaires/professional", configuration.GetQuestionnaireProfessional)
 	router.Get("/cultural-fit", configuration.GetCulturalFit)
 	router.Get("/list-areas", configuration.ListAreas)
-	router.Get("/state-cities/:company_id", configuration.ListStateCitiesByCompany)
+	router.Get("/state-cities", configuration.ListStateCities)
 }

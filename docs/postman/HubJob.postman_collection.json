@@ -3136,7 +3136,7 @@
 					"response": []
 				},
 				{
-					"name": "List state cities by company",
+					"name": "List state cities",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -3144,19 +3144,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/configuration/state-cities/:company_id",
+							"raw": "{{HOST}}/configuration/state-cities?company_id=0",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
 								"configuration",
-								"state-cities",
-								":company_id"
+								"state-cities"
 							],
-							"variable": [
+							"query": [
 								{
 									"key": "company_id",
-									"value": "1"
+									"value": "0"
 								}
 							]
 						}
