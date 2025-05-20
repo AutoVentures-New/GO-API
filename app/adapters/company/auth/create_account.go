@@ -45,15 +45,18 @@ func CreateAccount(
 
 	user.CompanyID = company.ID
 	user.Status = model.ACTIVE
+	user.Role = model.ADMINISTRATOR
 	user.Password = hashPassword
 	user.CreatedAt = time.Now().UTC()
 	user.UpdatedAt = user.CreatedAt
 
 	result, err := dbTransaction.ExecContext(
 		ctx,
-		`INSERT INTO users(name,cpf,email,password,status,company_id,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)`,
+		`INSERT INTO users(name,cpf,phone,role,email,password,status,company_id,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?)`,
 		user.Name,
 		user.CPF,
+		user.Phone,
+		user.Role,
 		user.Email,
 		user.Password,
 		user.Status,

@@ -103,11 +103,12 @@ func ValidateEmailValidationCode(fiberCtx *fiber.Ctx) error {
 }
 
 type CreateAccountRequest struct {
-	Name     string `json:"name"`
-	CPF      string `json:"cpf"`
-	Email    string `json:"email"`
-	Code     string `json:"code"`
-	Password string `json:"password"`
+	Name     string  `json:"name"`
+	CPF      string  `json:"cpf"`
+	Phone    *string `json:"phone"`
+	Email    string  `json:"email"`
+	Code     string  `json:"code"`
+	Password string  `json:"password"`
 
 	CompanyName string `json:"company_name"`
 	CNPJ        string `json:"cnpj"`
@@ -139,6 +140,7 @@ func CreateAccount(fiberCtx *fiber.Ctx) error {
 	user := model.User{
 		Name:     request.Name,
 		CPF:      request.CPF,
+		Phone:    request.Phone,
 		Email:    request.Email,
 		Password: request.Password,
 	}

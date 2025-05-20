@@ -13,7 +13,7 @@ func ListUsers(ctx context.Context, companyID int64) ([]model.User, error) {
 
 	rows, err := database.Database.QueryContext(
 		ctx,
-		`SELECT id,name,cpf,email,status,company_id,created_at,updated_at FROM users WHERE company_id = ?`,
+		`SELECT id,name,cpf,phone,role,email,status,company_id,created_at,updated_at FROM users WHERE company_id = ?`,
 		companyID,
 	)
 	if err != nil {
@@ -30,6 +30,8 @@ func ListUsers(ctx context.Context, companyID int64) ([]model.User, error) {
 			&user.ID,
 			&user.Name,
 			&user.CPF,
+			&user.Phone,
+			&user.Role,
 			&user.Email,
 			&user.Status,
 			&user.CompanyID,

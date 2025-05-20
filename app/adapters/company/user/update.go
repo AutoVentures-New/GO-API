@@ -17,10 +17,12 @@ func UpdateUser(
 
 	_, err := database.Database.ExecContext(
 		ctx,
-		`UPDATE users set name=?,email=?,cpf=?,status=?,updated_at = ? WHERE id = ? AND company_id = ?`,
+		`UPDATE users set name=?,email=?,cpf=?,phone=?,role=?,status=?,updated_at = ? WHERE id = ? AND company_id = ?`,
 		user.Name,
 		user.Email,
 		user.CPF,
+		user.Phone,
+		user.Role,
 		user.Status,
 		user.UpdatedAt,
 		user.ID,

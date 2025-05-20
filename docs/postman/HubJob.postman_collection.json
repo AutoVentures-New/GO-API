@@ -33,7 +33,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"email\": \"empresatest@test.com\",\n    \"password\": \"q1w2e3\"\n}",
+									"raw": "{\n    \"email\": \"empresatest@test.com\",\n    \"password\": \"q1w2e3r4\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -75,7 +75,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"full name\",\n    \"email\": \"email4@email.com\",\n    \"password\": \"q1w2e3\",\n    \"cnpj\": \"123456\",\n    \"cpf\": \"12345\",\n    \"code\": \"567880\",\n    \"city\": \"Ara\",\n    \"state\": \"SP\"\n}",
+									"raw": "{\n    \"name\": \"full name\",\n    \"email\": \"email4@email.com\",\n    \"password\": \"q1w2e3\",\n    \"cnpj\": \"123456\",\n    \"cpf\": \"12345\",\n    \"phone\": \"16997878548\",\n    \"code\": \"567880\",\n    \"city\": \"Ara\",\n    \"state\": \"SP\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -559,7 +559,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"user 1\",\n    \"email\": \"user3@email.com\",\n    \"cpf\": \"12313123\"\n}",
+									"raw": "{\n    \"name\": \"user 1\",\n    \"email\": \"user3@email.com\",\n    \"cpf\": \"12313123\",\n    \"phone\": \"16997878548\",\n    \"role\": \"MANAGER\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -689,7 +689,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"user 11111\",\n    \"email\": \"user2@emai11l.com\",\n    \"cpf\": \"123131221212\",\n    \"status\": \"INACTIVE\"\n}",
+									"raw": "{\n    \"name\": \"user root\",\n    \"email\": \"empresatest2@test.com\",\n    \"cpf\": \"123131221212\",\n    \"phone\": \"16997878548\",\n    \"status\": \"ACTIVE\",\n    \"role\": \"MANAGER\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2986,7 +2986,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"gender\": \"Masculino\",\n    \"gender_identifier\": \"Masculino\",\n    \"color\": \"Branco\",\n    \"special_needs\": false,\n    \"languages\": [\n        {\n            \"name\": \"Portugues\",\n            \"level\": \"Nativo\"\n        },\n        {\n            \"name\": \"Ingles\",\n            \"level\": \"Avançado\"\n        }\n    ],\n    \"professional_experiences\": [\n        {\n            \"title\": \"Dev senior front\",\n            \"company\": \"Stone\",\n            \"area_id\": 2,\n            \"city\": \"São Paulo\",\n            \"state\": \"SP\",\n            \"job_mode\": \"HOME_OFFICE\",\n            \"current_job\": true,\n            \"start_date\": \"2025-03-04T19:09:18.045043Z\",\n            \"end_date\": \"2025-03-04T19:09:18.045043Z\"\n        }\n    ],\n    \"academic_experiences\": [\n        {\n            \"title\": \"Analise e desenvolvimento de sistemas\",\n            \"company\": \"UNIARA\",\n            \"area_id\": 2,\n            \"status\": \"FINISHED\",\n            \"level\": \"HIGHER_EDUCATION\",\n            \"start_date\": \"2025-03-04T19:09:18.045043Z\",\n            \"end_date\": \"2025-03-20T19:09:18.045043Z\"\n        }\n    ]\n}",
+									"raw": "{\n    \"gender\": \"Masculino\",\n    \"special_needs\": false,\n    \"languages\": [\n        {\n            \"name\": \"Portugues\",\n            \"level\": \"Nativo\"\n        },\n        {\n            \"name\": \"Ingles\",\n            \"level\": \"Avançado\"\n        }\n    ],\n    \"professional_experiences\": [\n        {\n            \"title\": \"Dev senior front\",\n            \"company\": \"Stone\",\n            \"area_id\": 2,\n            \"city\": \"São Paulo\",\n            \"state\": \"SP\",\n            \"job_mode\": \"HOME_OFFICE\",\n            \"current_job\": true,\n            \"start_date\": \"2025-03-04T19:09:18.045043Z\",\n            \"end_date\": \"2025-03-04T19:09:18.045043Z\"\n        }\n    ],\n    \"academic_experiences\": [\n        {\n            \"title\": \"Analise e desenvolvimento de sistemas\",\n            \"company\": \"UNIARA\",\n            \"area_id\": 2,\n            \"status\": \"FINISHED\",\n            \"level\": \"HIGHER_EDUCATION\",\n            \"start_date\": \"2025-03-04T19:09:18.045043Z\",\n            \"end_date\": \"2025-03-20T19:09:18.045043Z\"\n        }\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"

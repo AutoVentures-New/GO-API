@@ -24,9 +24,11 @@ func ListUsers(fiberCtx *fiber.Ctx) error {
 }
 
 type CreateUserRequest struct {
-	Name  string `json:"name"`
-	CPF   string `json:"cpf"`
-	Email string `json:"email"`
+	Name  string     `json:"name"`
+	CPF   string     `json:"cpf"`
+	Phone *string    `json:"phone"`
+	Role  model.Role `json:"role"`
+	Email string     `json:"email"`
 }
 
 func CreateUser(fiberCtx *fiber.Ctx) error {
@@ -43,6 +45,8 @@ func CreateUser(fiberCtx *fiber.Ctx) error {
 			Name:      request.Name,
 			CompanyID: user.CompanyID,
 			CPF:       request.CPF,
+			Phone:     request.Phone,
+			Role:      request.Role,
 			Email:     request.Email,
 		},
 	)
@@ -93,6 +97,8 @@ func DeleteUser(fiberCtx *fiber.Ctx) error {
 type UpdateUserRequest struct {
 	Name   string       `json:"name"`
 	CPF    string       `json:"cpf"`
+	Phone  *string      `json:"phone"`
+	Role   model.Role   `json:"role"`
 	Email  string       `json:"email"`
 	Status model.Status `json:"status"`
 }
@@ -131,6 +137,8 @@ func UpdateUser(fiberCtx *fiber.Ctx) error {
 	userModel.Name = request.Name
 	userModel.Email = request.Email
 	userModel.CPF = request.CPF
+	userModel.Phone = request.Phone
+	userModel.Role = request.Role
 	userModel.Status = request.Status
 	userModel, err = company_user_adp.UpdateUser(
 		fiberCtx.UserContext(),

@@ -19,13 +19,15 @@ func GetUser(
 
 	err := database.Database.QueryRowContext(
 		ctx,
-		`SELECT id,name,cpf,email,status,company_id,created_at,updated_at FROM users WHERE id = ? AND company_id = ?`,
+		`SELECT id,name,cpf,phone,role,email,status,company_id,created_at,updated_at FROM users WHERE id = ? AND company_id = ?`,
 		id,
 		companyID,
 	).Scan(
 		&user.ID,
 		&user.Name,
 		&user.CPF,
+		&user.Phone,
+		&user.Role,
 		&user.Email,
 		&user.Status,
 		&user.CompanyID,
