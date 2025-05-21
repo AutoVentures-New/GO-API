@@ -559,7 +559,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"user 1\",\n    \"email\": \"user3@email.com\",\n    \"cpf\": \"12313123\",\n    \"phone\": \"16997878548\",\n    \"role\": \"MANAGER\"\n}",
+									"raw": "{\n    \"name\": \"user 1\",\n    \"email\": \"user5@email.com\",\n    \"cpf\": \"123131223\",\n    \"phone\": \"16997878548\",\n    \"role\": \"MANAGER\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3338,6 +3338,36 @@
 							"path": [
 								"public",
 								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"81b705f7-d079-4581-a749-0f65b0aa6db4\",\n    \"password\": \"q1w2e3\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/public/create-password",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"public",
+								"create-password"
 							]
 						}
 					},

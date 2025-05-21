@@ -12,4 +12,5 @@ func setupPublicRoute(router fiber.Router) {
 	router.Get("list-companies", public.ListCompanies)
 	router.Post("forgot-password", public.ForgotPassword)
 	router.Post("change-password", public.ChangePassword)
+	router.Post("create-password", public.CreatePassword)
 }

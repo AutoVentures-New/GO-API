@@ -5,11 +5,11 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"github.com/hubjob/api/app/adapters/sendgrid"
-	"math/rand"
-	"strconv"
 	"time"
 
+	"github.com/google/uuid"
+	"github.com/hubjob/api/app/adapters/sendgrid"
+	"github.com/hubjob/api/config"
 	"github.com/hubjob/api/database"
 	"github.com/hubjob/api/model"
 	"github.com/sirupsen/logrus"
@@ -123,16 +123,16 @@ func sendEmailValidation(
 	email string,
 	dbTransaction *sql.Tx,
 ) error {
-	code := generateRandomNumber()
+	token := uuid.New().String()
 	now := time.Now().UTC()
 
 	_, err := dbTransaction.ExecContext(
 		ctx,
 		`INSERT INTO email_validations(email, code, created_at) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE code = ?, created_at = ?`,
 		email,
-		code,
+		token,
 		now,
-		code,
+		token,
 		now,
 	)
 	if err != nil {
@@ -140,8 +140,9 @@ func sendEmailValidation(
 	}
 
 	htmlText := fmt.Sprintf(
-		"<html>Code: %s </html>",
-		code,
+		"<html><a href='%s/criar-conta/%s'>Click aqui para criar sua senha</a> </html>",
+		config.Config.FrontendURL,
+		token,
 	)
 
 	err = sendgrid.SendEmail(
@@ -158,16 +159,7 @@ func sendEmailValidation(
 
 		return err
 	}
-	fmt.Println("Email company user validation code: ", email, code)
+	fmt.Println("Email company user validation code: ", email, token)
 
 	return nil
-}
-
-func generateRandomNumber() string {
-	source := rand.NewSource(time.Now().UnixNano())
-	random := rand.New(source)
-
-	randomNumber := random.Intn(900000) + 100000
-
-	return strconv.Itoa(randomNumber)
 }
