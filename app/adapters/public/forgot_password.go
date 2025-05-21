@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -58,9 +59,10 @@ func ForgotPassword(
 	}
 
 	htmlText := fmt.Sprintf(
-		"<html><a href='%s/trocar-senha/%s'>Click aqui para trocar sua senha</a> </html>",
+		"<html><a href='%s/trocar-senha/%s/%s'>Click aqui para trocar sua senha</a> </html>",
 		config.Config.FrontendURL,
 		token,
+		strings.ToLower(execType),
 	)
 
 	err = sendgrid.SendEmail(
@@ -77,7 +79,7 @@ func ForgotPassword(
 
 		return err
 	}
-	fmt.Println("Email fotgot password: ", email, token)
+	fmt.Println("Email forgot password: ", email, token)
 
 	err = dbTransaction.Commit()
 	if err != nil {
