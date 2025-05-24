@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"encoding/json"
-
+	"fmt"
 	jwtware "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
@@ -36,17 +36,22 @@ func ProtectedCompany() fiber.Handler {
 	})
 }
 
-func ProtectedCandidate() fiber.Handler {
+func ProtectedCandidate(ignoreError bool) fiber.Handler {
 	return jwtware.New(jwtware.Config{
 		SigningKey: jwtware.SigningKey{Key: []byte(config.Config.JwtSecret)},
 		ErrorHandler: func(fiberCtx *fiber.Ctx, err error) error {
+			if ignoreError {
+				return fiberCtx.Next()
+			}
+
 			return responses.Forbidden(fiberCtx)
 		},
 		SuccessHandler: func(fiberCtx *fiber.Ctx) error {
 			token := fiberCtx.Locals("user").(*jwt.Token)
 
 			value, err := pkg.SessionClient.Get(fiberCtx.UserContext(), pkg.FormatToken(token.Raw)).Result()
-			if err != nil {
+			if err != nil && !ignoreError {
+				fmt.Println("entrou aqui", ignoreError)
 				return responses.Forbidden(fiberCtx)
 			}
 

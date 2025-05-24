@@ -69,10 +69,11 @@ func CreateUser(
 
 	result, err := dbTransaction.ExecContext(
 		ctx,
-		`INSERT INTO users(name,cpf,phone,email,password,status,company_id,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)`,
+		`INSERT INTO users(name,cpf,phone,role,email,password,status,company_id,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?)`,
 		user.Name,
 		user.CPF,
 		user.Phone,
+		user.Role,
 		user.Email,
 		user.Password,
 		user.Status,

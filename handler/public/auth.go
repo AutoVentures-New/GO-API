@@ -42,7 +42,7 @@ func ForgotPassword(fiberCtx *fiber.Ctx) error {
 		request.ExecType,
 	)
 	if errors.Is(err, public.ErrEmailNotFound) {
-		return responses.BadRequest(fiberCtx, err.Error())
+		return responses.NotFound(fiberCtx, err.Error())
 	}
 
 	if err != nil {

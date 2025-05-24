@@ -19,6 +19,7 @@ type Candidate struct {
 	Curriculum *Curriculum `json:"curriculum"`
 
 	NeedCompleteProfile bool `json:"need_complete_profile"`
+	HasPhoto            bool `json:"has_photo"`
 }
 
 type CandidateQuestionnaire struct {

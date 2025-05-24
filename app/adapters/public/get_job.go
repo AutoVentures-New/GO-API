@@ -16,6 +16,7 @@ var ErrJobNotFound = errors.New("Job not found")
 func GetJob(
 	ctx context.Context,
 	id int64,
+	candidateID int64,
 ) (model.Job, error) {
 	job := model.Job{}
 
@@ -68,6 +69,26 @@ func GetJob(
 	job.JobRequirement, err = getJobRequirements(ctx, id)
 	if err != nil {
 		return job, err
+	}
+
+	if candidateID > 0 {
+		var count int64
+
+		err := database.Database.QueryRowContext(
+			ctx,
+			`SELECT count(0) FROM job_applications WHERE candidate_id = ? AND job_id = ?`,
+			candidateID,
+			id,
+		).Scan(&count)
+		if err != nil && !errors.Is(err, sql.ErrNoRows) {
+			logrus.WithError(err).Error("Error to get job application for job details")
+
+			return job, nil
+		}
+
+		if count > 0 {
+			job.CandidateHasApplication = true
+		}
 	}
 
 	return job, nil

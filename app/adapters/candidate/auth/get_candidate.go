@@ -78,5 +78,22 @@ func GetCandidate(
 		}
 	}
 
+	var count int64
+
+	err = database.Database.QueryRowContext(
+		ctx,
+		`SELECT count(0) FROM candidate_photos WHERE candidate_id = ?`,
+		candidate.ID,
+	).Scan(&count)
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
+		logrus.WithError(err).Error("Error to get candidate photo")
+
+		return candidate, err
+	}
+
+	if count > 0 {
+		candidate.HasPhoto = true
+	}
+
 	return candidate, nil
 }

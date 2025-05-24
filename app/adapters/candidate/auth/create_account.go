@@ -88,11 +88,9 @@ func CreateAccount(
 
 	_, err = dbTransaction.ExecContext(
 		ctx,
-		`INSERT INTO candidate_curriculum(candidate_id,gender,gender_identifier,color,is_special_needs,languages,created_at,updated_at) 
-				VALUES(?,?,?,?,?,?,?,?)`,
+		`INSERT INTO candidate_curriculum(candidate_id,gender,is_special_needs,languages,created_at,updated_at) 
+				VALUES(?,?,?,?,?,?)`,
 		lastInsertID,
-		"",
-		"",
 		"",
 		false,
 		"[]",

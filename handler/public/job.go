@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	public_adp "github.com/hubjob/api/app/adapters/public"
 	"github.com/hubjob/api/handler/responses"
+	"github.com/hubjob/api/model"
 	"strconv"
 )
 
@@ -62,7 +63,14 @@ func GetJob(fiberCtx *fiber.Ctx) error {
 		return responses.BadRequest(fiberCtx, "Invalid params {job_id}")
 	}
 
-	company, err := public_adp.GetJob(fiberCtx.UserContext(), int64(idInt))
+	candidate := model.Candidate{}
+
+	candidateLocal := fiberCtx.Locals("candidate")
+	if candidateLocal != nil && candidateLocal != "" {
+		candidate = candidateLocal.(model.Candidate)
+	}
+
+	job, err := public_adp.GetJob(fiberCtx.UserContext(), int64(idInt), candidate.ID)
 	if errors.Is(err, public_adp.ErrJobNotFound) {
 		return responses.NotFound(fiberCtx, err.Error())
 	}
@@ -71,5 +79,5 @@ func GetJob(fiberCtx *fiber.Ctx) error {
 		return responses.InternalServerError(fiberCtx, err)
 	}
 
-	return responses.Success(fiberCtx, company)
+	return responses.Success(fiberCtx, job)
 }

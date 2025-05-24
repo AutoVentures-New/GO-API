@@ -37,6 +37,8 @@ type Job struct {
 	VideoQuestions *JobVideoQuestions `json:"video_questions"`
 	Questions      []Question         `json:"questions"`
 	Area           *Area              `json:"area"`
+
+	CandidateHasApplication bool `json:"candidate_has_application"`
 }
 
 type JobCulturalFit struct {

@@ -51,5 +51,13 @@ func SendEmail(
 		return errors.New("invalid response status code from sendgrid")
 	}
 
+	logrus.WithFields(map[string]interface{}{
+		"response_status_code": response.StatusCode,
+		"response_status_body": response.Body,
+		"from":                 from,
+		"to":                   emailTo,
+		"subject":              subject,
+	}).Error("Email sent with success")
+
 	return nil
 }
