@@ -55,8 +55,9 @@ func CreatePassword(
 
 	_, err = dbTransaction.ExecContext(
 		ctx,
-		`UPDATE users set password = ?,updated_at = ? WHERE email = ?`,
+		`UPDATE users set password = ?,status=?,updated_at = ? WHERE email = ?`,
 		hashPassword,
+		model.ACTIVE,
 		time.Now().UTC(),
 		emailValidation.Email,
 	)

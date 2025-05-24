@@ -108,7 +108,7 @@ func CreatePassword(fiberCtx *fiber.Ctx) error {
 		request.Password,
 	)
 	if errors.Is(err, public.ErrUserTokenNotFound) {
-		return responses.BadRequest(fiberCtx, err.Error())
+		return responses.NotFound(fiberCtx, err.Error())
 	}
 
 	if err != nil {

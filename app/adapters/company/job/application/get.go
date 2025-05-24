@@ -227,7 +227,7 @@ func getJobApplicationQuestion(
 
 	err := database.Database.QueryRowContext(
 		ctx,
-		`SELECT application_id,questions,score,open_field_score,created_at,updated_at FROM job_application_questions WHERE application_id = ?`,
+		`SELECT application_id,questions,score,open_field_score,created_at,updated_at FROM job_application_questions WHERE application_id = ? ORDER BY created_at ASC`,
 		applicationID,
 	).Scan(
 		&jobApplicationQuestion.ApplicationID,
