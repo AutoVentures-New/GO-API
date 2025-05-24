@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"sort"
+	
 	profile "github.com/hubjob/api/app/adapters/candidate/curriculum"
 	questions_adp "github.com/hubjob/api/app/adapters/questions"
 	"github.com/hubjob/api/database"
@@ -227,7 +229,7 @@ func getJobApplicationQuestion(
 
 	err := database.Database.QueryRowContext(
 		ctx,
-		`SELECT application_id,questions,score,open_field_score,created_at,updated_at FROM job_application_questions WHERE application_id = ? ORDER BY created_at ASC`,
+		`SELECT application_id,questions,score,open_field_score,created_at,updated_at FROM job_application_questions WHERE application_id = ?`,
 		applicationID,
 	).Scan(
 		&jobApplicationQuestion.ApplicationID,
@@ -264,6 +266,10 @@ func getJobApplicationQuestion(
 	for _, question := range questionsMap {
 		jobApplicationQuestion.JobQuestions = append(jobApplicationQuestion.JobQuestions, question)
 	}
+
+	sort.Slice(jobApplicationQuestion.JobQuestions, func(i, j int) bool {
+		return jobApplicationQuestion.JobQuestions[i].ID < jobApplicationQuestion.JobQuestions[j].ID
+	})
 
 	return &jobApplicationQuestion, nil
 }
