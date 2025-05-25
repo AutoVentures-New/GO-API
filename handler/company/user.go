@@ -2,11 +2,12 @@ package company
 
 import (
 	"errors"
+	"strconv"
+	
 	"github.com/gofiber/fiber/v2"
 	company_user_adp "github.com/hubjob/api/app/adapters/company/user"
 	"github.com/hubjob/api/handler/responses"
 	"github.com/hubjob/api/model"
-	"strconv"
 )
 
 func ListUsers(fiberCtx *fiber.Ctx) error {
@@ -15,6 +16,7 @@ func ListUsers(fiberCtx *fiber.Ctx) error {
 	users, err := company_user_adp.ListUsers(
 		fiberCtx.UserContext(),
 		user.CompanyID,
+		user.ID,
 	)
 	if err != nil {
 		return responses.InternalServerError(fiberCtx, err)

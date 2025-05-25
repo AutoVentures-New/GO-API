@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/hubjob/api/handler/company"
+	dashboard2 "github.com/hubjob/api/handler/company/dashboard"
 	job2 "github.com/hubjob/api/handler/company/job"
 	"github.com/hubjob/api/handler/company/profile"
 	"github.com/hubjob/api/middleware"
@@ -79,4 +80,9 @@ func setupCompanyRoute(router fiber.Router) {
 	users.Get("", company.ListUsers)
 	users.Patch("/:id", company.UpdateUser)
 	users.Delete("/:id", company.DeleteUser)
+
+	dashboard := router.Group("/dashboard", middleware.ProtectedCompany())
+
+	dashboard.Get("open-jobs", dashboard2.OpenJobs)
+	dashboard.Get("applications", dashboard2.Applications)
 }

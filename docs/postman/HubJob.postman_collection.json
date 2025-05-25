@@ -33,7 +33,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"email\": \"empresatest@test.com\",\n    \"password\": \"q1w2e3r4\"\n}",
+									"raw": "{\n    \"email\": \"vitorruschoni@gmail.com\",\n    \"password\": \"q1w2e3\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1962,6 +1962,93 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "Dashboard",
+					"item": [
+						{
+							"name": "Open Jobs",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{COMPANY_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/company/dashboard/open-jobs",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"dashboard",
+										"open-jobs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Applications",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{COMPANY_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/company/dashboard/applications",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"dashboard",
+										"applications"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
@@ -2688,7 +2775,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{HOST}}/candidate/job/application/18",
+									"raw": "{{HOST}}/candidate/job/application/:job_id",
 									"host": [
 										"{{HOST}}"
 									],
@@ -2696,7 +2783,13 @@
 										"candidate",
 										"job",
 										"application",
-										"18"
+										":job_id"
+									],
+									"variable": [
+										{
+											"key": "job_id",
+											"value": "1"
+										}
 									]
 								}
 							},

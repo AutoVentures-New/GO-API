@@ -8,13 +8,16 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func ListUsers(ctx context.Context, companyID int64) ([]model.User, error) {
+func ListUsers(ctx context.Context, companyID int64, userLogged int64) ([]model.User, error) {
 	users := make([]model.User, 0)
 
 	rows, err := database.Database.QueryContext(
 		ctx,
-		`SELECT id,name,cpf,phone,role,email,status,company_id,created_at,updated_at FROM users WHERE company_id = ?`,
+		`SELECT id,name,cpf,phone,role,email,status,company_id,created_at,updated_at 
+				FROM users 
+				WHERE company_id = ? and id != ?`,
 		companyID,
+		userLogged,
 	)
 	if err != nil {
 		logrus.WithError(err).Error("Error to list users")
