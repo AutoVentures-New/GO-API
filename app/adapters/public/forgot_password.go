@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"github.com/hubjob/api/pkg"
 	"strings"
 	"time"
 
@@ -58,11 +59,18 @@ func ForgotPassword(
 		return err
 	}
 
-	htmlText := fmt.Sprintf(
-		"<html><a href='%s/trocar-senha/%s/%s'>Click aqui para trocar sua senha</a> </html>",
+	link := fmt.Sprintf("%s/trocar-senha/%s/%s",
 		config.Config.FrontendURL,
 		token,
 		strings.ToLower(execType),
+	)
+
+	htmlText, err := pkg.ParseTemplate(
+		ctx,
+		"forgot-password",
+		pkg.EmailClickLink{
+			Link: link,
+		},
 	)
 
 	err = sendgrid.SendEmail(

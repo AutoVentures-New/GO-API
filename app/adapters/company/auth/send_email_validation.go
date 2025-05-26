@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/hubjob/api/app/adapters/sendgrid"
+	"github.com/hubjob/api/pkg"
 	"math/rand"
 	"strconv"
 	"time"
@@ -64,9 +65,12 @@ func SendEmailValidation(
 		return err
 	}
 
-	htmlText := fmt.Sprintf(
-		"<html>Code: %s </html>",
-		code,
+	htmlText, err := pkg.ParseTemplate(
+		ctx,
+		"validate-code",
+		pkg.EmailValidateCode{
+			Code: code,
+		},
 	)
 
 	err = sendgrid.SendEmail(

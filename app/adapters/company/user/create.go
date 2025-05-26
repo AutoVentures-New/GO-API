@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"github.com/hubjob/api/pkg"
 	"time"
 
 	"github.com/google/uuid"
@@ -140,10 +141,17 @@ func sendEmailValidation(
 		return err
 	}
 
-	htmlText := fmt.Sprintf(
-		"<html><a href='%s/criar-conta/%s'>Click aqui para criar sua senha</a> </html>",
+	link := fmt.Sprintf("%s/criar-conta/%s",
 		config.Config.FrontendURL,
 		token,
+	)
+
+	htmlText, err := pkg.ParseTemplate(
+		ctx,
+		"create-account",
+		pkg.EmailClickLink{
+			Link: link,
+		},
 	)
 
 	err = sendgrid.SendEmail(
