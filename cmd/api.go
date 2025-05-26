@@ -41,6 +41,7 @@ var apiCmd = &cobra.Command{
 			ErrorHandler:             middleware.ErrorHandler(),
 			EnableSplittingOnParsers: true,
 			EnablePrintRoutes:        false,
+			BodyLimit:                20 * 1024 * 1024,
 		})
 
 		app.Use(cors.New())
