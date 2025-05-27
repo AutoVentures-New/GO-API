@@ -2,8 +2,6 @@ package dashboard_adp
 
 import (
 	"context"
-	"time"
-
 	"github.com/hubjob/api/database"
 	"github.com/hubjob/api/model"
 	"github.com/sirupsen/logrus"
@@ -22,7 +20,7 @@ func OpenJobs(
 
 	rows, err := database.Database.QueryContext(
 		ctx,
-		`SELECT id,title,finish_at
+		`SELECT id,title
 				FROM jobs WHERE company_id = ? AND status = 'ACTIVE'
 				ORDER BY id DESC`,
 		companyID,
@@ -35,15 +33,12 @@ func OpenJobs(
 
 	defer rows.Close()
 
-	fiveDays := time.Now().UTC().AddDate(0, 0, 5)
-
 	for rows.Next() {
 		job := model.Job{}
 
 		err := rows.Scan(
 			&job.ID,
 			&job.Title,
-			&job.FinishAt,
 		)
 		if err != nil {
 			logrus.WithError(err).Error("Error to scan jobs open")
@@ -58,10 +53,6 @@ func OpenJobs(
 				ID    int64  `json:"id"`
 				Title string `json:"title"`
 			}{ID: job.ID, Title: job.Title})
-		}
-
-		if job.FinishAt.Before(fiveDays) {
-			jobs.CloseToFinish++
 		}
 	}
 

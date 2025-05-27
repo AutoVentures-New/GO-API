@@ -26,7 +26,6 @@ type CreateJobRequest struct {
 	VideoLink           string    `json:"video_link"`
 	Status              string    `json:"status"`
 	PublishAt           time.Time `json:"publish_at"`
-	FinishAt            time.Time `json:"finish_at"`
 	JobCulturalFit      struct {
 		Answers []struct {
 			CulturalFitID int64  `json:"cultural_fit_id"`
@@ -108,7 +107,6 @@ func CreateJob(fiberCtx *fiber.Ctx) error {
 			VideoLink:           request.VideoLink,
 			Status:              request.Status,
 			PublishAt:           request.PublishAt,
-			FinishAt:            request.FinishAt,
 			JobCulturalFit:      &jobCulturalFit,
 			JobRequirement:      &jobRequirement,
 			Benefits:            benefits,
@@ -185,7 +183,6 @@ type UpdateJobRequest struct {
 	VideoLink           string    `json:"video_link"`
 	Status              string    `json:"status"`
 	PublishAt           time.Time `json:"publish_at"`
-	FinishAt            time.Time `json:"finish_at"`
 	JobCulturalFit      struct {
 		Answers []struct {
 			CulturalFitID int64  `json:"cultural_fit_id"`
@@ -284,7 +281,6 @@ func UpdateJob(fiberCtx *fiber.Ctx) error {
 	job.VideoLink = request.VideoLink
 	job.Status = request.Status
 	job.PublishAt = request.PublishAt
-	job.FinishAt = request.FinishAt
 	job.Benefits = benefits
 	job.VideoQuestions.Questions = request.VideoQuestions.Questions
 	job.Questions = questions
@@ -322,6 +318,31 @@ func DeleteJob(fiberCtx *fiber.Ctx) error {
 		return responses.NotFound(fiberCtx, err.Error())
 	}
 
+	if err != nil {
+		return responses.InternalServerError(fiberCtx, err)
+	}
+
+	return responses.Success(fiberCtx, nil)
+}
+
+func FinishJob(fiberCtx *fiber.Ctx) error {
+	user := fiberCtx.Locals("user").(model.User)
+
+	id := fiberCtx.Params("id")
+	if len(id) == 0 {
+		return responses.BadRequest(fiberCtx, "Params {id} is required")
+	}
+
+	idInt, err := strconv.Atoi(id)
+	if len(id) == 0 {
+		return responses.BadRequest(fiberCtx, "Invalid params {id}")
+	}
+
+	err = company_job_adp.FinishJob(
+		fiberCtx.UserContext(),
+		int64(idInt),
+		user.CompanyID,
+	)
 	if err != nil {
 		return responses.InternalServerError(fiberCtx, err)
 	}

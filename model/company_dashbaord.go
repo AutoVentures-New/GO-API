@@ -3,9 +3,8 @@ package model
 import "time"
 
 type OpenJobs struct {
-	Count         int64 `json:"count"`
-	CloseToFinish int64 `json:"close_to_finish"`
-	Jobs          []struct {
+	Count int64 `json:"count"`
+	Jobs  []struct {
 		ID    int64  `json:"id"`
 		Title string `json:"title"`
 	} `json:"jobs"`

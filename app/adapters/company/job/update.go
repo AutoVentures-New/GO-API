@@ -28,7 +28,7 @@ func UpdateJob(
 		ctx,
 		`UPDATE jobs set title = ?,area_id=?,is_talent_bank = ?,is_special_needs = ?,description = ?,job_mode = ?,
                 contracting_modality = ?,state = ?,city = ?,responsibilities = ?,questionnaire = ?,video_link = ?,
-                status = ?,publish_at = ?,finish_at = ?,updated_at = ? WHERE id = ?`,
+                status = ?,publish_at = ?,updated_at = ? WHERE id = ?`,
 		job.Title,
 		job.AreaID,
 		job.IsTalentBank,
@@ -43,12 +43,13 @@ func UpdateJob(
 		job.VideoLink,
 		job.Status,
 		job.PublishAt,
-		job.FinishAt,
 		job.UpdatedAt,
 		job.ID,
 	)
 	if err != nil {
 		logrus.WithError(err).Error("Error to update job")
+
+		_ = dbTransaction.Rollback()
 
 		return job, err
 	}

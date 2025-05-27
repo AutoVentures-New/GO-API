@@ -1363,6 +1363,48 @@
 							"response": []
 						},
 						{
+							"name": "Finish Job",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{COMPANY_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/company/job/1/finish",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"job",
+										"1",
+										"finish"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Delete Job",
 							"event": [
 								{

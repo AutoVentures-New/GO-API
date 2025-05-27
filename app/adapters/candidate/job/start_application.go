@@ -127,8 +127,7 @@ func getJob(
 
 	err := database.Database.QueryRowContext(
 		ctx,
-		`SELECT id,company_id,status,questionnaire,publish_at,finish_at 
-				FROM jobs WHERE id = ?`,
+		`SELECT id,company_id,status,questionnaire,publish_at FROM jobs WHERE id = ?`,
 		id,
 	).Scan(
 		&job.ID,
@@ -136,7 +135,6 @@ func getJob(
 		&job.Status,
 		&job.Questionnaire,
 		&job.PublishAt,
-		&job.FinishAt,
 	)
 	if errors.Is(err, sql.ErrNoRows) {
 		return job, ErrJobNotFound
@@ -149,7 +147,7 @@ func getJob(
 	}
 
 	now := time.Now().UTC()
-	if now.Before(job.PublishAt) || now.After(job.FinishAt) {
+	if now.Before(job.PublishAt) {
 		return job, ErrInvalidJob
 	}
 
