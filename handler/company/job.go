@@ -234,6 +234,19 @@ func UpdateJob(fiberCtx *fiber.Ctx) error {
 		return responses.InternalServerError(fiberCtx, err)
 	}
 
+	hasApplication, err := company_job_adp.HasApplication(
+		fiberCtx.UserContext(),
+		int64(idInt),
+		user.CompanyID,
+	)
+	if err != nil {
+		return responses.InternalServerError(fiberCtx, err)
+	}
+
+	if hasApplication {
+		return responses.BadRequest(fiberCtx, "HAS_APPLICATION")
+	}
+
 	job.JobCulturalFit.Answers = make([]model.JobCulturalFitAnswer, 0)
 	for _, value := range request.JobCulturalFit.Answers {
 		job.JobCulturalFit.Answers = append(job.JobCulturalFit.Answers, model.JobCulturalFitAnswer{

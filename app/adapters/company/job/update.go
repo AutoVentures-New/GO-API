@@ -11,6 +11,28 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+func HasApplication(
+	ctx context.Context,
+	jobID int64,
+	companyID int64,
+) (bool, error) {
+	var count int64
+
+	err := database.Database.QueryRowContext(
+		ctx,
+		`SELECT count(0) FROM job_applications WHERE company_id = ? AND job_id = ?`,
+		companyID,
+		jobID,
+	).Scan(&count)
+	if err != nil {
+		logrus.WithError(err).Error("Error to get count job application")
+
+		return false, err
+	}
+
+	return count > 0, nil
+}
+
 func UpdateJob(
 	ctx context.Context,
 	job model.Job,

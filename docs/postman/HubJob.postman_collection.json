@@ -1349,14 +1349,20 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/company/job/15",
+									"raw": "{{HOST}}/company/job/:job_id",
 									"host": [
 										"{{HOST}}"
 									],
 									"path": [
 										"company",
 										"job",
-										"15"
+										":job_id"
+									],
+									"variable": [
+										{
+											"key": "job_id",
+											"value": "2"
+										}
 									]
 								}
 							},
