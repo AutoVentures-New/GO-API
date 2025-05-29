@@ -39,6 +39,7 @@ func ListJobApplications(
     					j.created_at,
     					j.updated_at,
     					c.name,
+    					c.phone,
     					r.match_value as r_match_value,
     					f.match_value as f_match_value,
     					v.score,
@@ -93,6 +94,7 @@ func ListJobApplications(
 			&application.UpdatedAt,
 
 			&candidate.Name,
+			&candidate.Phone,
 			&requirementMatchValue,
 			&culturalFitMatchValue,
 			&candidateVideoScore,
