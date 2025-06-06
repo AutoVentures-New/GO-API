@@ -95,3 +95,11 @@ type State struct {
 type City struct {
 	Name string `json:"name"`
 }
+
+type JobVideo struct {
+	ID        int64     `json:"id"`
+	CompanyID int64     `json:"company_id"`
+	VideoLink string    `json:"video_link"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}

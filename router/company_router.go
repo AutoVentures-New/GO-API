@@ -53,6 +53,7 @@ func setupCompanyRoute(router fiber.Router) {
 	job.Patch("/:id", company.UpdateJob)
 	job.Delete("/:id", company.DeleteJob)
 	job.Patch("/:id/finish", company.FinishJob)
+	job.Post("/upload-video", job2.SaveJobVideo)
 
 	applications := job.Group("/:id/application")
 

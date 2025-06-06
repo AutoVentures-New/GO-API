@@ -62,7 +62,7 @@ func ListJobApplications(
 		args = append(args, "%"+request.FilterCandidateName+"%")
 	}
 
-	query += " ORDER BY j.id DESC"
+	query += " ORDER BY q.score DESC, q.open_field_score DESC"
 
 	rows, err := database.Database.QueryContext(
 		ctx,
