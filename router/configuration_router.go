@@ -12,4 +12,5 @@ func setupConfigurationRoute(router fiber.Router) {
 	router.Get("/cultural-fit", configuration.GetCulturalFit)
 	router.Get("/list-areas", configuration.ListAreas)
 	router.Get("/state-cities", configuration.ListStateCities)
+	router.Get("/example-questions", configuration.ListExampleQuestions)
 }

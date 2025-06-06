@@ -34,3 +34,14 @@ type Answer struct {
 	CreatedAt       time.Time `json:"created_at"`
 	UpdatedAt       time.Time `json:"updated_at"`
 }
+
+type ExampleQuestions struct {
+	Title       string                `json:"title"`
+	Description string                `json:"description"`
+	Subs        []ExampleQuestionsSub `json:"subs"`
+}
+
+type ExampleQuestionsSub struct {
+	Title     string   `json:"title"`
+	Questions []string `json:"questions"`
+}

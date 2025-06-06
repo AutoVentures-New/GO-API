@@ -1232,6 +1232,57 @@
 							"response": []
 						},
 						{
+							"name": "Upload video",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{COMPANY_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "video",
+											"type": "file",
+											"src": "/Users/vitorruschoni/Desktop/test/video-test.mov"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{HOST}}/company/job/upload-video",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"company",
+										"job",
+										"upload-video"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "List Job",
 							"event": [
 								{
@@ -3298,6 +3349,27 @@
 									"key": "company_id",
 									"value": "0"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List example questions",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/configuration/example-questions",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"configuration",
+								"example-questions"
 							]
 						}
 					},
