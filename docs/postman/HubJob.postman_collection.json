@@ -33,7 +33,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"email\": \"vitorruschoni@gmail.com\",\n    \"password\": \"q1w2e3\"\n}",
+									"raw": "{\n    \"email\": \"vitorruschoni@gmail.com\",\n    \"password\": \"q1w2e3r4\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"

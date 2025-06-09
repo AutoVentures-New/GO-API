@@ -28,5 +28,7 @@ func SaveJobVideo(fiberCtx *fiber.Ctx) error {
 		return responses.InternalServerError(fiberCtx, err)
 	}
 
-	return responses.Success(fiberCtx, jobVideo)
+	return responses.Success(fiberCtx, map[string]string{
+		"video_link": jobVideo,
+	})
 }

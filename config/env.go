@@ -23,6 +23,7 @@ type configEnv struct {
 	}
 	S3 struct {
 		Bucket          string `env:"S3_BUCKET_NAME"`
+		BucketPublic    string `env:"S3_BUCKET_PUBLIC_NAME"`
 		BucketRegion    string `env:"S3_BUCKET_REGION"`
 		AccessKey       string `env:"S3_ACCESS_KEY"`
 		SecretAccessKey string `env:"S3_SECRET_ACCESS_KEY"`
