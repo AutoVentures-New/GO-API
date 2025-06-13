@@ -22,5 +22,38 @@ func ListContactData(fiberCtx *fiber.Ctx) error {
 		return responses.InternalServerError(fiberCtx, err)
 	}
 
+	_, err = contact_data.GetEmails(fiberCtx.Context(), user, ExtractIdentifiers(contactData))
+	if err != nil {
+		return responses.InternalServerError(fiberCtx, err)
+	}
+
+	_, err = contact_data.GetCalls(fiberCtx.Context(), user, ExtractIdentifiers(contactData))
+	if err != nil {
+		return responses.InternalServerError(fiberCtx, err)
+	}
+
+	_, err = contact_data.GetActivityFiles(fiberCtx.Context(), user, ExtractIdentifiers(contactData))
+	if err != nil {
+		return responses.InternalServerError(fiberCtx, err)
+	}
+
+	_, err = contact_data.GetNotes(fiberCtx.Context(), user, ExtractIdentifiers(contactData))
+	if err != nil {
+		return responses.InternalServerError(fiberCtx, err)
+	}
+
+	_, err = contact_data.GetEvents(fiberCtx.Context(), user, ExtractIdentifiers(contactData))
+	if err != nil {
+		return responses.InternalServerError(fiberCtx, err)
+	}
+
 	return responses.Success(fiberCtx, contactData)
+}
+
+func ExtractIdentifiers(data []model.ContactData) []string {
+	identifiers := make([]string, 0, len(data))
+	for _, d := range data {
+		identifiers = append(identifiers, d.Identifier)
+	}
+	return identifiers
 }

@@ -1,9 +1,9 @@
 package router
 
 import (
-	"github.com/gofiber/fiber/v2"
 	"github.com/AutoVentures-New/GO-API/handler/responses"
 	"github.com/AutoVentures-New/GO-API/middleware"
+	"github.com/gofiber/fiber/v2"
 )
 
 func SetupRoutes(app *fiber.App) {

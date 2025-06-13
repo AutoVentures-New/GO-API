@@ -65,7 +65,6 @@ var apiCmd = &cobra.Command{
 		_ = app.Shutdown()
 
 		database.CloseDatabase()
-		pkg.CloseRedis()
 
 		logrus.Info("API finish with success")
 	},

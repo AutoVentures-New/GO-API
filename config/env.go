@@ -9,7 +9,6 @@ import (
 var Config configEnv
 
 type configEnv struct {
-	AccessToken string `env:"ACCESS_TOKEN" envDefault:"-"`
 	Env         string `env:"ENV" envDefault:"prod"`
 	FrontendURL string `env:"FRONTEND_URL" envDefault:"http://localhost:3000"`
 	Port        string `env:"PORT" envDefault:"5000"`

@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/AutoVentures-New/GO-API/database"
+	"github.com/AutoVentures-New/GO-API/internal/query"
 	"github.com/AutoVentures-New/GO-API/model"
 	"github.com/AutoVentures-New/GO-API/model/request"
 	"github.com/sirupsen/logrus"
@@ -16,12 +17,9 @@ func GetContactData(
 	filter request.ContactDataQuery,
 ) ([]model.ContactData, error) {
 
-	listContactDataQuery := fmt.Sprintf("SELECT cd.ulid, cd.date FROM tenant_%s.contact_data_contact cdc "+
-		"INNER JOIN tenant_%s.contact_data cd "+
-		"ON cdc.contact_data_ulid COLLATE utf8mb4_unicode_ci = cd.ulid COLLATE utf8mb4_unicode_ci "+
-		"WHERE cdc.contact_ulid = ?", user.Account, user.Account)
+	sqlQuery := fmt.Sprintf(query.ListContactData, user.Account, user.Account)
 
-	rows, err := database.Database.QueryContext(ctx, listContactDataQuery, filter.ContactULID)
+	rows, err := database.Database.QueryContext(ctx, sqlQuery, filter.ContactULID)
 
 	if err != nil {
 		logrus.WithError(err).
@@ -44,6 +42,11 @@ func GetContactData(
 
 		err := rows.Scan(
 			&contactData.Ulid,
+			&contactData.Type,
+			&contactData.Identifier,
+			&contactData.From,
+			&contactData.To,
+			&contactData.CC,
 			&contactData.Date,
 		)
 		if err != nil {
