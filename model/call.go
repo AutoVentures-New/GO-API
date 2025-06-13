@@ -7,6 +7,7 @@ import (
 type Call struct {
 	RecordNumber       uint64         `json:"record_number"`
 	Ulid               string         `json:"ulid"`
+	Subject            string         `json:"subject"`
 	CreatedBy          string         `json:"created_by"`
 	UserPhoneNumber    string         `json:"user_phone_number"`
 	ContactPhoneNumber string         `json:"contact_phone_number"`

@@ -7,13 +7,14 @@ import (
 	"github.com/AutoVentures-New/GO-API/database"
 	"github.com/AutoVentures-New/GO-API/internal/query"
 	"github.com/AutoVentures-New/GO-API/model"
+	"github.com/AutoVentures-New/GO-API/pkg"
 	"github.com/sirupsen/logrus"
 	"strings"
 )
 
 func GetActivityFiles(
 	ctx context.Context,
-	user model.User,
+	account string,
 	ulids []string) ([]model.ActivityFile, error) {
 
 	placeholders := make([]string, len(ulids))
@@ -26,7 +27,7 @@ func GetActivityFiles(
 
 	whereIn := strings.Join(placeholders, ", ")
 
-	sqlQuery := fmt.Sprintf(query.ListActivityFileData, user.Account) + " WHERE ulid IN (" + whereIn + ")"
+	sqlQuery := fmt.Sprintf(query.ListActivityFileData, account) + " WHERE ulid IN (" + whereIn + ")"
 
 	rows, err := database.Database.QueryContext(ctx, sqlQuery, args...)
 
@@ -65,5 +66,29 @@ func GetActivityFiles(
 		results = append(results, af)
 	}
 
-	return results, nil
+	comments, err := GetComments(ctx, account, pkg.ExtractIdentifiers(results))
+
+	if err != nil {
+		return nil, err
+	}
+
+	return GroupComments(results, comments), nil
+}
+
+func GroupComments(files []model.ActivityFile, comments []model.Comment) []model.ActivityFile {
+	commentsMap := make(map[string][]model.Comment)
+
+	for _, c := range comments {
+		if c.CommentedAt != nil {
+			commentsMap[*c.CommentedAt] = append(commentsMap[*c.CommentedAt], c)
+		}
+	}
+	for i, n := range files {
+		if replies, ok := commentsMap[n.Ulid]; ok {
+			files[i].Comments = replies
+		} else {
+			files[i].Comments = []model.Comment{}
+		}
+	}
+	return files
 }

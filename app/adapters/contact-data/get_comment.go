@@ -11,11 +11,10 @@ import (
 	"strings"
 )
 
-func GetCalls(
+func GetComments(
 	ctx context.Context,
 	account string,
-	ulids []string,
-) ([]model.Call, error) {
+	ulids []string) ([]model.Comment, error) {
 
 	placeholders := make([]string, len(ulids))
 	args := make([]interface{}, len(ulids))
@@ -27,13 +26,13 @@ func GetCalls(
 
 	whereIn := strings.Join(placeholders, ", ")
 
-	sqlQuery := fmt.Sprintf(query.ListCallData, account) + " WHERE ulid IN (" + whereIn + ")"
+	sqlQuery := fmt.Sprintf(query.ListCommentsData, account) + " WHERE commented_at IN (" + whereIn + ") ORDER BY created_at ASC"
 
 	rows, err := database.Database.QueryContext(ctx, sqlQuery, args...)
 
 	if err != nil {
 		logrus.WithError(err).
-			Error("Error to list call data")
+			Error("Error to list comments data")
 
 		return nil, err
 	}
@@ -45,33 +44,24 @@ func GetCalls(
 		}
 	}(rows)
 
-	callsData := make([]model.Call, 0)
-
+	var comments []model.Comment
 	for rows.Next() {
-		var call model.Call
+		var c model.Comment
 		err := rows.Scan(
-			&call.RecordNumber,
-			&call.Ulid,
-			&call.Subject,
-			&call.CreatedBy,
-			&call.UserPhoneNumber,
-			&call.ContactPhoneNumber,
-			&call.Done,
-			&call.To,
-			&call.CallType,
-			&call.Direction,
-			&call.Outcome,
-			&call.Notes,
-			&call.UserCreateDate,
-			&call.CreatedAt,
-			&call.UpdatedAt,
+			&c.RecordNumber,
+			&c.Ulid,
+			&c.CreatedBy,
+			&c.Text,
+			&c.CommentedAt,
+			&c.Files,
+			&c.CreatedAt,
+			&c.UpdatedAt,
 		)
 		if err != nil {
-			logrus.WithError(err).Error("Error to list call data")
 			return nil, err
 		}
-		callsData = append(callsData, call)
+		comments = append(comments, c)
 	}
 
-	return callsData, nil
+	return comments, nil
 }

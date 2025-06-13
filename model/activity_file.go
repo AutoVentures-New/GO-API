@@ -16,4 +16,10 @@ type ActivityFile struct {
 	UserCreateDate time.Time       `json:"user_create_date"`
 	CreatedAt      time.Time       `json:"created_at"`
 	UpdatedAt      time.Time       `json:"updated_at"`
+	Comments       []Comment       `json:"comments"`
+}
+
+func (a ActivityFile) GetUlid() string {
+	return a.Ulid
+
 }

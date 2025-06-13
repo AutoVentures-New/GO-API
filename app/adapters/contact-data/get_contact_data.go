@@ -13,11 +13,11 @@ import (
 
 func GetContactData(
 	ctx context.Context,
-	user model.User,
+	account string,
 	filter request.ContactDataQuery,
 ) ([]model.ContactData, error) {
 
-	sqlQuery := fmt.Sprintf(query.ListContactData, user.Account, user.Account)
+	sqlQuery := fmt.Sprintf(query.ListContactData, account, account)
 
 	rows, err := database.Database.QueryContext(ctx, sqlQuery, filter.ContactULID)
 

@@ -7,14 +7,33 @@ import (
 	"github.com/AutoVentures-New/GO-API/database"
 	"github.com/AutoVentures-New/GO-API/internal/query"
 	"github.com/AutoVentures-New/GO-API/model"
+	"github.com/AutoVentures-New/GO-API/pkg"
 	"github.com/sirupsen/logrus"
 	"strings"
 )
 
 func GetNotes(
 	ctx context.Context,
-	user model.User,
+	account string,
 	ulids []string) ([]model.Note, error) {
+
+	notes, err := GetNotesSelect(ctx, account, ulids, false)
+
+	if err != nil {
+		return nil, err
+	}
+
+	notesComments, err := GetNotesSelect(ctx, account, pkg.ExtractIdentifiers(notes), true)
+
+	return GroupNotes(notes, notesComments), nil
+}
+
+func GetNotesSelect(
+	ctx context.Context,
+	account string,
+	ulids []string,
+	isComments bool,
+) ([]model.Note, error) {
 
 	placeholders := make([]string, len(ulids))
 	args := make([]interface{}, len(ulids))
@@ -26,8 +45,17 @@ func GetNotes(
 
 	whereIn := strings.Join(placeholders, ", ")
 
-	sqlQuery := fmt.Sprintf(query.ListNoteData, user.Account) + " WHERE ulid IN (" + whereIn + ")"
+	condition := "ulid"
+	if isComments {
+		condition = "commented_at"
+	}
 
+	sqlQuery := fmt.Sprintf(
+		`%s WHERE %s IN (%s) ORDER BY n.created_at ASC`,
+		fmt.Sprintf(query.ListNoteData, account),
+		condition,
+		whereIn,
+	)
 	rows, err := database.Database.QueryContext(ctx, sqlQuery, args...)
 
 	if err != nil {
@@ -68,4 +96,22 @@ func GetNotes(
 	}
 
 	return notes, nil
+}
+
+func GroupNotes(notes []model.Note, comments []model.Note) []model.Note {
+	commentsMap := make(map[string][]model.Note)
+
+	for _, c := range comments {
+		if c.CommentedAt != nil {
+			commentsMap[*c.CommentedAt] = append(commentsMap[*c.CommentedAt], c)
+		}
+	}
+	for i, n := range notes {
+		if replies, ok := commentsMap[n.Ulid]; ok {
+			notes[i].Comments = replies
+		} else {
+			notes[i].Comments = []model.Note{}
+		}
+	}
+	return notes
 }

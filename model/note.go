@@ -18,4 +18,9 @@ type Note struct {
 	UserCreateDate time.Time       `json:"user_create_date"`
 	CreatedAt      time.Time       `json:"created_at"`
 	UpdatedAt      time.Time       `json:"updated_at"`
+	Comments       []Note          `json:"comments"`
+}
+
+func (n Note) GetUlid() string {
+	return n.Ulid
 }

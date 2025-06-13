@@ -32,4 +32,5 @@ type EmailBucket struct {
 	Date             time.Time       `json:"date"`
 	CreatedAt        time.Time       `json:"created_at"`
 	UpdatedAt        time.Time       `json:"updated_at"`
+	EmailsReply      []EmailBucket   `json:"emails_reply"`
 }

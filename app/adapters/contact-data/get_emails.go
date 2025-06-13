@@ -13,7 +13,7 @@ import (
 
 func GetEmails(
 	ctx context.Context,
-	user model.User,
+	account string,
 	ulids []string,
 ) ([]model.EmailBucket, error) {
 
@@ -27,7 +27,7 @@ func GetEmails(
 
 	whereIn := strings.Join(placeholders, ", ")
 
-	sqlQuery := fmt.Sprintf(query.ListEmailData, user.Account) + " WHERE ulid IN (" + whereIn + ")"
+	sqlQuery := fmt.Sprintf(query.ListEmailData, account) + " WHERE thread_id IN (" + whereIn + ") ORDER  BY eb.date DESC"
 
 	rows, err := database.Database.QueryContext(ctx, sqlQuery, args...)
 
@@ -83,5 +83,36 @@ func GetEmails(
 		emailsData = append(emailsData, e)
 	}
 
-	return emailsData, nil
+	return GroupEmailsByThreadID(emailsData), nil
+}
+
+func GroupEmailsByThreadID(emails []model.EmailBucket) []model.EmailBucket {
+	grouped := make([]model.EmailBucket, 0)
+	processed := make(map[string]bool)
+	threads := make(map[string][]model.EmailBucket)
+
+	for _, e := range emails {
+		threads[e.ThreadID] = append(threads[e.ThreadID], e)
+	}
+
+	for _, group := range threads {
+		if len(group) == 0 {
+			continue
+		}
+		parent := group[0]
+		parent.EmailsReply = group[1:]
+		grouped = append(grouped, parent)
+
+		for _, e := range group {
+			processed[e.Ulid] = true
+		}
+	}
+
+	for _, e := range emails {
+		if !processed[e.Ulid] {
+			grouped = append(grouped, e)
+		}
+	}
+
+	return grouped
 }

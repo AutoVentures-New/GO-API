@@ -11,12 +11,8 @@ import (
 	"strings"
 )
 
-func GetCalls(
-	ctx context.Context,
-	account string,
-	ulids []string,
-) ([]model.Call, error) {
-
+func GetEventFiles(ctx context.Context, account string, ulids []string,
+) ([]model.CalendarEventFile, error) {
 	placeholders := make([]string, len(ulids))
 	args := make([]interface{}, len(ulids))
 
@@ -27,13 +23,13 @@ func GetCalls(
 
 	whereIn := strings.Join(placeholders, ", ")
 
-	sqlQuery := fmt.Sprintf(query.ListCallData, account) + " WHERE ulid IN (" + whereIn + ")"
+	sqlQuery := fmt.Sprintf(query.ListEventFileData, account) + " WHERE event_ulid IN (" + whereIn + ") ORDER BY created_at DESC"
 
 	rows, err := database.Database.QueryContext(ctx, sqlQuery, args...)
 
 	if err != nil {
 		logrus.WithError(err).
-			Error("Error to list call data")
+			Error("Error to list event file data")
 
 		return nil, err
 	}
@@ -44,34 +40,26 @@ func GetCalls(
 
 		}
 	}(rows)
-
-	callsData := make([]model.Call, 0)
+	var files []model.CalendarEventFile
 
 	for rows.Next() {
-		var call model.Call
+		var f model.CalendarEventFile
 		err := rows.Scan(
-			&call.RecordNumber,
-			&call.Ulid,
-			&call.Subject,
-			&call.CreatedBy,
-			&call.UserPhoneNumber,
-			&call.ContactPhoneNumber,
-			&call.Done,
-			&call.To,
-			&call.CallType,
-			&call.Direction,
-			&call.Outcome,
-			&call.Notes,
-			&call.UserCreateDate,
-			&call.CreatedAt,
-			&call.UpdatedAt,
+			&f.RecordNumber,
+			&f.Ulid,
+			&f.EventUlid,
+			&f.IsExternal,
+			&f.Name,
+			&f.Extension,
+			&f.Link,
+			&f.CreatedAt,
+			&f.UpdatedAt,
 		)
 		if err != nil {
-			logrus.WithError(err).Error("Error to list call data")
 			return nil, err
 		}
-		callsData = append(callsData, call)
+		files = append(files, f)
 	}
 
-	return callsData, nil
+	return files, nil
 }

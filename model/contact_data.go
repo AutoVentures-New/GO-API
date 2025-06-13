@@ -17,4 +17,9 @@ type ContactData struct {
 	Date         time.Time       `json:"date"`
 	CreatedAt    time.Time       `json:"created_at"`
 	UpdatedAt    time.Time       `json:"updated_at"`
+	Object       interface{}     `json:"object"`
+}
+
+func (n ContactData) GetUlid() string {
+	return n.Identifier
 }

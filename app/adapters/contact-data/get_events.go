@@ -7,13 +7,14 @@ import (
 	"github.com/AutoVentures-New/GO-API/database"
 	"github.com/AutoVentures-New/GO-API/internal/query"
 	"github.com/AutoVentures-New/GO-API/model"
+	"github.com/AutoVentures-New/GO-API/pkg"
 	"github.com/sirupsen/logrus"
 	"strings"
 )
 
 func GetEvents(
 	ctx context.Context,
-	user model.User,
+	account string,
 	ulids []string,
 ) ([]model.CalendarEvent, error) {
 
@@ -27,7 +28,7 @@ func GetEvents(
 
 	whereIn := strings.Join(placeholders, ", ")
 
-	sqlQuery := fmt.Sprintf(query.ListCalendarEventData, user.Account) + " WHERE ulid IN (" + whereIn + ")"
+	sqlQuery := fmt.Sprintf(query.ListCalendarEventData, account) + " WHERE ulid IN (" + whereIn + ")"
 
 	rows, err := database.Database.QueryContext(ctx, sqlQuery, args...)
 
@@ -80,5 +81,29 @@ func GetEvents(
 		events = append(events, ev)
 	}
 
-	return events, nil
+	eventFiles, err := GetEventFiles(ctx, account, pkg.ExtractIdentifiers(events))
+
+	if err != nil {
+		return nil, err
+	}
+
+	return GroupFiles(events, eventFiles), nil
+}
+
+func GroupFiles(events []model.CalendarEvent, files []model.CalendarEventFile) []model.CalendarEvent {
+	filesMap := make(map[string][]model.CalendarEventFile)
+
+	for _, f := range files {
+		if f.EventUlid != nil {
+			filesMap[*f.EventUlid] = append(filesMap[*f.EventUlid], f)
+		}
+	}
+	for i, e := range events {
+		if fileData, ok := filesMap[e.Ulid]; ok {
+			events[i].ActivityFiles = fileData
+		} else {
+			events[i].ActivityFiles = []model.CalendarEventFile{}
+		}
+	}
+	return events
 }
