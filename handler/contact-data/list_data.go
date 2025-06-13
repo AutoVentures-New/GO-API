@@ -9,6 +9,18 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+type ListResponse[T any] struct {
+	Data  []T `json:"data"`
+	Total int `json:"total"`
+}
+
+func ListSuccess[T any](ctx *fiber.Ctx, data []T, total int) error {
+	return ctx.Status(fiber.StatusOK).JSON(ListResponse[T]{
+		Data:  data,
+		Total: total,
+	})
+}
+
 func ListContactData(fiberCtx *fiber.Ctx) error {
 	user := fiberCtx.Locals("user").(model.User)
 	ctx := fiberCtx.Context()
@@ -22,6 +34,10 @@ func ListContactData(fiberCtx *fiber.Ctx) error {
 	contactData, err := contact_data.GetContactData(ctx, account, query)
 	if err != nil {
 		return responses.InternalServerError(fiberCtx, err)
+	}
+
+	if len(contactData) == 0 {
+		return ListSuccess(fiberCtx, contactData, 0)
 	}
 
 	ulids := pkg.ExtractIdentifiers(contactData)
@@ -71,5 +87,5 @@ func ListContactData(fiberCtx *fiber.Ctx) error {
 		}
 	}
 
-	return responses.Success(fiberCtx, contactData)
+	return ListSuccess(fiberCtx, contactData, len(contactData))
 }

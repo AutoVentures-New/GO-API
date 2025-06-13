@@ -17,7 +17,8 @@ type CalendarEvent struct {
 	Recurrence        json.RawMessage     `json:"recurrence"`
 	Notifications     json.RawMessage     `json:"notifications"`
 	Conferencing      json.RawMessage     `json:"conferencing"`
-	ConferenceRecords sql.NullString      `json:"conference_records"`
+	Records           sql.NullString      `json:"records"`
+	ConferenceRecords []interface{}       `json:"conference_records"`
 	OrganizerName     string              `json:"organizer_name"`
 	OrganizerEmail    string              `json:"organizer_email"`
 	Owner             string              `json:"owner"`

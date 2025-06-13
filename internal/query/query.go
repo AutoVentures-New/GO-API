@@ -10,7 +10,7 @@ var ListActivityFileData = `SELECT record_number, ulid, created_by, af.to, subje
 
 var ListNoteData = `SELECT record_number, ulid, created_by, n.to, subject, done, text, commented_at, files, user_create_date, created_at, updated_at FROM tenant_%s.notes n`
 
-var ListCalendarEventData = `SELECT record_number, ulid, name, description, participants, ce.when, location, recurrence, notifications, conferencing, conference_records, organizer_name, organizer_email, owner, done, start_date, end_date, all_day, type, sequence, files, created_at, updated_at FROM tenant_%s.calendar_events ce`
+var ListCalendarEventData = `SELECT record_number, ulid, name, description, participants, ce.when, location, recurrence, notifications, conferencing, conference_records as 'records', organizer_name, organizer_email, owner, done, start_date, end_date, all_day, type, sequence, files, created_at, updated_at FROM tenant_%s.calendar_events ce`
 
 var ListCommentsData = `SELECT record_number, ulid, created_by, text, commented_at, files, created_at, updated_at FROM tenant_%s.comments`
 

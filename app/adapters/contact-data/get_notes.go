@@ -35,6 +35,10 @@ func GetNotesSelect(
 	isComments bool,
 ) ([]model.Note, error) {
 
+	if len(ulids) == 0 {
+		return []model.Note{}, nil
+	}
+
 	placeholders := make([]string, len(ulids))
 	args := make([]interface{}, len(ulids))
 

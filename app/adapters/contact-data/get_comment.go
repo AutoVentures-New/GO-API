@@ -16,6 +16,10 @@ func GetComments(
 	account string,
 	ulids []string) ([]model.Comment, error) {
 
+	if len(ulids) == 0 {
+		return []model.Comment{}, nil
+	}
+
 	placeholders := make([]string, len(ulids))
 	args := make([]interface{}, len(ulids))
 

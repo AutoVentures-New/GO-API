@@ -13,6 +13,11 @@ import (
 
 func GetEventFiles(ctx context.Context, account string, ulids []string,
 ) ([]model.CalendarEventFile, error) {
+
+	if len(ulids) == 0 {
+		return []model.CalendarEventFile{}, nil
+	}
+
 	placeholders := make([]string, len(ulids))
 	args := make([]interface{}, len(ulids))
 

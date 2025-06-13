@@ -60,7 +60,7 @@ func GetEvents(
 			&ev.Recurrence,
 			&ev.Notifications,
 			&ev.Conferencing,
-			&ev.ConferenceRecords,
+			&ev.Records,
 			&ev.OrganizerName,
 			&ev.OrganizerEmail,
 			&ev.Owner,
@@ -101,8 +101,10 @@ func GroupFiles(events []model.CalendarEvent, files []model.CalendarEventFile) [
 	for i, e := range events {
 		if fileData, ok := filesMap[e.Ulid]; ok {
 			events[i].ActivityFiles = fileData
+			events[i].ConferenceRecords = []interface{}{}
 		} else {
 			events[i].ActivityFiles = []model.CalendarEventFile{}
+			events[i].ConferenceRecords = []interface{}{}
 		}
 	}
 	return events

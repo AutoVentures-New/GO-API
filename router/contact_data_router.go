@@ -6,5 +6,5 @@ import (
 )
 
 func setupContactDataRoute(router fiber.Router) {
-	router.Get("/", contact_data.ListContactData)
+	router.Get("/list-data", contact_data.ListContactData)
 }
