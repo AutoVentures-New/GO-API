@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/hubjob/api/handler/responses"
+	"github.com/AutoVentures-New/GO-API/handler/responses"
 	"github.com/sirupsen/logrus"
 )
 

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/hubjob/api/cmd"
+	"github.com/AutoVentures-New/GO-API/cmd"
 )
 
 func main() {

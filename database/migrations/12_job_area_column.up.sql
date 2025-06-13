@@ -1,3 +1,0 @@
-ALTER TABLE jobs ADD COLUMN area_id BIGINT NOT NULL DEFAULT 1 AFTER company_id;
-
-ALTER TABLE jobs ADD FOREIGN KEY (area_id) REFERENCES areas(id);

@@ -2,7 +2,8 @@ package router
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/hubjob/api/handler/responses"
+	"github.com/AutoVentures-New/GO-API/handler/responses"
+	"github.com/AutoVentures-New/GO-API/middleware"
 )
 
 func SetupRoutes(app *fiber.App) {
@@ -11,10 +12,8 @@ func SetupRoutes(app *fiber.App) {
 		return responses.Success(fiberCtx, "I'm OK")
 	})
 
-	setupCompanyRoute(api.Group("/company"))
-	setupCandidateRoute(api.Group("/candidate"))
-	setupConfigurationRoute(api.Group("/configuration"))
-	setupPublicRoute(api.Group("/public"))
+	protected := api.Group("/", middleware.Auth())
+	setupContactDataRoute(protected.Group("/contact"))
 }
 
 func RouteNotFound() fiber.Handler {

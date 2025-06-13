@@ -9,32 +9,27 @@ import (
 var Config configEnv
 
 type configEnv struct {
+	AccessToken string `env:"ACCESS_TOKEN" envDefault:"-"`
 	Env         string `env:"ENV" envDefault:"prod"`
 	FrontendURL string `env:"FRONTEND_URL" envDefault:"http://localhost:3000"`
 	Port        string `env:"PORT" envDefault:"5000"`
 	JwtSecret   string `env:"JWT_SECRET"`
 	Database    struct {
-		Uri string `env:"DB_URI"`
+		Uri string `env:"DB_URI" json:"-"`
 	}
-	SendGrid struct {
-		ApiKey   string `env:"SENDGRID_API_KEY"`
-		Sender   string `env:"SENDGRID_SENDER"`
-		EmailDev string `env:"SENDGRID_EMAIL_DEV"`
-	}
+
 	S3 struct {
-		Bucket          string `env:"S3_BUCKET_NAME"`
-		BucketPublic    string `env:"S3_BUCKET_PUBLIC_NAME"`
-		BucketRegion    string `env:"S3_BUCKET_REGION"`
-		AccessKey       string `env:"S3_ACCESS_KEY"`
-		SecretAccessKey string `env:"S3_SECRET_ACCESS_KEY"`
+		Region    string `env:"S3_REGION" json:"region"`
+		Key       string `env:"S3_KEY" json:"-"`
+		Secret    string `env:"S3_SECRET" json:"-"`
+		Bucket    string `env:"S3_BUCKET" json:"bucket"`
+		SaveFiles string `env:"S3_SAVE_FILES" json:"saveFiles"`
 	}
+
 	Redis struct {
 		Address         string `env:"REDIS_ADDRESS"`
 		Password        string `env:"REDIS_PASSWORD"`
 		SessionDatabase int    `env:"REDIS_SESSION_DATABASE"`
-	}
-	GCP struct {
-		CredentialsFile string `env:"GCP_CREDENTIALS_FILE"`
 	}
 }
 

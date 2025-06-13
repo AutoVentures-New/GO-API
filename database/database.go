@@ -2,8 +2,8 @@ package database
 
 import (
 	"database/sql"
+	"github.com/AutoVentures-New/GO-API/config"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/hubjob/api/config"
 	"github.com/sirupsen/logrus"
 )
 

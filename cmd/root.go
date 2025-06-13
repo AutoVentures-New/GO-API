@@ -1,13 +1,12 @@
 package cmd
 
 import (
-	"os"
-
 	"github.com/spf13/cobra"
+	"os"
 )
 
 var rootCmd = &cobra.Command{
-	Use: "hubjob",
+	Use: "AutoVentures",
 }
 
 func Execute() {

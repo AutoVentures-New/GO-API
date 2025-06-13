@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
-	"github.com/hubjob/api/config"
+	"github.com/AutoVentures-New/GO-API/config"
 	"github.com/sirupsen/logrus"
 )
 
@@ -16,8 +16,8 @@ var S3Client *s3.S3
 
 func InitS3Client() {
 	sess, err := session.NewSession(&aws.Config{
-		Region:      aws.String(config.Config.S3.BucketRegion),
-		Credentials: credentials.NewStaticCredentials(config.Config.S3.AccessKey, config.Config.S3.SecretAccessKey, ""),
+		Region:      aws.String(config.Config.S3.Region),
+		Credentials: credentials.NewStaticCredentials(config.Config.S3.Key, config.Config.S3.Secret, ""),
 	})
 	if err != nil {
 		logrus.WithError(err).Panic("Error to create s3 client")

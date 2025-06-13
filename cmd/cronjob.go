@@ -1,28 +1,22 @@
 package cmd
 
 import (
-	"github.com/hubjob/api/config"
-	"github.com/hubjob/api/database"
-	"github.com/hubjob/api/handler/queue_job"
-	"github.com/hubjob/api/log"
-	"github.com/hubjob/api/pkg"
+	"github.com/AutoVentures-New/GO-API/config"
+	"github.com/AutoVentures-New/GO-API/database"
+	"github.com/AutoVentures-New/GO-API/log"
+	"github.com/AutoVentures-New/GO-API/pkg"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
 var cronjobCmd = &cobra.Command{
 	Use:   "cronjob",
-	Short: "Hubjob Cronjob",
+	Short: "Autoventures Cronjob",
 	Run: func(cmd *cobra.Command, args []string) {
 		log.InitLogger()
 		config.InitConfig()
 		database.InitDatabase()
 		pkg.InitS3Client()
-		pkg.InitSheetsService(cmd.Context())
-		pkg.InitDriveService(cmd.Context())
-		pkg.InitSlideService(cmd.Context())
-
-		queue_job.Executor(cmd.Context())
 
 		database.CloseDatabase()
 

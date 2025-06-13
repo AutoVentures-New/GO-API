@@ -1,8 +1,0 @@
-CREATE TABLE IF NOT EXISTS queue_jobs (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    type VARCHAR(255) NOT NULL,
-    status ENUM('PENDING', 'PROCESSING', 'ERROR', 'FINISHED') DEFAULT 'PENDING',
-    configurations JSON NOT NULL,
-    created_at DATETIME(6) NOT NULL,
-    updated_at DATETIME(6) NOT NULL
-);

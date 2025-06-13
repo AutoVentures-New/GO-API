@@ -3,8 +3,8 @@ package pkg
 import (
 	"context"
 
+	"github.com/AutoVentures-New/GO-API/config"
 	"github.com/go-redis/redis/v8"
-	"github.com/hubjob/api/config"
 	"github.com/sirupsen/logrus"
 )
 

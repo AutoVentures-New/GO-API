@@ -1,1 +1,0 @@
-ALTER TABLE job_application_questions ADD COLUMN score INT NOT NULL AFTER questions;

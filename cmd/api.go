@@ -5,37 +5,33 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/AutoVentures-New/GO-API/config"
+	"github.com/AutoVentures-New/GO-API/database"
+	"github.com/AutoVentures-New/GO-API/log"
+	"github.com/AutoVentures-New/GO-API/middleware"
+	"github.com/AutoVentures-New/GO-API/pkg"
+	"github.com/AutoVentures-New/GO-API/router"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/hubjob/api/app/adapters/sendgrid"
-	"github.com/hubjob/api/config"
-	"github.com/hubjob/api/database"
-	"github.com/hubjob/api/log"
-	"github.com/hubjob/api/middleware"
-	"github.com/hubjob/api/pkg"
-	"github.com/hubjob/api/router"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
 var apiCmd = &cobra.Command{
 	Use:   "api",
-	Short: "Hubjob API",
+	Short: "AutoVentures API",
 	Run: func(cmd *cobra.Command, args []string) {
 		log.InitLogger()
 		config.InitConfig()
 		database.InitDatabase()
-		database.RunMigrations()
-		sendgrid.InitSendGrid()
 		pkg.InitS3Client()
-		pkg.InitRedis()
 
 		app := fiber.New(fiber.Config{
 			Prefork:                  false,
 			CaseSensitive:            false,
 			StrictRouting:            false,
 			ServerHeader:             "*",
-			AppName:                  "HubJob API",
+			AppName:                  "AutoVentures API",
 			Immutable:                true,
 			DisableStartupMessage:    true,
 			ErrorHandler:             middleware.ErrorHandler(),
