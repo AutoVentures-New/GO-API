@@ -73,12 +73,12 @@ func getWhereClause(filter request.ContactDataQuery, sqlQuery string, args []int
 		args = append(args, filter.ContactULID)
 	}
 
-	if filter.Type != "" && filter.Type != "ALL" && filter.OrderBy != nil && *filter.OrderBy != "new_emails" && filter.Type != "CALL" {
+	if filter.Type != "" && filter.Type != model.TypeAll && filter.OrderBy != nil && *filter.OrderBy != "new_emails" && filter.Type != model.TypeCall && filter.Type != model.TypePhoneCall {
 		sqlQuery += " AND cd.type = ?"
 		args = append(args, filter.Type)
 	}
 
-	if filter.Type == "CALL" {
+	if filter.Type == model.TypeCall || filter.Type == model.TypePhoneCall {
 		sqlQuery += " AND (cd.type = ? OR cd.type = ?)"
 		args = append(args, "CALL", "PHONE_CALL")
 	}
@@ -91,7 +91,7 @@ func getWhereClause(filter request.ContactDataQuery, sqlQuery string, args []int
 		args = append(args, true)
 	}
 
-	if filter.Unread != nil && filter.OrderBy != nil && *filter.OrderBy == "new_emails" || filter.Type == "EMAIL" {
+	if filter.Unread != nil && filter.OrderBy != nil && *filter.OrderBy == "new_emails" || filter.Type == model.TypeEmail {
 		sqlQuery += " AND cd.unread = ?"
 		value := 0
 		if *filter.Unread {

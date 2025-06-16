@@ -7,6 +7,7 @@ import (
 	"github.com/AutoVentures-New/GO-API/model/request"
 	"github.com/AutoVentures-New/GO-API/pkg"
 	"github.com/gofiber/fiber/v2"
+	"sync"
 )
 
 type ListResponse[T any] struct {
@@ -31,6 +32,10 @@ func ListContactData(fiberCtx *fiber.Ctx) error {
 		return responses.BadRequest(fiberCtx, "Invalid query parameters")
 	}
 
+	if query.Type == "" {
+		query.Type = model.TypeAll
+	}
+
 	contactData, err := contact_data.GetContactData(ctx, account, query)
 	if err != nil {
 		return responses.InternalServerError(fiberCtx, err)
@@ -42,29 +47,70 @@ func ListContactData(fiberCtx *fiber.Ctx) error {
 
 	ulids := pkg.ExtractIdentifiers(contactData)
 
-	emails, err := contact_data.GetEmails(ctx, account, ulids)
-	if err != nil {
-		return responses.InternalServerError(fiberCtx, err)
+	var (
+		emails        []model.EmailBucket
+		calls         []model.Call
+		activityFiles []model.ActivityFile
+		notes         []model.Note
+		events        []model.CalendarEvent
+	)
+
+	var (
+		wg      sync.WaitGroup
+		errLock sync.Mutex
+		callErr error
+	)
+
+	fetch := func(do bool, action func() error) {
+		if do {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				if err := action(); err != nil {
+					errLock.Lock()
+					defer errLock.Unlock()
+					if callErr == nil {
+						callErr = err
+					}
+				}
+			}()
+		}
 	}
 
-	calls, err := contact_data.GetCalls(ctx, account, ulids, *query.ContactULID)
-	if err != nil {
-		return responses.InternalServerError(fiberCtx, err)
-	}
+	fetch(query.Type == model.TypeAll || query.Type == model.TypeEmail, func() error {
+		var err error
+		emails, err = contact_data.GetEmails(ctx, account, ulids)
+		return err
+	})
 
-	activityFiles, err := contact_data.GetActivityFiles(ctx, account, ulids)
-	if err != nil {
-		return responses.InternalServerError(fiberCtx, err)
-	}
+	fetch(query.Type == model.TypeAll || query.Type == model.TypeCall || query.Type == model.TypePhoneCall, func() error {
+		var err error
+		calls, err = contact_data.GetCalls(ctx, account, ulids, *query.ContactULID)
+		return err
+	})
 
-	notes, err := contact_data.GetNotes(ctx, account, ulids)
-	if err != nil {
-		return responses.InternalServerError(fiberCtx, err)
-	}
+	fetch(query.Type == model.TypeAll || query.Type == model.TypeFile, func() error {
+		var err error
+		activityFiles, err = contact_data.GetActivityFiles(ctx, account, ulids)
+		return err
+	})
 
-	events, err := contact_data.GetEvents(ctx, account, ulids)
-	if err != nil {
-		return responses.InternalServerError(fiberCtx, err)
+	fetch(query.Type == model.TypeAll || query.Type == model.TypeNote, func() error {
+		var err error
+		notes, err = contact_data.GetNotes(ctx, account, ulids)
+		return err
+	})
+
+	fetch(query.Type == model.TypeAll || query.Type == model.TypeCall || query.Type == model.TypeEvent || query.Type == model.TypeTask || query.Type == model.TypeMeeting || query.Type == model.TypeVideoConference, func() error {
+		var err error
+		events, err = contact_data.GetEvents(ctx, account, ulids)
+		return err
+	})
+
+	wg.Wait()
+
+	if callErr != nil {
+		return responses.InternalServerError(fiberCtx, callErr)
 	}
 
 	contactDataMap := pkg.SliceToMap(contactData, func(c model.ContactData) string { return c.Identifier })

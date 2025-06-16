@@ -13,4 +13,5 @@ const (
 	TypeMeeting         ContactDataType = "MEETING"
 	TypeVideoConference ContactDataType = "VIDEO_CONFERENCE"
 	TypePhoneCall       ContactDataType = "PHONE_CALL"
+	TypeAll             ContactDataType = "ALL"
 )
