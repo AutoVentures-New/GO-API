@@ -124,32 +124,48 @@ func GetNotesSelect(
 func GroupNotes(notes []model.Note, comments []model.Note, users map[string]model.User) []model.Note {
 	commentsMap := make(map[string][]model.Note)
 
-	for _, c := range comments {
-		if c.CommentedAt != nil {
-			commentsMap[*c.CommentedAt] = append(commentsMap[*c.CommentedAt], c)
+	setUserInfo := func(user model.User) (name, image string) {
+		var parts []string
+		if user.FirstName != nil && strings.TrimSpace(*user.FirstName) != "" {
+			parts = append(parts, *user.FirstName)
+		}
+		if user.LastName != nil && strings.TrimSpace(*user.LastName) != "" {
+			parts = append(parts, *user.LastName)
+		}
+		if user.Image != nil {
+			image = *user.Image
+		}
+		return strings.Join(parts, " "), image
+	}
+
+	for i := range comments {
+		if user, ok := users[comments[i].CreatedBy]; ok {
+			name, image := setUserInfo(user)
+			if name != "" {
+				comments[i].CreatedByName = name
+			}
+			if image != "" {
+				comments[i].CreatedByImage = image
+			}
+		}
+		if comments[i].CommentedAt != nil {
+			key := *comments[i].CommentedAt
+			commentsMap[key] = append(commentsMap[key], comments[i])
 		}
 	}
-	for i, n := range notes {
-		if user, ok := users[n.CreatedBy]; ok {
-			var parts []string
-			if user.FirstName != nil && strings.TrimSpace(*user.FirstName) != "" {
-				parts = append(parts, *user.FirstName)
+
+	for i := range notes {
+		if user, ok := users[notes[i].CreatedBy]; ok {
+			name, image := setUserInfo(user)
+			if name != "" {
+				notes[i].CreatedByName = name
 			}
-			if user.LastName != nil && strings.TrimSpace(*user.LastName) != "" {
-				parts = append(parts, *user.LastName)
-			}
-			if len(parts) > 0 {
-				notes[i].CreatedByName = strings.Join(parts, " ")
-			}
-			if user.Image != nil {
-				notes[i].CreatedByImage = *user.Image
+			if image != "" {
+				notes[i].CreatedByImage = image
 			}
 		}
-		if replies, ok := commentsMap[n.Ulid]; ok {
-			notes[i].Comments = replies
-		} else {
-			notes[i].Comments = []model.Note{}
-		}
+		notes[i].Comments = commentsMap[notes[i].Ulid]
 	}
+
 	return notes
 }

@@ -93,32 +93,47 @@ func GetActivityFiles(
 func GroupComments(files []model.ActivityFile, comments []model.Comment, users map[string]model.User) []model.ActivityFile {
 	commentsMap := make(map[string][]model.Comment)
 
-	for _, c := range comments {
-		if c.CommentedAt != nil {
-			commentsMap[*c.CommentedAt] = append(commentsMap[*c.CommentedAt], c)
+	setUserInfo := func(user model.User) (name, image string) {
+		var parts []string
+		if user.FirstName != nil && strings.TrimSpace(*user.FirstName) != "" {
+			parts = append(parts, *user.FirstName)
+		}
+		if user.LastName != nil && strings.TrimSpace(*user.LastName) != "" {
+			parts = append(parts, *user.LastName)
+		}
+		if user.Image != nil {
+			image = *user.Image
+		}
+		return strings.Join(parts, " "), image
+	}
+
+	for i := range comments {
+		if user, ok := users[comments[i].CreatedBy]; ok {
+			name, image := setUserInfo(user)
+			if name != "" {
+				comments[i].CreatedByName = name
+			}
+			if image != "" {
+				comments[i].CreatedByImage = image
+			}
+		}
+		if comments[i].CommentedAt != nil {
+			commentsMap[*comments[i].CommentedAt] = append(commentsMap[*comments[i].CommentedAt], comments[i])
 		}
 	}
-	for i, n := range files {
-		if user, ok := users[n.CreatedBy]; ok {
-			var parts []string
-			if user.FirstName != nil && strings.TrimSpace(*user.FirstName) != "" {
-				parts = append(parts, *user.FirstName)
+
+	for i := range files {
+		if user, ok := users[files[i].CreatedBy]; ok {
+			name, image := setUserInfo(user)
+			if name != "" {
+				files[i].CreatedByName = name
 			}
-			if user.LastName != nil && strings.TrimSpace(*user.LastName) != "" {
-				parts = append(parts, *user.LastName)
-			}
-			if len(parts) > 0 {
-				files[i].CreatedByName = strings.Join(parts, " ")
-			}
-			if user.Image != nil {
-				files[i].CreatedByImage = *user.Image
+			if image != "" {
+				files[i].CreatedByImage = image
 			}
 		}
-		if replies, ok := commentsMap[n.Ulid]; ok {
-			files[i].Comments = replies
-		} else {
-			files[i].Comments = []model.Comment{}
-		}
+		files[i].Comments = commentsMap[files[i].Ulid]
 	}
+
 	return files
 }
