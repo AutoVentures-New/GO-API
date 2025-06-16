@@ -15,15 +15,38 @@ func GetContactData(
 	ctx context.Context,
 	account string,
 	filter request.ContactDataQuery,
-) ([]model.ContactData, error) {
+) ([]model.ContactData, int, error) {
 
 	sqlQuery := fmt.Sprintf(query.ListContactData, account, account)
+	countQuery := fmt.Sprintf(query.CountContactData, account, account)
 
 	var args []interface{}
 
-	sqlQuery, args = getWhereClause(filter, sqlQuery, args)
+	var total = 0
+
+	whereClause, args := getWhereClause(filter, args)
+
+	sqlQuery += whereClause
+
+	countQuery += whereClause
 
 	sqlQuery = getOrderByClause(filter, sqlQuery)
+
+	limit := filter.Limit
+	offset := filter.Page * limit
+
+	sqlQuery += fmt.Sprintf(" LIMIT %d OFFSET %d", limit, offset)
+
+	err := database.Database.QueryRowContext(
+		ctx,
+		countQuery,
+		args...,
+	).Scan(&total)
+
+	if err != nil {
+		return nil, total, err
+
+	}
 
 	rows, err := database.Database.QueryContext(ctx, sqlQuery, args...)
 
@@ -31,7 +54,7 @@ func GetContactData(
 		logrus.WithError(err).
 			Error("Error to list providers")
 
-		return nil, err
+		return nil, total, err
 	}
 
 	defer func(rows *sql.Rows) {
@@ -58,16 +81,17 @@ func GetContactData(
 		if err != nil {
 			logrus.WithError(err).Error("Error to list contact data")
 
-			return nil, err
+			return nil, total, err
 		}
 
 		contactsData = append(contactsData, contactData)
 	}
 
-	return contactsData, nil
+	return contactsData, total, nil
 }
 
-func getWhereClause(filter request.ContactDataQuery, sqlQuery string, args []interface{}) (string, []interface{}) {
+func getWhereClause(filter request.ContactDataQuery, args []interface{}) (string, []interface{}) {
+	sqlQuery := ""
 	if filter.ContactULID != nil {
 		sqlQuery += "AND cdc.contact_ulid = ?"
 		args = append(args, filter.ContactULID)

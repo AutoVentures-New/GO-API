@@ -28,21 +28,18 @@ func ListContactData(fiberCtx *fiber.Ctx) error {
 	account := user.Account
 	var query request.ContactDataQuery
 
-	if err := fiberCtx.QueryParser(&query); err != nil {
+	query, err := UnmarshalParams(fiberCtx)
+	if err != nil {
 		return responses.BadRequest(fiberCtx, "Invalid query parameters")
 	}
 
-	if query.Type == "" {
-		query.Type = model.TypeAll
-	}
-
-	contactData, err := contact_data.GetContactData(ctx, account, query)
+	contactData, total, err := contact_data.GetContactData(ctx, account, query)
 	if err != nil {
 		return responses.InternalServerError(fiberCtx, err)
 	}
 
 	if len(contactData) == 0 {
-		return ListSuccess(fiberCtx, contactData, 0)
+		return ListSuccess(fiberCtx, contactData, total)
 	}
 
 	ulids := pkg.ExtractIdentifiers(contactData)
@@ -139,5 +136,23 @@ func ListContactData(fiberCtx *fiber.Ctx) error {
 		}
 	}
 
-	return ListSuccess(fiberCtx, contactData, len(contactData))
+	return ListSuccess(fiberCtx, contactData, total)
+}
+
+func UnmarshalParams(ctx *fiber.Ctx) (request.ContactDataQuery, error) {
+	var query request.ContactDataQuery
+
+	if err := ctx.QueryParser(&query); err != nil {
+		return query, err
+	}
+
+	if query.Type == "" {
+		query.Type = model.TypeAll
+	}
+
+	if query.Limit <= 0 {
+		query.Limit = 20
+	}
+
+	return query, nil
 }
