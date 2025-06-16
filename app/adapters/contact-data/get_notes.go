@@ -25,7 +25,26 @@ func GetNotes(
 
 	notesComments, err := GetNotesSelect(ctx, account, pkg.ExtractIdentifiers(notes), true)
 
-	return GroupNotes(notes, notesComments), nil
+	if err != nil {
+		return nil, err
+	}
+
+	notesUlid := pkg.ExtractField(notes, func(item model.Note) string {
+		return item.CreatedBy
+	})
+	commentsUlid := pkg.ExtractField(notesComments, func(item model.Note) string {
+		return item.CreatedBy
+	})
+
+	users, err := GetUsers(ctx, append(notesUlid, commentsUlid...))
+
+	if err != nil {
+		return nil, err
+	}
+
+	usersMap := pkg.SliceToMap(users, func(c model.User) string { return c.Ulid })
+
+	return GroupNotes(notes, notesComments, usersMap), nil
 }
 
 func GetNotesSelect(
@@ -102,7 +121,7 @@ func GetNotesSelect(
 	return notes, nil
 }
 
-func GroupNotes(notes []model.Note, comments []model.Note) []model.Note {
+func GroupNotes(notes []model.Note, comments []model.Note, users map[string]model.User) []model.Note {
 	commentsMap := make(map[string][]model.Note)
 
 	for _, c := range comments {
@@ -111,6 +130,21 @@ func GroupNotes(notes []model.Note, comments []model.Note) []model.Note {
 		}
 	}
 	for i, n := range notes {
+		if user, ok := users[n.CreatedBy]; ok {
+			var parts []string
+			if user.FirstName != nil && strings.TrimSpace(*user.FirstName) != "" {
+				parts = append(parts, *user.FirstName)
+			}
+			if user.LastName != nil && strings.TrimSpace(*user.LastName) != "" {
+				parts = append(parts, *user.LastName)
+			}
+			if len(parts) > 0 {
+				notes[i].CreatedByName = strings.Join(parts, " ")
+			}
+			if user.Image != nil {
+				notes[i].CreatedByImage = *user.Image
+			}
+		}
 		if replies, ok := commentsMap[n.Ulid]; ok {
 			notes[i].Comments = replies
 		} else {

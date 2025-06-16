@@ -73,9 +73,14 @@ func getWhereClause(filter request.ContactDataQuery, sqlQuery string, args []int
 		args = append(args, filter.ContactULID)
 	}
 
-	if filter.Type != "" && filter.Type != "ALL" && filter.OrderBy != nil && *filter.OrderBy != "new_emails" {
+	if filter.Type != "" && filter.Type != "ALL" && filter.OrderBy != nil && *filter.OrderBy != "new_emails" && filter.Type != "CALL" {
 		sqlQuery += " AND cd.type = ?"
 		args = append(args, filter.Type)
+	}
+
+	if filter.Type == "CALL" {
+		sqlQuery += " AND (cd.type = ? OR cd.type = ?)"
+		args = append(args, "CALL", "PHONE_CALL")
 	}
 
 	if filter.OrderBy != nil && *filter.OrderBy == "new_emails" {

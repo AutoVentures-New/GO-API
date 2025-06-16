@@ -28,7 +28,7 @@ func GetEvents(
 
 	whereIn := strings.Join(placeholders, ", ")
 
-	sqlQuery := fmt.Sprintf(query.ListCalendarEventData, account) + " WHERE ulid IN (" + whereIn + ")"
+	sqlQuery := fmt.Sprintf(query.ListCalendarEventData, account, account) + " WHERE ce.ulid IN (" + whereIn + ")"
 
 	rows, err := database.Database.QueryContext(ctx, sqlQuery, args...)
 
@@ -52,6 +52,7 @@ func GetEvents(
 		err := rows.Scan(
 			&ev.RecordNumber,
 			&ev.Ulid,
+			&ev.CalendarUlid,
 			&ev.Name,
 			&ev.Description,
 			&ev.Participants,
@@ -87,10 +88,16 @@ func GetEvents(
 		return nil, err
 	}
 
-	return GroupFiles(events, eventFiles), nil
+	calendars, err := GetCalendars(ctx, account)
+	if err != nil {
+		return nil, err
+	}
+	calendarMap := pkg.SliceToMap(calendars, func(c model.Calendar) string { return c.Ulid })
+
+	return GroupFiles(events, eventFiles, calendarMap), nil
 }
 
-func GroupFiles(events []model.CalendarEvent, files []model.CalendarEventFile) []model.CalendarEvent {
+func GroupFiles(events []model.CalendarEvent, files []model.CalendarEventFile, calendarMap map[string]model.Calendar) []model.CalendarEvent {
 	filesMap := make(map[string][]model.CalendarEventFile)
 
 	for _, f := range files {
@@ -99,6 +106,10 @@ func GroupFiles(events []model.CalendarEvent, files []model.CalendarEventFile) [
 		}
 	}
 	for i, e := range events {
+		if calendar, ok := calendarMap[e.CalendarUlid]; ok {
+			events[i].Calendar = calendar
+		}
+
 		if fileData, ok := filesMap[e.Ulid]; ok {
 			events[i].ActivityFiles = fileData
 			events[i].ConferenceRecords = []interface{}{}

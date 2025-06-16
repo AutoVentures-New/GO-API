@@ -10,7 +10,8 @@ type CalendarEvent struct {
 	RecordNumber      uint64              `json:"record_number"`
 	Ulid              string              `json:"ulid"`
 	Name              string              `json:"name"`
-	Description       string              `json:"description"`
+	CalendarUlid      string              `json:"calendar_ulid"`
+	Description       *string             `json:"description"`
 	Participants      EmailAddresses      `json:"participants"`
 	When              json.RawMessage     `json:"when"`
 	Location          *string             `json:"location"`
@@ -32,6 +33,9 @@ type CalendarEvent struct {
 	CreatedAt         time.Time           `json:"created_at"`
 	UpdatedAt         time.Time           `json:"updated_at"`
 	ActivityFiles     []CalendarEventFile `json:"activity_files"`
+	Calendar          Calendar            `json:"calendar"`
+	From              EmailAddresses      `json:"from"`
+	Date              time.Time           `json:"date"`
 }
 
 func (c CalendarEvent) GetUlid() string {

@@ -20,4 +20,8 @@ type Call struct {
 	UserCreateDate     time.Time      `json:"user_create_date"`
 	CreatedAt          time.Time      `json:"created_at"`
 	UpdatedAt          time.Time      `json:"updated_at"`
+	CreatedByName      string         `json:"created_by_name"`
+	CreatedByImage     string         `json:"created_by_image"`
+	ContactName        string         `json:"contact_name"`
+	ContactImage       string         `json:"contact_image"`
 }

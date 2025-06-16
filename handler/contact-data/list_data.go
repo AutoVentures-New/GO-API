@@ -47,7 +47,7 @@ func ListContactData(fiberCtx *fiber.Ctx) error {
 		return responses.InternalServerError(fiberCtx, err)
 	}
 
-	calls, err := contact_data.GetCalls(ctx, account, ulids)
+	calls, err := contact_data.GetCalls(ctx, account, ulids, *query.ContactULID)
 	if err != nil {
 		return responses.InternalServerError(fiberCtx, err)
 	}
@@ -65,6 +65,12 @@ func ListContactData(fiberCtx *fiber.Ctx) error {
 	events, err := contact_data.GetEvents(ctx, account, ulids)
 	if err != nil {
 		return responses.InternalServerError(fiberCtx, err)
+	}
+
+	contactDataMap := pkg.SliceToMap(contactData, func(c model.ContactData) string { return c.Identifier })
+	for i, e := range events {
+		events[i].From = contactDataMap[e.Ulid].From
+		events[i].Date = contactDataMap[e.Ulid].Date
 	}
 
 	maps := map[model.ContactDataType]map[string]any{

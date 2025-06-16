@@ -72,10 +72,25 @@ func GetActivityFiles(
 		return nil, err
 	}
 
-	return GroupComments(results, comments), nil
+	fileUlids := pkg.ExtractField(results, func(item model.ActivityFile) string {
+		return item.CreatedBy
+	})
+	commentsUlid := pkg.ExtractField(comments, func(item model.Comment) string {
+		return item.CreatedBy
+	})
+
+	users, err := GetUsers(ctx, append(fileUlids, commentsUlid...))
+
+	if err != nil {
+		return nil, err
+	}
+
+	usersMap := pkg.SliceToMap(users, func(c model.User) string { return c.Ulid })
+
+	return GroupComments(results, comments, usersMap), nil
 }
 
-func GroupComments(files []model.ActivityFile, comments []model.Comment) []model.ActivityFile {
+func GroupComments(files []model.ActivityFile, comments []model.Comment, users map[string]model.User) []model.ActivityFile {
 	commentsMap := make(map[string][]model.Comment)
 
 	for _, c := range comments {
@@ -84,6 +99,21 @@ func GroupComments(files []model.ActivityFile, comments []model.Comment) []model
 		}
 	}
 	for i, n := range files {
+		if user, ok := users[n.CreatedBy]; ok {
+			var parts []string
+			if user.FirstName != nil && strings.TrimSpace(*user.FirstName) != "" {
+				parts = append(parts, *user.FirstName)
+			}
+			if user.LastName != nil && strings.TrimSpace(*user.LastName) != "" {
+				parts = append(parts, *user.LastName)
+			}
+			if len(parts) > 0 {
+				files[i].CreatedByName = strings.Join(parts, " ")
+			}
+			if user.Image != nil {
+				files[i].CreatedByImage = *user.Image
+			}
+		}
 		if replies, ok := commentsMap[n.Ulid]; ok {
 			files[i].Comments = replies
 		} else {
