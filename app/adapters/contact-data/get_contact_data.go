@@ -19,7 +19,13 @@ func GetContactData(
 
 	sqlQuery := fmt.Sprintf(query.ListContactData, account, account)
 
-	rows, err := database.Database.QueryContext(ctx, sqlQuery, filter.ContactULID)
+	var args []interface{}
+
+	sqlQuery, args = getWhereClause(filter, sqlQuery, args)
+
+	sqlQuery = getOrderByClause(filter, sqlQuery)
+
+	rows, err := database.Database.QueryContext(ctx, sqlQuery, args...)
 
 	if err != nil {
 		logrus.WithError(err).
@@ -59,4 +65,86 @@ func GetContactData(
 	}
 
 	return contactsData, nil
+}
+
+func getWhereClause(filter request.ContactDataQuery, sqlQuery string, args []interface{}) (string, []interface{}) {
+	if filter.ContactULID != nil {
+		sqlQuery += "AND cdc.contact_ulid = ?"
+		args = append(args, filter.ContactULID)
+	}
+
+	if filter.Type != "" && filter.Type != "ALL" && filter.OrderBy != nil && *filter.OrderBy != "new_emails" {
+		sqlQuery += " AND cd.type = ?"
+		args = append(args, filter.Type)
+	}
+
+	if filter.OrderBy != nil && *filter.OrderBy == "new_emails" {
+		sqlQuery += " AND cd.type = ? "
+		args = append(args, "EMAIL")
+
+		sqlQuery += " AND cdc.is_new = ?"
+		args = append(args, true)
+	}
+
+	if filter.Unread != nil && filter.OrderBy != nil && *filter.OrderBy == "new_emails" || filter.Type == "EMAIL" {
+		sqlQuery += " AND cd.unread = ?"
+		value := 0
+		if *filter.Unread {
+			value = 1
+		}
+
+		args = append(args, value)
+	}
+
+	if filter.DateFrom != nil && filter.DateTo != nil {
+		sqlQuery += " AND cd.date >= ? AND cd.date <= ?"
+		args = append(args, filter.DateFrom, filter.DateTo)
+	}
+
+	if filter.From != nil {
+		sqlQuery += " AND cd.from LIKE ?"
+		args = append(args, "%"+*filter.From+"%")
+	}
+
+	if filter.To != nil {
+		sqlQuery += " AND cd.to LIKE ?"
+		args = append(args, "%"+*filter.To+"%")
+	}
+
+	if filter.Subject != nil {
+		sqlQuery += " AND cd.search_field LIKE ?"
+		args = append(args, "%"+*filter.Subject+"%")
+	}
+
+	if filter.Folder != nil {
+		sqlQuery += " AND cd.folder = ?"
+		args = append(args, filter.Folder)
+	}
+
+	return sqlQuery, args
+}
+
+func getOrderByClause(filter request.ContactDataQuery, sqlQuery string) string {
+	var column string
+
+	if filter.OrderBy == nil || *filter.OrderBy == "created_at" {
+		column = "cd.created_at"
+	} else {
+		switch *filter.OrderBy {
+		case "date", "updated_at":
+			column = "cd." + *filter.OrderBy
+		case "subject", "title":
+			column = "cd.search_field"
+		default:
+			column = "cd.created_at"
+		}
+	}
+
+	sort := "DESC"
+	if filter.Sort != nil && (*filter.Sort == "ASC" || *filter.Sort == "DESC") {
+		sort = *filter.Sort
+	}
+
+	sqlQuery += fmt.Sprintf(" ORDER BY %s %s ", column, sort)
+	return sqlQuery
 }

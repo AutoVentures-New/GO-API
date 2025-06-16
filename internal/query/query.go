@@ -1,6 +1,6 @@
 package query
 
-var ListContactData = `SELECT cd.ulid, cd.type, cd.identifier, cd.from, cd.to, cd.cc, cd.date FROM tenant_%s.contact_data_contact cdc INNER JOIN tenant_%s.contact_data cd ON cdc.contact_data_ulid COLLATE utf8mb4_unicode_ci = cd.ulid COLLATE utf8mb4_unicode_ci WHERE cdc.contact_ulid = ?`
+var ListContactData = `SELECT cd.ulid, cd.type, cd.identifier, cd.from, cd.to, cd.cc, cd.date FROM tenant_%s.contact_data_contact cdc INNER JOIN tenant_%s.contact_data cd ON cdc.contact_data_ulid COLLATE utf8mb4_unicode_ci = cd.ulid COLLATE utf8mb4_unicode_ci WHERE 1 = 1 `
 
 var ListEmailData = `SELECT record_number, ulid, account_id, message_id, thread_id, subject, eb.from, eb.to, cc, bcc, reply_to, headers, starred, unread, reply_to_message_id, body, files, folder, links, opens, COALESCE(link_clicks, 'null') AS link_clicks, is_tracked, eb.date, created_at, updated_at FROM tenant_%s.email_bucket eb`
 
