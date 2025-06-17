@@ -30,12 +30,12 @@ func ListContactData(fiberCtx *fiber.Ctx) error {
 
 	query, err := UnmarshalParams(fiberCtx)
 	if err != nil {
-		return responses.BadRequest(fiberCtx, "Invalid query parameters")
+		return responses.Conflict(fiberCtx, err.Error(), "DATA|LIST|INTERNAL_SERVER_ERROR")
 	}
 
 	contactData, total, err := contact_data.GetContactData(ctx, account, query)
 	if err != nil {
-		return responses.InternalServerError(fiberCtx, err)
+		return responses.Conflict(fiberCtx, err.Error(), "DATA|LIST|INTERNAL_SERVER_ERROR")
 	}
 
 	if len(contactData) == 0 {

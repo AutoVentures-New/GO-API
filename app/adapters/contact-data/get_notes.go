@@ -164,7 +164,12 @@ func GroupNotes(notes []model.Note, comments []model.Note, users map[string]mode
 				notes[i].CreatedByImage = image
 			}
 		}
-		notes[i].Comments = commentsMap[notes[i].Ulid]
+		if comments, ok := commentsMap[notes[i].Ulid]; ok {
+			notes[i].Comments = comments
+		} else {
+			notes[i].Comments = []model.Note{}
+		}
+
 	}
 
 	return notes

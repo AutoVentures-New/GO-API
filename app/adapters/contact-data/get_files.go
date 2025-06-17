@@ -132,7 +132,11 @@ func GroupComments(files []model.ActivityFile, comments []model.Comment, users m
 				files[i].CreatedByImage = image
 			}
 		}
-		files[i].Comments = commentsMap[files[i].Ulid]
+		if comments, ok := commentsMap[files[i].Ulid]; ok {
+			files[i].Comments = comments
+		} else {
+			files[i].Comments = []model.Comment{}
+		}
 	}
 
 	return files
