@@ -13,7 +13,9 @@ import (
 	"github.com/AutoVentures-New/GO-API/router"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/newrelic/go-agent/v3/integrations/nrfiber"
 	"github.com/sirupsen/logrus"
+
 	"github.com/spf13/cobra"
 )
 
@@ -25,6 +27,7 @@ var apiCmd = &cobra.Command{
 		config.InitConfig()
 		database.InitDatabase()
 		pkg.InitS3Client()
+		pkg.InitNewRelic()
 
 		app := fiber.New(fiber.Config{
 			Prefork:                  false,
@@ -39,6 +42,8 @@ var apiCmd = &cobra.Command{
 			EnablePrintRoutes:        false,
 			BodyLimit:                20 * 1024 * 1024,
 		})
+
+		app.Use(nrfiber.Middleware(pkg.NewRelicApp))
 
 		app.Use(cors.New())
 

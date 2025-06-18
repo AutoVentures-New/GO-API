@@ -9,11 +9,12 @@ import (
 var Config configEnv
 
 type configEnv struct {
-	Env         string `env:"ENV" envDefault:"prod"`
-	FrontendURL string `env:"FRONTEND_URL" envDefault:"http://localhost:3000"`
-	Port        string `env:"PORT" envDefault:"5000"`
-	JwtSecret   string `env:"JWT_SECRET"`
-	Database    struct {
+	Env                string `env:"ENV" envDefault:"prod"`
+	FrontendURL        string `env:"FRONTEND_URL" envDefault:"http://localhost:3000"`
+	Port               string `env:"PORT" envDefault:"5000"`
+	NewRelicLicenseKey string `env:"NEW_RELIC_LICENSE_KEY" envDefault:"-"`
+	JwtSecret          string `env:"JWT_SECRET"`
+	Database           struct {
 		Uri string `env:"DB_URI" json:"-"`
 	}
 
